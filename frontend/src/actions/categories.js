@@ -1,20 +1,29 @@
 import { getCategories } from '../utils/ApiServer'
 
+export const REQUEST_CATEGORIES = 'REQUEST_CATEGORIES'
 export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
 
-export function receiveCategories (categories) {
+export function requestCategories () {
+	return {
+		type: REQUEST_CATEGORIES
+	}
+}
+
+export function receiveCategories (items) {
 	return {
 		type: RECEIVE_CATEGORIES,
-		categories
+		items
 	}
 }
 
 // Async Action TOGGLE_TWEET
-export function handleCategories (info) {
+export function handleCategories () {
 	return (dispatch) => {
+		dispatch(requestCategories())
+
 		return getCategories()
-			.then(({ categories }) => {
-				dispatch(receiveCategories(categories))
+			.then((data) => {
+				dispatch(receiveCategories(data.categories))
 			})
 	}
 }

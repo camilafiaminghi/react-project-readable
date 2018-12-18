@@ -1,11 +1,22 @@
-import { RECEIVE_CATEGORIES } from '../actions/categories'
+import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../actions/categories'
 
-export default function categories (state = {}, action) {
+export default function categories (state = {
+	isFetching: false,
+	items: []
+}, action) {
 	switch(action.type) {
-		case RECEIVE_CATEGORIES :
+		case REQUEST_CATEGORIES :
 			return {
 				...state,
-				...action.categories
+				isFetching: true
+			}
+		case RECEIVE_CATEGORIES :
+			console.log('action', action)
+
+			return {
+				...state,
+				isFetching: false,
+				items: action.items.map(item => (item.path))
 			}
 		default :
 			return state
