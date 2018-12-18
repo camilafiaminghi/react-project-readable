@@ -16,7 +16,7 @@ export function receiveCategories (items) {
 	}
 }
 
-// Async Action TOGGLE_TWEET
+// Async Action
 export function handleCategories () {
 	return (dispatch) => {
 		dispatch(requestCategories())

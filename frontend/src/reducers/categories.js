@@ -11,8 +11,6 @@ export default function categories (state = {
 				isFetching: true
 			}
 		case RECEIVE_CATEGORIES :
-			console.log('action', action)
-
 			return {
 				...state,
 				isFetching: false,
