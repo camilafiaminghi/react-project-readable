@@ -14,7 +14,7 @@ export default function categories (state = {
 			return {
 				...state,
 				isFetching: false,
-				items: action.items.map(item => (item.path))
+				items: action.items
 			}
 		default :
 			return state

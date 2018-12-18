@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import Nav from './Nav'
 
 class DefaultView extends Component {
 
 	render() {
 		return (
 			<div>
-				Root View lists all posts
+				DefaultView
+				<Nav />
 			</div>
 		)
 	}
@@ -14,7 +16,7 @@ class DefaultView extends Component {
 
 function mapStateToProps ({ categories }) {
 	return {
-		categories: categories,
+		categories: categories.items,
 	}
 }
 
