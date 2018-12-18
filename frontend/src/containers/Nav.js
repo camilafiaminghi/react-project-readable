@@ -17,7 +17,7 @@ class Nav extends Component {
 				</li>
 				{this.props.items.map((item, index) => (
 					<li key={index}>
-						<NavLink to={item.path} exact activeClassName="active">{item.name}</NavLink>
+						<NavLink to={item.path} isActive={(match, location) => (`/${item.path}` === location.pathname)} activeClassName="active">{item.name}</NavLink>
 					</li>
 				))}
 			</ul>
