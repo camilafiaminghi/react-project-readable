@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import PropTypes from 'prop-types'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { handleCategories } from '../actions/categories'
@@ -6,6 +7,11 @@ import DefaultView from './DefaultView'
 import RouteNotFound from '../components/RouteNotFound'
 
 class App extends Component {
+
+	static propTypes = {
+		routes: PropTypes.array.isRequired
+	}
+
 	componentDidMount() {
 		this.props.dispatch(handleCategories())
 	}
