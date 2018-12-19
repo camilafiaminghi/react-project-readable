@@ -18,17 +18,9 @@ describe('ApiServer', function() {
 		expect(response.categories.length).toBeGreaterThan(1)
   })
 
-  it('should load a list of posts by category', async () => {
-		window.fetch = fetch.successful(posts)
-		const response = await ApiServer.getPostsByCategory()
-
-		expect(response[0]).toMatchObject({})
-		expect(response[0].hasOwnProperty('id')).toBeTruthy()
-  })
-
   it('should load a list of posts', async () => {
 		window.fetch = fetch.successful(posts)
-		const response = await ApiServer.getAllPosts()
+		const response = await ApiServer.getPosts()
 
 		expect(response[0]).toMatchObject({})
 		expect(response[0].hasOwnProperty('id')).toBeTruthy()

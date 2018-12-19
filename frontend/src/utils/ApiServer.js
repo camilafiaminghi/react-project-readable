@@ -27,26 +27,18 @@ export const getCategories = () =>
 /*
  * GET /:category/posts
  * Posts by category.
+ * @param {String} category - react, redux, udacity
  */
-export const getPostsByCategory = (category) =>
-	fetch(`${api}/${category}/posts`, {
-		...options,
-		method: 'GET'
-	})
-		.then(response => response.json())
-		.then(data => data)
+export const getPosts = (category) => {
+	const url = (category) ? `${api}/${category}/posts` : `${api}/posts`;
 
-/*
- * GET /posts
- * All posts.
- */
-export const getAllPosts = () =>
-	fetch(`${api}/posts`, {
+	return fetch(url, {
 		...options,
 		method: 'GET'
 	})
 		.then(response => response.json())
 		.then(data => data)
+}
 
 /*
  * POST /posts
