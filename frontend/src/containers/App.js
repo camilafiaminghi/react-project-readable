@@ -25,7 +25,7 @@ class App extends Component {
 							<Switch>
 								<Route exact path="/" component={DefaultView} />
 								{this.props.routes.map((route, index) => (
-									<Route exact key={index} path={route} component={DefaultView} />
+									<Route exact key={index} path={`/${route}`} component={DefaultView} />
 	              ))}
 	              <Route component={RouteNotFound} />
 	            </Switch>
@@ -37,9 +37,9 @@ class App extends Component {
 	}
 }
 
-function mapStateToProps ({ categories }) {
+const mapStateToProps = ({ categories }) => {
 	return {
-		routes: categories.items.map(item => (`/${item.path}`))
+		routes: categories.items.map(item => (item.path))
 	}
 }
 

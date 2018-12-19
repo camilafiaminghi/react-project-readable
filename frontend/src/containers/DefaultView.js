@@ -9,6 +9,10 @@ class DefaultView extends Component {
 		categories: PropTypes.array.isRequired
 	}
 
+	componentDidMount() {
+		console.log('pathname: ', this.props.match.path.split('/')[1])
+	}
+
 	render() {
 		return (
 			<div>
@@ -19,7 +23,7 @@ class DefaultView extends Component {
 	}
 }
 
-function mapStateToProps ({ categories }) {
+function mapStateToProps ({ categories }, { route }) {
 	return {
 		categories: categories.items,
 	}
