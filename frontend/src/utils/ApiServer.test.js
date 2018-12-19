@@ -8,7 +8,7 @@ import comments from '../__helpers__/comments'
 const postID = posts[0].id
 const commentID = comments[0].id
 
-describe('ApiServer', function() {
+describe('ApiServer', () => {
 	/* POST METHODS */
 	it('should load a list of categories', async () => {
 		window.fetch = fetch.successful(categories)

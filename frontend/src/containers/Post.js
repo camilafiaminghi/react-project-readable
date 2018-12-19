@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import { timeDiff, formatTimeDiff } from '../utils/dateUtils'
 
 export class Post extends Component {
 
@@ -17,7 +18,7 @@ export class Post extends Component {
 			<div className="post">
 				<div className="header">
 					<span>Score [{ voteScore }] </span>
-					<span>Posted by { author } - { timestamp }</span>
+					<span>Posted by { author } { formatTimeDiff(timeDiff(timestamp)) }</span>
 				</div>
 				<section>
 					<h2 className="title">{ title }</h2>
