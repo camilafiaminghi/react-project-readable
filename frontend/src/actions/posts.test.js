@@ -7,14 +7,14 @@ import { posts } from '../__helpers__/posts'
 const configStore = configureMockStore([thunk])
 const store = configStore({
 	isFetching: false,
-	items: []
+	items: undefined
 })
 
 describe('posts action creators', () => {
 	it('should return an object', () => {
 		expect(receivePosts()).toEqual({
 			type: RECEIVE_POSTS,
-			posts: undefined
+			items: undefined
 		})
 	})
 
@@ -23,11 +23,13 @@ describe('posts action creators', () => {
 
 	// TEST ASYNC PASS THROUGH THUNK
 	it('successful handlePosts calls receivePosts', () => {
-		window.fetch = fetch.successful({ data:{posts} })
+		window.fetch = fetch.successful(posts)
 
 		const expectAction = [
 			{ type: REQUEST_POSTS},
-			{ type: RECEIVE_POSTS, items: undefined }
+			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW' },
+			{ type: RECEIVE_POSTS, items: undefined },
+			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' }
 		]
 
 		return store.dispatch(handlePosts())
