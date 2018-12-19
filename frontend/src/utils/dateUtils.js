@@ -10,7 +10,6 @@ export function timeDiff (timestamp, now=new Date()) {
   const d1 = new Date(timestamp)
   const d2 = new Date(now)
 
-  const day = 1000 * 60 * 60 * 24
   const d1Ms = d1.getTime()
   const d2Ms = d2.getTime()
 
@@ -32,7 +31,7 @@ export function timeDiff (timestamp, now=new Date()) {
 
 export function formatTimeDiff (timeobj) {
 	const {days, hours, minutes, seconds} = timeobj
-	let str = ''
+
 	if (days > 0)
 		return ((days > 0) ? ((days > 1) ? `${days} days` : `${days} day`) : '') + ' ago'
 	if (hours > 0)
