@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { handlePosts } from '../actions/posts'
 import Nav from './Nav'
 
 class DefaultView extends Component {
@@ -10,20 +11,20 @@ class DefaultView extends Component {
 	}
 
 	componentDidMount() {
-		console.log('pathname: ', this.props.match.path.split('/')[1])
+		const category = this.props.match.path.split('/')[1]
+		this.props.dispatch(handlePosts(category))
 	}
 
 	render() {
 		return (
 			<div>
-				DefaultView
 				<Nav />
 			</div>
 		)
 	}
 }
 
-function mapStateToProps ({ categories }, { route }) {
+const mapStateToProps = ({ categories }) => {
 	return {
 		categories: categories.items,
 	}

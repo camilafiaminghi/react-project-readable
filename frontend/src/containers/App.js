@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { handleCategories } from '../actions/categories'
 import DefaultView from './DefaultView'
+import LoadingBar from 'react-redux-loading-bar'
 import RouteNotFound from '../components/RouteNotFound'
 
 class App extends Component {
@@ -21,6 +22,7 @@ class App extends Component {
 			<Router>
 				<Fragment>
 					<div className="container">
+						<LoadingBar className="loading-bar" />
 						<Fragment>
 							<Switch>
 								<Route exact path="/" component={DefaultView} />

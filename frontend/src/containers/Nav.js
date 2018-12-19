@@ -11,7 +11,7 @@ class Nav extends Component {
 
 	render() {
 		return (
-			<ul>
+			<ul role="navigation">
 				<li>
 					<NavLink to="/" exact activeClassName="active">Home</NavLink>
 				</li>
