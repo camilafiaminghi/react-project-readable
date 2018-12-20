@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { handleInitialData } from '../actions/shared'
 import DefaultView from './DefaultView'
-import PostView from './PostView'
+import PostView from '../components/PostView'
 import LoadingBar from 'react-redux-loading-bar'
 import RouteNotFound from '../components/RouteNotFound'
 

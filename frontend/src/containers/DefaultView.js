@@ -23,7 +23,7 @@ class DefaultView extends Component {
 		return (
 			<div>
 				<Nav />
-				<ul>
+				<ul className="list">
 					{posts.map((post, index) => (
 						<li key={index}>
 							<Post id={post.id} />

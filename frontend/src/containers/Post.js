@@ -27,7 +27,7 @@ export class Post extends Component {
 					</section>
 				</Link>
 				<div className="footer">
-					<span>{ commentCount } Comments</span>
+					<span>{ commentCount } { (commentCount > 1) ? `Comments` : `Comment` }</span>
 				</div>
 			</div>
 		)

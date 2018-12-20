@@ -5,8 +5,8 @@ import configureMockStore from 'redux-mock-store'
 import App from './App'
 import { handleCategories } from '../actions/categories'
 import DefaultView from './DefaultView'
-import data from '../__helpers__/categories'
 import fetch from '../__helpers__/fetch'
+import data from '../__helpers__/categories'
 
 const initialState = {
 	categories: {
