@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { handleComments } from '../actions/comments'
+import Comment from './Comment'
 
 export class Comments extends Component {
 
@@ -20,7 +21,9 @@ export class Comments extends Component {
 		return (
 			<ul className="list">
 				{comments.map((comment, index) => (
-					<li key={index}>{comment.id}</li>
+					<li key={index}>
+						<Comment id={comment.id} />
+					</li>
 				))}
 			</ul>
 		)
