@@ -12,7 +12,7 @@ describe('posts reducer', () => {
 		expect(posts(initialState, {})).toEqual(initialState)
 	})
 
-	it('should handle REQUEST_TWEETS', () => {
+	it('should handle REQUEST_POSTS', () => {
 		expect(posts(initialState, {
 			type: REQUEST_POSTS,
 			isFetching: true
@@ -23,7 +23,7 @@ describe('posts reducer', () => {
 		expect(posts(initialState, {
 			type: RECEIVE_POSTS,
 			isFetching: false,
-			items: data.posts
-		})).toMatchObject({})
+			items: data
+		})).toMatchObject({isFetching: false, items: data})
 	})
 })

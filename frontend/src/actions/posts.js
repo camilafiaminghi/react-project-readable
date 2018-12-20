@@ -22,8 +22,8 @@ export function handlePosts (category) {
 		dispatch(requestPosts())
 
 		return getPosts(category)
-			.then((data) => {
-				dispatch(receivePosts(data))
+			.then((posts) => {
+				dispatch(receivePosts(posts))
 			})
 	}
 }
