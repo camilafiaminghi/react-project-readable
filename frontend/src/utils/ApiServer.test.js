@@ -42,20 +42,11 @@ describe('ApiServer', () => {
 		expect(response).toMatchObject(posts[0])
   })
 
-  it('should increment vote score for a post', async () => {
+  it('should increment or decrement vote score for a post', async () => {
   	const post = posts[0]
   	post.voteScore++
 		window.fetch = fetch.successful(post)
-		const response = await ApiServer.upVotePost(postID)
-
-		expect(response).toMatchObject(post)
-  })
-
-  it('should decrement vote score for a post', async () => {
-  	const post = posts[0]
-  	post.voteScore--
-		window.fetch = fetch.successful(post)
-		const response = await ApiServer.downVotePost(postID)
+		const response = await ApiServer.votePost(postID, 'upVote')
 
 		expect(response).toMatchObject(post)
   })

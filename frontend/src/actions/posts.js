@@ -1,9 +1,9 @@
-import { getPosts, upVotePost } from '../utils/ApiServer'
+import { getPosts, votePost } from '../utils/ApiServer'
 
 export const REQUEST_POSTS = 'REQUEST_POSTS'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
-export const REQUEST_POST_UPVOTE = 'REQUEST_POST_UPVOTE'
-export const RECEIVE_POST_UPVOTE = 'RECEIVE_POST_UPVOTE'
+export const REQUEST_POST_VOTE = 'REQUEST_POST_VOTE'
+export const RECEIVE_POST_VOTE = 'RECEIVE_POST_VOTE'
 
 export function requestPosts () {
 	return {
@@ -18,16 +18,17 @@ export function receivePosts (items) {
 	}
 }
 
-export function requestPostUpVote (id) {
+export function requestPostVote (id, option) {
 	return {
-		type: REQUEST_POST_UPVOTE,
-		id
+		type: REQUEST_POST_VOTE,
+		id,
+		option
 	}
 }
 
-export function receivePostUpVote (post) {
+export function receivePostVote (post) {
 	return {
-		type: RECEIVE_POST_UPVOTE,
+		type: RECEIVE_POST_VOTE,
 		post
 	}
 }
@@ -45,14 +46,14 @@ export function handlePosts (category) {
 }
 
 // Async Action REQUEST_POST_UPVOTE
-export function handlePostUpVote (id) {
+export function handleVotePost (id, option) {
 	return (dispatch) => {
-		dispatch(requestPostUpVote(id))
+		dispatch(requestPostVote(id, option))
 
-		return upVotePost(id)
+		return votePost(id, option)
 			.then((post) => {
 				if (post)
-					dispatch(receivePostUpVote(post))
+					dispatch(receivePostVote(post))
 				else
 					/* DISPATCH receivePostDownVote */
 					console.log('onError post', post)

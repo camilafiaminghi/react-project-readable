@@ -70,31 +70,18 @@ export const getPostById = (id) =>
 /*
  * POST /posts/:id
  * Increment post vote score.
- * @param {Object} option - {option: 'upVote'}
+ * @param {String} id
+ * @param {String} option - 'upVote' || 'downVote'
  */
-export const upVotePost = (id) =>
+export const votePost = (id, option) =>
 	fetch(`${api}/posts/${id}`, {
 		...options,
 		method: 'POST',
-		body: JSON.stringify({ option: 'upVote' })
+		body: JSON.stringify({ option })
 	})
 		.then(response => response.json())
 		.then(data => data)
-		.catch(error => console.log('upVotePost Error: ', error))
-
-/*
- * POST /posts/:id
- * Decrement post vote score.
- * @param {Object} option - {option: 'downVote'}
- */
-export const downVotePost = (id) =>
-	fetch(`${api}/posts/${id}`, {
-		...options,
-		method: 'POST',
-		body: JSON.stringify({ option: 'downVote' })
-	})
-		.then(response => response.json())
-		.then(data => data)
+		.catch(error => console.log('Error: ', error))
 
 /*
  * PUT /posts/:id
