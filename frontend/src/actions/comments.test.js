@@ -32,8 +32,10 @@ describe('comments action creators', () => {
 		window.fetch = fetch.successful(comments)
 
 		const expectAction = [
+			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW'},
 			{ type: REQUEST_COMMENTS },
 			{ type: RECEIVE_COMMENTS, items: comments },
+			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE'}
 		]
 
 		return store.dispatch(handleComments())

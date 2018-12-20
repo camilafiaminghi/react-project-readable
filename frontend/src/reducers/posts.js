@@ -1,4 +1,8 @@
-import { REQUEST_POSTS, RECEIVE_POSTS } from '../actions/posts'
+import {
+	REQUEST_POSTS,
+	RECEIVE_POSTS,
+	REQUEST_POST_UPVOTE,
+	RECEIVE_POST_UPVOTE } from '../actions/posts'
 
 export default function posts (state = {
 	isFetching: false,
@@ -15,6 +19,24 @@ export default function posts (state = {
 				...state,
 				isFetching: false,
 				items: action.items
+			}
+		case REQUEST_POST_UPVOTE :
+			const posts = state.items.map((item) => {
+				if (item.id === action.id)
+					item.voteScore++
+				return item
+			})
+
+			return {
+				...state,
+				isFetching: true,
+				items: [ ...posts ]
+			}
+		case RECEIVE_POST_UPVOTE :
+			/* POST voteScore UPDATE BY REQUEST */
+			return {
+				...state,
+				isFetching: false
 			}
 		default :
 			return state

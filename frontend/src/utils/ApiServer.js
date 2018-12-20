@@ -80,6 +80,7 @@ export const upVotePost = (id) =>
 	})
 		.then(response => response.json())
 		.then(data => data)
+		.catch(error => console.log('upVotePost Error: ', error))
 
 /*
  * POST /posts/:id

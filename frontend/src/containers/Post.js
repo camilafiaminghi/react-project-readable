@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { handlePostUpVote } from '../actions/posts'
 import { Link, withRouter } from 'react-router-dom'
 import { timeDiff, formatTimeDiff } from '../utils/dateUtils'
 
@@ -11,13 +12,24 @@ export class Post extends Component {
 		post: PropTypes.object.isRequired
 	}
 
+	handleUpVote = (event) => {
+		event.preventDefault()
+		const { dispatch, id } = this.props
+
+		dispatch(handlePostUpVote(id))
+	}
+
 	render() {
 		const { id, voteScore, author, timestamp, title, body, commentCount } = this.props.post
 
 		return (
 			<div className="post">
 				<div className="header">
-					<span>Score [{ voteScore }] </span>
+					<span>
+						Score
+						[{ voteScore }]
+						<button onClick={this.handleUpVote}>+</button>
+					</span>
 					<span>Posted by { author } { formatTimeDiff(timeDiff(timestamp)) }</span>
 				</div>
 				<Link to={`/post/${id}`}>

@@ -1,6 +1,7 @@
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import { REQUEST_POSTS, RECEIVE_POSTS,  receivePosts, requestPosts, handlePosts } from './posts'
+import { REQUEST_POSTS, RECEIVE_POSTS, REQUEST_POST_UPVOTE, RECEIVE_POST_UPVOTE } from './posts'
+import { receivePosts, requestPosts, handlePosts, receivePostUpVote, requestPostUpVote, handlePostUpVote } from './posts'
 import fetch from '../__helpers__/fetch'
 import posts from '../__helpers__/posts'
 
@@ -27,8 +28,22 @@ describe('posts action creators', () => {
 		})
 	})
 
-	// TEST ASYNC PASS THROUGH THUNK
-	it('successful handlePosts calls receivePosts', () => {
+	it('receivePostUpVote should return an object', () => {
+		expect(receivePostUpVote()).toEqual({
+			type: RECEIVE_POST_UPVOTE,
+			post: undefined
+		})
+	})
+
+	it('requestPostUpVote should return an object', () => {
+		expect(requestPostUpVote()).toEqual({
+			type: REQUEST_POST_UPVOTE,
+			post: undefined
+		})
+	})
+
+	// TESTS ASYNC PASS THROUGH THUNK
+	it('successful handlePosts calls actions', () => {
 		window.fetch = fetch.successful(posts)
 
 		const expectAction = [
@@ -37,6 +52,18 @@ describe('posts action creators', () => {
 		]
 
 		return store.dispatch(handlePosts())
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	it('successful handlePostUpVote calls actions', () => {
+		window.fetch = fetch.successful(posts[0])
+
+		const expectAction = [
+			{ type: REQUEST_POST_UPVOTE },
+			{ type: RECEIVE_POST_UPVOTE, post: posts[0] },
+		]
+
+		return store.dispatch(handlePostUpVote())
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 })

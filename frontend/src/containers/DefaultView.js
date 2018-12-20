@@ -9,7 +9,7 @@ class DefaultView extends Component {
 
 	static propTypes = {
 		category: PropTypes.string,
-		posts: PropTypes.array.isRequired
+		items: PropTypes.array.isRequired
 	}
 
 	componentDidMount() {
@@ -18,15 +18,15 @@ class DefaultView extends Component {
 	}
 
 	render() {
-		const { posts } = this.props
+		const { items } = this.props
 
 		return (
 			<div>
 				<Nav />
 				<ul className="list">
-					{posts.map((post, index) => (
+					{items.map((item, index) => (
 						<li key={index}>
-							<Post id={post.id} />
+							<Post id={item.id} />
 						</li>
 					))}
 				</ul>
@@ -37,10 +37,11 @@ class DefaultView extends Component {
 
 const mapStateToProps = ({ posts, categories }, props) => {
 	const { category } = props
+	const items = posts.items.sort((a, b) => ( b.voteScore - a.voteScore ))
 
 	return {
 		category: category,
-		posts: posts.items.sort((a, b) => ( b.voteScore - a.voteScore ))
+		items
 	}
 }
 
