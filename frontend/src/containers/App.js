@@ -2,8 +2,9 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { handleCategories } from '../actions/categories'
+import { handleInitialData } from '../actions/shared'
 import DefaultView from './DefaultView'
+import PostView from './PostView'
 import LoadingBar from 'react-redux-loading-bar'
 import RouteNotFound from '../components/RouteNotFound'
 
@@ -14,7 +15,8 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		this.props.dispatch(handleCategories())
+		/* HANDLE INITIAL DATA */
+		this.props.dispatch(handleInitialData())
 	}
 
 	render() {
@@ -25,11 +27,12 @@ class App extends Component {
 						<LoadingBar className="loading-bar" />
 						<Fragment>
 							<Switch>
-								<Route exact path="/" component={DefaultView} />
-								{this.props.routes.map((route, index) => (
-									<Route exact key={index} path={`/${route}`} component={DefaultView} />
-	              ))}
-	              <Route component={RouteNotFound} />
+									<Route exact path="/" component={DefaultView} />
+									{this.props.routes.map((route, index) => (
+										<Route exact key={index} path={`/${route}`} render={() => <DefaultView category={route} />} />
+		              ))}
+		              <Route path="/post/:id" component={PostView} />
+	              	<Route component={RouteNotFound} />
 	            </Switch>
 						</Fragment>
 					</div>
@@ -39,7 +42,7 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = ({ categories }) => {
+const mapStateToProps = ({ categories, posts }) => {
 	return {
 		routes: categories.items.map(item => (item.path))
 	}

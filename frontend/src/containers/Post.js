@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { timeDiff, formatTimeDiff } from '../utils/dateUtils'
 
 export class Post extends Component {
@@ -12,7 +12,7 @@ export class Post extends Component {
 	}
 
 	render() {
-		const { voteScore, author, timestamp, title, body, commentCount } = this.props.post
+		const { id, voteScore, author, timestamp, title, body, commentCount } = this.props.post
 
 		return (
 			<div className="post">
@@ -20,10 +20,12 @@ export class Post extends Component {
 					<span>Score [{ voteScore }] </span>
 					<span>Posted by { author } { formatTimeDiff(timeDiff(timestamp)) }</span>
 				</div>
-				<section>
-					<h2 className="title">{ title }</h2>
-					<div className="content">{ body }</div>
-				</section>
+				<Link to={`/post/${id}`}>
+					<section>
+						<h2 className="title">{ title }</h2>
+						<div className="content">{ body }</div>
+					</section>
+				</Link>
 				<div className="footer">
 					<span>{ commentCount } Comments</span>
 				</div>
@@ -32,9 +34,13 @@ export class Post extends Component {
 	}
 }
 
-const mapStateToProps = ({ posts }, { id }) => {
+const mapStateToProps = ({ posts }, props) => {
+	const id = props.id
+	const post = posts.items.filter((item) => (id === item.id))[0] || {}
+
 	return {
-		post: posts.items.filter((item) => (id === item.id))[0]
+		id,
+		post
 	}
 }
 

@@ -26,7 +26,11 @@ describe('<App />', () => {
 
 		store = mockStore(initialState)
 
-		wrapper = shallow(<App dispatch={store.dispatch} routes={routes} />)
+		wrapper = shallow(
+			<App
+				dispatch={store.dispatch}
+				routes={routes} />
+		)
 	})
 
 	it('should render', () => {

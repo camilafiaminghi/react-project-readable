@@ -8,13 +8,13 @@ import Post from './Post'
 class DefaultView extends Component {
 
 	static propTypes = {
-		categories: PropTypes.array.isRequired,
+		category: PropTypes.string,
 		posts: PropTypes.array.isRequired
 	}
 
 	componentDidMount() {
-		const category = this.props.match.path.split('/')[1]
-		this.props.dispatch(handlePosts(category))
+		/* HANDLE POSTS BY CATEGORY */
+		this.props.dispatch(handlePosts(this.props.category))
 	}
 
 	render() {
@@ -35,9 +35,11 @@ class DefaultView extends Component {
 	}
 }
 
-const mapStateToProps = ({ categories, posts }) => {
+const mapStateToProps = ({ posts, categories }, props) => {
+	const { category } = props
+
 	return {
-		categories: categories.items,
+		category: category,
 		posts: posts.items.sort((a, b) => ( b.voteScore - a.voteScore ))
 	}
 }
