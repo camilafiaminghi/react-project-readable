@@ -1,11 +1,12 @@
 import React from 'react';
+import { MemoryRouter } from 'react-router';
 import PostView from './PostView'
 
 let wrapper
 
 describe('<PostView />', () => {
 	beforeEach(() => {
-		wrapper = shallow(<PostView match={{params: {id: '8xf0y6ziyjabvozdd253nd'}}}/>)
+		wrapper = shallow(<MemoryRouter><PostView match={{params: {id: '8xf0y6ziyjabvozdd253nd'}}}/></MemoryRouter>)
 	})
 
 	it('should render', () => {
