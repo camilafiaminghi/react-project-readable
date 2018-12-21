@@ -1,10 +1,13 @@
-import { getPosts, votePost } from '../utils/ApiServer'
-
+import { getPosts, votePost, savePost } from '../utils/ApiServer'
+import { showLoading, hideLoading } from 'react-redux-loading-bar'
 export const REQUEST_POSTS = 'REQUEST_POSTS'
 export const RECEIVE_POSTS = 'RECEIVE_POSTS'
 export const REQUEST_POST_VOTE = 'REQUEST_POST_VOTE'
 export const RECEIVE_POST_VOTE = 'RECEIVE_POST_VOTE'
+export const REQUEST_POST_SAVE = 'REQUEST_POST_SAVE'
+export const RECEIVE_POST_SAVE = 'RECEIVE_POST_SAVE'
 
+/**/
 export function requestPosts () {
 	return {
 		type: REQUEST_POSTS
@@ -18,7 +21,8 @@ export function receivePosts (items) {
 	}
 }
 
-export function requestPostVote (id, option) {
+/**/
+export function requestVotePost (id, option) {
 	return {
 		type: REQUEST_POST_VOTE,
 		id,
@@ -26,9 +30,23 @@ export function requestPostVote (id, option) {
 	}
 }
 
-export function receivePostVote (post) {
+export function receiveVotePost (post) {
 	return {
 		type: RECEIVE_POST_VOTE,
+		post
+	}
+}
+
+/**/
+export function requestSavePost () {
+	return {
+		type: REQUEST_POST_SAVE
+	}
+}
+
+export function receiveSavePost (post) {
+	return {
+		type: RECEIVE_POST_SAVE,
 		post
 	}
 }
@@ -45,18 +63,37 @@ export function handlePosts (category) {
 	}
 }
 
-// Async Action REQUEST_POST_UPVOTE
+// Async Action votePost
 export function handleVotePost (id, option) {
 	return (dispatch) => {
-		dispatch(requestPostVote(id, option))
+		dispatch(requestVotePost(id, option))
 
 		return votePost(id, option)
 			.then((post) => {
 				if (post)
-					dispatch(receivePostVote(post))
+					dispatch(receiveVotePost(post))
 				else
 					/* DISPATCH receivePostDownVote */
 					console.log('onError post', post)
+			})
+	}
+}
+
+// Async Action votePost
+export function handleSavePost (post) {
+	return (dispatch) => {
+		dispatch(showLoading())
+		dispatch(requestSavePost(post))
+
+		return savePost(post)
+			.then((response) => {
+				if (response) {
+					dispatch(receiveSavePost(response))
+				} else {
+					/* DISPATCH ERROR */
+					console.log('onError post', response)
+				}
+				dispatch(hideLoading())
 			})
 	}
 }

@@ -1,14 +1,14 @@
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import { REQUEST_POSTS, RECEIVE_POSTS, REQUEST_POST_VOTE, RECEIVE_POST_VOTE } from './posts'
-import { receivePosts, requestPosts, handlePosts, receivePostVote, requestPostVote, handleVotePost } from './posts'
+import { REQUEST_POSTS, RECEIVE_POSTS, REQUEST_POST_VOTE, RECEIVE_POST_VOTE, REQUEST_POST_SAVE, RECEIVE_POST_SAVE } from './posts'
+import { receivePosts, requestPosts, handlePosts} from './posts'
+import { receiveVotePost, requestVotePost, handleVotePost } from './posts'
+import { receiveSavePost, requestSavePost, handleSavePost } from './posts'
 import fetch from '../__helpers__/fetch'
 import posts from '../__helpers__/posts'
 
 const configStore = configureMockStore([thunk])
-const store = configStore({
-	items: undefined
-})
+const store = configStore({})
 
 describe('posts action creators', () => {
 	// CLEAR ACTIONS BEFORE RUN STORE AGAIN TEST MODULE INDEPEDENT OF OTHERS MODULES
@@ -28,16 +28,28 @@ describe('posts action creators', () => {
 		})
 	})
 
-	it('receivePostVote should return an object', () => {
-		expect(receivePostVote()).toEqual({
+	it('receiveVotePost should return an object', () => {
+		expect(receiveVotePost()).toEqual({
 			type: RECEIVE_POST_VOTE,
 			post: undefined
 		})
 	})
 
-	it('requestPostVote should return an object', () => {
-		expect(requestPostVote()).toEqual({
-			type: REQUEST_POST_VOTE,
+	it('requestVotePost should return an object', () => {
+		expect(requestVotePost()).toEqual({
+			type: REQUEST_POST_VOTE
+		})
+	})
+
+	it('receiveSavePost should return an object', () => {
+		expect(receiveSavePost()).toEqual({
+			type: RECEIVE_POST_SAVE
+		})
+	})
+
+	it('requestSavePost should return an object', () => {
+		expect(requestSavePost()).toEqual({
+			type: REQUEST_POST_SAVE,
 			post: undefined
 		})
 	})
@@ -64,6 +76,20 @@ describe('posts action creators', () => {
 		]
 
 		return store.dispatch(handleVotePost())
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	it('successful handleSavePost calls actions', () => {
+		window.fetch = fetch.successful(posts[0])
+
+		const expectAction = [
+			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW'},
+			{ type: REQUEST_POST_SAVE },
+			{ type: RECEIVE_POST_SAVE, post: posts[0] },
+			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE'}
+		]
+
+		return store.dispatch(handleSavePost())
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 })

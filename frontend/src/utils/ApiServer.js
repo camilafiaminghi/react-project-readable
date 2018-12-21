@@ -1,3 +1,5 @@
+import generateUID from './generateUID'
+
 const api = '//127.0.0.1:3001';
 
 /* Generate a unique token */
@@ -10,6 +12,21 @@ const options = {
 		'Content-Type': 'application/json',
 		'Authorization': token
 	}
+}
+
+/*
+ * HELPER FORMAT POST
+ * @param {Object} post - { title, body, author, category }
+ */
+const formatPost = (post) => {
+  return {
+  	...post,
+    id: generateUID(),
+    timestamp: Date.now(),
+    voteScore: 1,
+    deleted: false,
+    commentCount: 0
+  }
 }
 
 /*
@@ -43,13 +60,14 @@ export const getPosts = (category) => {
 /*
  * POST /posts
  * Save a new post.
- * @param {Object} post - {id, timestamp, title, body, author, category, voteScore, deleted, commentCount}
+ * @param {Object} post - { title, body, author, category }
  */
+ //id, timestamp, voteScore, deleted, commentCount
 export const savePost = (post) =>
 	fetch(`${api}/posts`, {
 		...options,
 		method: 'POST',
-		body: JSON.stringify({ post })
+		body: JSON.stringify(formatPost(post))
 	})
 		.then(response => response.json())
 		.then(data => data)

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { handleSavePost } from '../actions/posts'
 import ButtonGoBack from '../components/ButtonGoBack'
 import { validationRules, isValid } from '../utils/validation'
 
@@ -18,14 +19,19 @@ export class NewPost extends Component {
 			category: false
 		},
 		validated: false,
-		submitted: false
+		submitted: false,
+		saved: false
+	}
+
+	componentDidMount() {
+		this.setState((prevState) => ({...prevState, saved: false}))
 	}
 
 	handleChange = (event) => {
 		const { name, value } = event.target
 		const valid = validationRules(name, value)
 		const form = {...this.state.form, [name]: value}
-		const validation = {...this.state.validation, [name]: valid}
+		const validation = (this.state.validation.hasOwnProperty(name)) ? {...this.state.validation, [name]: valid} : {...this.state.validation}
 		let validated = isValid(validation)
 
 		this.setState((prevState) => ({
@@ -38,24 +44,32 @@ export class NewPost extends Component {
 
 	handleSubmit = (event) => {
 		event.preventDefault()
+
+		const { dispatch } = this.props
 		const { validated } = this.state
+		const { form } = this.state
 
 		this.setState((prevState) => ({ ...prevState, submitted: true }))
 
 		/* DISPATCH IF IS VALID */
 		if (validated) {
-			console.log(this.state.form)
+			dispatch(handleSavePost(form))
 		}
 	}
 
 	render() {
+		const { categories, success } = this.props
 		const { goBack } = this.props.history
-		const { categories } = this.props
 		const { author, category, title, body } = this.state.form
 		const { validated, validation, submitted } = this.state
 
 		const titleLeft = 280 - title.length
 		const bodyLeft = 280 - body.length
+
+		/* IF STORE HAS CHANGED AND FORM IS SUBMITTED */
+		// if ( success ) {
+		// 	goBack()
+		// }
 
 		return (
 			<div className="new-post">
@@ -139,11 +153,13 @@ export class NewPost extends Component {
 	}
 }
 
-const mapStateToProps = ({ categories }, props) => {
+const mapStateToProps = ({ categories, posts }, props) => {
 	const items = categories.items
+	const { success } = posts.success
 
 	return {
-		categories: items
+		categories: items,
+		success
 	}
 }
 
