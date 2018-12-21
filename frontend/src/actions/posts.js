@@ -86,12 +86,12 @@ export function handleSavePost (post) {
 		dispatch(requestSavePost(post))
 
 		return savePost(post)
-			.then((response) => {
-				if (response) {
-					dispatch(receiveSavePost(response))
+			.then((data) => {
+				if (data) {
+					dispatch(receiveSavePost(data))
 				} else {
 					/* DISPATCH ERROR */
-					console.log('onError post', response)
+					console.log('onError post', data)
 				}
 				dispatch(hideLoading())
 			})

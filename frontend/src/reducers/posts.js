@@ -54,6 +54,7 @@ export default function posts (state = {
 			/**/
 			return {
 				...state,
+				items: [...state.items, action.post],
 				success: true
 			}
 		/**/

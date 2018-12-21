@@ -7,12 +7,19 @@ import { NewPost } from './NewPost'
 import ButtonGoBack from '../components/ButtonGoBack'
 import data from '../__helpers__/categories'
 
+const props = {
+	history: {
+		goBack: jest.fn()
+	},
+	categories: data.categories,
+	success: false
+}
 const initialState = {
 	form : {
 		author: '',
 		title: '',
 		body: '',
-		category: 'none'
+		category: ''
 	},
 	validation: {
 		author: false,
@@ -25,7 +32,6 @@ const initialState = {
 const mockStore = configureMockStore([thunk])
 let store
 let wrapper
-const goBack = jest.fn()
 const handleSubmit = jest.fn();
 
 describe('<NewPost />', () => {
@@ -35,7 +41,7 @@ describe('<NewPost />', () => {
 
 		const provider = mount(
 			<Provider store={store}>
-				<NewPost history={{goBack}} categories={data.categories} />
+				<NewPost {...props} />
 			</Provider>
 		)
 

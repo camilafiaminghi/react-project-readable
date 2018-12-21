@@ -1,17 +1,26 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { handleSavePost } from '../actions/posts'
 import ButtonGoBack from '../components/ButtonGoBack'
-import { validationRules, isValid } from '../utils/validation'
+import InputText from './InputText'
+import InputTextArea from './InputTextArea'
+import SelectOption from './SelectOption'
+import { isValid } from '../utils/validation'
 
 export class NewPost extends Component {
+
+	static propTypes = {
+		categories: PropTypes.array.isRequired,
+		success: PropTypes.bool.isRequired
+	}
 
 	state = {
 		form : {
 			author: '',
 			title: '',
 			body: '',
-			category: 'none'
+			category: ''
 		},
 		validation: {
 			author: false,
@@ -19,20 +28,13 @@ export class NewPost extends Component {
 			category: false
 		},
 		validated: false,
-		submitted: false,
-		saved: false
+		submitted: false
 	}
 
-	componentDidMount() {
-		this.setState((prevState) => ({...prevState, saved: false}))
-	}
-
-	handleChange = (event) => {
-		const { name, value } = event.target
-		const valid = validationRules(name, value)
+	handleChange = (name, value, valid) => {
 		const form = {...this.state.form, [name]: value}
 		const validation = (this.state.validation.hasOwnProperty(name)) ? {...this.state.validation, [name]: valid} : {...this.state.validation}
-		let validated = isValid(validation)
+		const validated = isValid(validation)
 
 		this.setState((prevState) => ({
 			...prevState,
@@ -46,8 +48,7 @@ export class NewPost extends Component {
 		event.preventDefault()
 
 		const { dispatch } = this.props
-		const { validated } = this.state
-		const { form } = this.state
+		const { form, validated } = this.state
 
 		this.setState((prevState) => ({ ...prevState, submitted: true }))
 
@@ -60,16 +61,12 @@ export class NewPost extends Component {
 	render() {
 		const { categories, success } = this.props
 		const { goBack } = this.props.history
-		const { author, category, title, body } = this.state.form
-		const { validated, validation, submitted } = this.state
+		const { validated, submitted } = this.state
 
-		const titleLeft = 280 - title.length
-		const bodyLeft = 280 - body.length
-
-		/* IF STORE HAS CHANGED AND FORM IS SUBMITTED */
-		// if ( success ) {
-		// 	goBack()
-		// }
+		/* IF STATE CHANGED AND FORM IS SUBMITTED */
+		if ( success && submitted ) {
+			goBack()
+		}
 
 		return (
 			<div className="new-post">
@@ -79,67 +76,39 @@ export class NewPost extends Component {
 				<div>
 					<h2 className="center">Compose new Post</h2>
 					<form onSubmit={this.handleSubmit}>
-						<div>
-							<input
-								type="text"
-								name="author"
-								placeholder="Who are you?"
-								maxLength={122}
-								value={author}
-								onChange={this.handleChange} />
-							{	(!validation.author && submitted) &&
-								<span>This field is required</span>
-							}
-						</div>
+						<InputText
+							name="author"
+							placeholder="Who are you?"
+							maxLength={122}
+							charsLeft={false}
+							message="This field is required"
+							handleChange={this.handleChange}
+							submitted={submitted} />
 
-						<div>
-							<select
-								name="category"
-								value={category}
-			 					onChange={this.handleChange}>
-			 					<option value="none" disabled="disabled">Choose a category...</option>
-			 					{categories.map((category, index) => (
-									<option
-										key={index}
-										value={category.path}>{category.name}</option>
-								))}
-							</select>
-							{	(!validation.category && submitted) &&
-								<span>This field is required</span>
-							}
-						</div>
+						<SelectOption
+							name="category"
+							placeholder="Choose a category..."
+							message="This field is required"
+							handleChange={this.handleChange}
+							submitted={submitted}
+							items={categories} />
 
-						<div>
-							<input
-								type="text"
-								name="title"
-								placeholder="Title"
-								maxLength={280}
-								value={title}
-								onChange={this.handleChange} />
-							{ (titleLeft <= 100) &&
-								<span>
-									characteres left [{ titleLeft }]
-								</span>
-							}
-							{	(!validation.title && submitted) &&
-								<span>This field is required</span>
-							}
-						</div>
+						<InputText
+							name="title"
+							placeholder="Title"
+							maxLength={122}
+							charsLeft={true}
+							message="This field is required"
+							handleChange={this.handleChange}
+							submitted={submitted} />
 
-						<div>
-							<textarea
-								name="body"
-								placeholder="Text"
-								maxLength={280}
-								value={body}
-								onChange={this.handleChange}></textarea>
-							{ (bodyLeft <= 100) &&
-								<span>
-									characteres left [{ bodyLeft }]
-								</span>
-							}
-						</div>
+						<InputTextArea
+							name="body"
+							placeholder="Text"
+							maxLength={280}
+							charsLeft={true}
+							handleChange={this.handleChange}
+							items={categories} />
 
 						<button
 							type="submit"
@@ -154,12 +123,14 @@ export class NewPost extends Component {
 }
 
 const mapStateToProps = ({ categories, posts }, props) => {
-	const items = categories.items
-	const { success } = posts.success
+	const items = categories.items.map((item) => {
+		item.value = item.path
+		return item
+	})
 
 	return {
 		categories: items,
-		success
+		success: posts.success
 	}
 }
 
