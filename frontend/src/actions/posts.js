@@ -33,7 +33,7 @@ export function receivePostVote (post) {
 	}
 }
 
-// Async Action
+// Async Action getPosts
 export function handlePosts (category) {
 	return (dispatch) => {
 		dispatch(requestPosts())

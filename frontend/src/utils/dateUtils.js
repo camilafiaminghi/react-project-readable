@@ -28,7 +28,6 @@ export function timeDiff (timestamp, now=new Date()) {
   return diff
 }
 
-
 export function formatTimeDiff (timeobj) {
 	const {days, hours, minutes, seconds} = timeobj
 

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { handleInitialData } from '../actions/shared'
 import DefaultView from './DefaultView'
 import PostView from '../components/PostView'
+import NewPost from './NewPost'
 import LoadingBar from 'react-redux-loading-bar'
 import RouteNotFound from '../components/RouteNotFound'
 
@@ -32,6 +33,7 @@ class App extends Component {
 										<Route exact key={index} path={`/${route}`} render={() => <DefaultView category={route} />} />
 		              ))}
 		              <Route path="/post/:id" component={PostView} />
+		              <Route exat path="/post" component={NewPost} />
 	              	<Route component={RouteNotFound} />
 	            </Switch>
 						</Fragment>

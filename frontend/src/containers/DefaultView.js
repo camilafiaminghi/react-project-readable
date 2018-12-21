@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { handlePosts } from '../actions/posts'
+import { Link } from 'react-router-dom'
 import Nav from './Nav'
 import Post from './Post'
 
@@ -23,6 +24,7 @@ class DefaultView extends Component {
 		return (
 			<div>
 				<Nav />
+
 				<ul className="list">
 					{items.map((item, index) => (
 						<li key={index}>
@@ -30,6 +32,10 @@ class DefaultView extends Component {
 						</li>
 					))}
 				</ul>
+
+				<div className="btn-add-post">
+					<Link to="/post" >Add Post</Link>
+				</div>
 			</div>
 		)
 	}
