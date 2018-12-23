@@ -1,5 +1,5 @@
 import { ERROR_LOADING } from '../actions/shared'
-import loading from './shared'
+import { loading } from './shared'
 
 const initialState = {
 	error: true

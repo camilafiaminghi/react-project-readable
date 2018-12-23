@@ -53,8 +53,6 @@ class App extends Component {
 }
 
 const mapStateToProps = ({ categories, posts, loading }) => {
-
-	console.log('mapStateToProps', loading)
 	return {
 		routes: categories.items.map(item => (item.path)),
 		loading: loading.error

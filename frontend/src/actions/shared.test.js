@@ -2,6 +2,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import { REQUEST_POSTS, RECEIVE_POSTS } from './posts'
 import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from './categories'
+import { ERROR_LOADING } from './shared'
 import { handleInitialData } from './shared'
 import fetch from '../__helpers__/fetch'
 import posts from '../__helpers__/posts'
@@ -25,6 +26,22 @@ describe('posts action creators', () => {
 			{ type: REQUEST_POSTS },
 			{ type: RECEIVE_CATEGORIES, items: categories },
 			{ type: RECEIVE_POSTS, items: { categories: categories, posts: posts } },
+			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' },
+		]
+
+		return store.dispatch(handleInitialData())
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	it('failure handlePosts calls receivePosts', () => {
+		const categories = data.categories
+		window.fetch = fetch.failing()
+
+		const expectAction = [
+			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW' },
+			{ type: REQUEST_CATEGORIES },
+			{ type: REQUEST_POSTS },
+			{ type: ERROR_LOADING, error: true },
 			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' },
 		]
 
