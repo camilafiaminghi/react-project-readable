@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { handleVotePost } from '../actions/posts'
+import { handleVotePost, handleRemovePost } from '../actions/posts'
 import { Link, withRouter } from 'react-router-dom'
 import { timeDiff, formatTimeDiff } from '../utils/dateUtils'
 
@@ -26,6 +26,13 @@ export class Post extends Component {
 		dispatch(handleVotePost(id, 'downVote'))
 	}
 
+	handleRemove = (event) => {
+		event.preventDefault()
+		const { dispatch, id } = this.props
+
+		dispatch(handleRemovePost(id))
+	}
+
 	render() {
 		const { id, voteScore, author, timestamp, title, body, commentCount } = this.props.post
 
@@ -42,10 +49,13 @@ export class Post extends Component {
 				<Link to={`/post/${id}`}>
 					<section>
 						<h2 className="title">{ title }</h2>
-						<div className="content">{ body }</div>
+						<p className="content">{ body }</p>
 					</section>
 				</Link>
 				<div className="footer">
+					<div>
+						<button onClick={this.handleRemove}>Remove Post</button>
+					</div>
 					<span>{ commentCount } { (commentCount > 1) ? `Comments` : `Comment` }</span>
 				</div>
 			</div>

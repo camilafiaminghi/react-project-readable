@@ -1,9 +1,15 @@
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import { REQUEST_POSTS, RECEIVE_POSTS, REQUEST_POST_VOTE, RECEIVE_POST_VOTE, REQUEST_POST_SAVE, RECEIVE_POST_SAVE } from './posts'
-import { receivePosts, requestPosts, handlePosts} from './posts'
-import { receiveVotePost, requestVotePost, handleVotePost } from './posts'
-import { receiveSavePost, requestSavePost, handleSavePost } from './posts'
+import {
+	REQUEST_POSTS, RECEIVE_POSTS,
+	REQUEST_VOTE_POST, RECEIVE_VOTE_POST,
+	REQUEST_SAVE_POST, RECEIVE_SAVE_POST,
+	REQUEST_REMOVE_POST, RECEIVE_REMOVE_POST, } from './posts'
+import {
+	receivePosts, requestPosts, handlePosts,
+	receiveVotePost, requestVotePost, handleVotePost,
+	receiveSavePost, requestSavePost, handleSavePost,
+	receiveRemovePost, requestRemovePost, handleRemovePost } from './posts'
 import fetch from '../__helpers__/fetch'
 import posts from '../__helpers__/posts'
 
@@ -30,26 +36,40 @@ describe('posts action creators', () => {
 
 	it('receiveVotePost should return an object', () => {
 		expect(receiveVotePost()).toEqual({
-			type: RECEIVE_POST_VOTE,
+			type: RECEIVE_VOTE_POST,
 			post: undefined
 		})
 	})
 
 	it('requestVotePost should return an object', () => {
 		expect(requestVotePost()).toEqual({
-			type: REQUEST_POST_VOTE
+			type: REQUEST_VOTE_POST
 		})
 	})
 
 	it('receiveSavePost should return an object', () => {
 		expect(receiveSavePost()).toEqual({
-			type: RECEIVE_POST_SAVE
+			type: RECEIVE_SAVE_POST
 		})
 	})
 
 	it('requestSavePost should return an object', () => {
 		expect(requestSavePost()).toEqual({
-			type: REQUEST_POST_SAVE,
+			type: REQUEST_SAVE_POST,
+			post: undefined
+		})
+	})
+
+	it('receiveRemovePost should return an object', () => {
+		expect(receiveRemovePost()).toEqual({
+			type: RECEIVE_REMOVE_POST,
+			id: undefined
+		})
+	})
+
+	it('requestRemovePost should return an object', () => {
+		expect(requestRemovePost()).toEqual({
+			type: REQUEST_REMOVE_POST,
 			post: undefined
 		})
 	})
@@ -71,8 +91,8 @@ describe('posts action creators', () => {
 		window.fetch = fetch.successful(posts[0])
 
 		const expectAction = [
-			{ type: REQUEST_POST_VOTE },
-			{ type: RECEIVE_POST_VOTE, post: posts[0] },
+			{ type: REQUEST_VOTE_POST },
+			{ type: RECEIVE_VOTE_POST, post: posts[0] },
 		]
 
 		return store.dispatch(handleVotePost())
@@ -83,13 +103,11 @@ describe('posts action creators', () => {
 		window.fetch = fetch.successful(posts[0])
 
 		const expectAction = [
-			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW'},
-			{ type: REQUEST_POST_SAVE },
-			{ type: RECEIVE_POST_SAVE, post: posts[0] },
-			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE'}
+			{ type: REQUEST_REMOVE_POST, id: undefined },
+			{ type: RECEIVE_REMOVE_POST, post: posts[0] }
 		]
 
-		return store.dispatch(handleSavePost())
+		return store.dispatch(handleRemovePost())
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 })

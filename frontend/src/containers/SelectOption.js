@@ -24,7 +24,7 @@ class SelectOption extends Component {
 
 		this.setState((prevState) => ({
 			...prevState,
-			text: value,
+			option: value,
 			changed: true,
 			valid
 		}))
@@ -42,7 +42,7 @@ class SelectOption extends Component {
 					name={name}
 					value={option}
  					onChange={this.handleValidation}>
- 					<option value="none" disabled="disabled">{placeholder}</option>
+ 					<option value="" disabled="disabled">{placeholder}</option>
  					{items.map((item, index) => {
  						const { value, name } = item
  						return (

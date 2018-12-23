@@ -83,7 +83,8 @@ export class NewPost extends Component {
 							charsLeft={false}
 							message="This field is required"
 							handleChange={this.handleChange}
-							submitted={submitted} />
+							submitted={submitted}
+							initialOption={''} />
 
 						<SelectOption
 							name="category"

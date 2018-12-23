@@ -1,4 +1,12 @@
-import { REQUEST_POSTS, RECEIVE_POSTS } from '../actions/posts'
+import {
+	REQUEST_POSTS,
+	RECEIVE_POSTS,
+	REQUEST_VOTE_POST,
+	RECEIVE_VOTE_POST,
+	REQUEST_SAVE_POST,
+	RECEIVE_SAVE_POST,
+	REQUEST_REMOVE_POST,
+	RECEIVE_REMOVE_POST } from '../actions/posts'
 import posts from './posts'
 import data from '../__helpers__/posts'
 
@@ -25,5 +33,58 @@ describe('posts reducer', () => {
 			isFetching: false,
 			items: data
 		})).toMatchObject({isFetching: false, items: data})
+	})
+
+	/**/
+	it('should handle REQUEST_VOTE_POST', () => {
+		expect(posts(initialState, {
+			type: REQUEST_VOTE_POST,
+			isFetching: true,
+			id: undefined
+		})).toMatchObject({})
+	})
+
+	it('should handle RECEIVE_VOTE_POST', () => {
+		expect(posts({
+			type: RECEIVE_VOTE_POST,
+			isFetching: false,
+			items: data
+		}, {})).toMatchObject({isFetching: false, items: data})
+	})
+
+	/**/
+	it('should handle REQUEST_SAVE_POST', () => {
+		expect(posts(initialState, {
+			type: REQUEST_SAVE_POST,
+			isFetching: true,
+			post: data[0]
+		})).toMatchObject({})
+	})
+
+	it('should handle RECEIVE_SAVE_POST', () => {
+		expect(posts({
+			type: RECEIVE_SAVE_POST,
+			isFetching: false,
+			items: data[0],
+			success: true
+		}, {})).toMatchObject({isFetching: false, items: data[0], success: true})
+	})
+
+	/**/
+	it('should handle REQUEST_REMOVE_POST', () => {
+		expect(posts(initialState, {
+			type: REQUEST_REMOVE_POST,
+			isFetching: true,
+			post: data[0]
+		})).toMatchObject({})
+	})
+
+	it('should handle RECEIVE_REMOVE_POST', () => {
+		expect(posts({
+			type: RECEIVE_REMOVE_POST,
+			isFetching: false,
+			items: data[0],
+			success: true
+		}, {})).toMatchObject({isFetching: false, items: data[0], success: true})
 	})
 })
