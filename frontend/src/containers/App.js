@@ -12,7 +12,8 @@ import RouteNotFound from '../components/RouteNotFound'
 class App extends Component {
 
 	static propTypes = {
-		routes: PropTypes.array.isRequired
+		routes: PropTypes.array.isRequired,
+		loading: PropTypes.bool.isRequired
 	}
 
 	componentDidMount() {
@@ -21,21 +22,28 @@ class App extends Component {
 	}
 
 	render() {
+		const { loading, routes } = this.props
+
 		return (
 			<Router>
 				<Fragment>
 					<div className="container">
 						<LoadingBar className="loading-bar" />
 						<Fragment>
-							<Switch>
-									<Route exact path="/" component={DefaultView} />
-									{this.props.routes.map((route, index) => (
-										<Route exact key={index} path={`/${route}`} render={() => <DefaultView category={route} />} />
-		              ))}
-		              <Route path="/post/:id" component={PostView} />
-		              <Route exat path="/post" component={NewPost} />
-	              	<Route component={RouteNotFound} />
-	            </Switch>
+							{ loading
+			      		? <div className="error">
+			      				<p>Sorry! The server is unavaiable. <br /> Please, try again later.</p>
+			      			</div>
+								: <Switch>
+										<Route exact path="/" component={DefaultView} />
+										{routes.map((route, index) => (
+											<Route exact key={index} path={`/${route}`} render={() => <DefaultView category={route} />} />
+			              ))}
+			              <Route path="/post/:id" component={PostView} />
+			              <Route exat path="/post" component={NewPost} />
+		              	<Route component={RouteNotFound} />
+		            </Switch>
+		          }
 						</Fragment>
 					</div>
 				</Fragment>
@@ -44,9 +52,12 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = ({ categories, posts }) => {
+const mapStateToProps = ({ categories, posts, loading }) => {
+
+	console.log('mapStateToProps', loading)
 	return {
-		routes: categories.items.map(item => (item.path))
+		routes: categories.items.map(item => (item.path)),
+		loading: loading.error
 	}
 }
 
