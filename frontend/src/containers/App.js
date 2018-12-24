@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { handleInitialData } from '../actions/shared'
 import DefaultView from './DefaultView'
@@ -25,29 +25,27 @@ class App extends Component {
 		const { loading, routes } = this.props
 
 		return (
-			<Router>
-				<Fragment>
-					<div className="container">
-						<LoadingBar className="loading-bar" />
-						<Fragment>
-							{ loading
-			      		? <div className="error">
-			      				<p>Sorry! The server is unavaiable. <br /> Please, try again later.</p>
-			      			</div>
-								: <Switch>
-										<Route exact path="/" component={DefaultView} />
-										{routes.map((route, index) => (
-											<Route exact key={index} path={`/${route}`} render={() => <DefaultView category={route} />} />
-			              ))}
-			              <Route path="/post/:id" component={PostView} />
-			              <Route exat path="/post" component={NewPost} />
-		              	<Route component={RouteNotFound} />
-		            </Switch>
-		          }
-						</Fragment>
-					</div>
-				</Fragment>
-			</Router>
+			<Fragment>
+				<div className="container">
+					<LoadingBar className="loading-bar" />
+					<Fragment>
+						{ loading
+		      		? <div className="error">
+		      				<p>Sorry! The server is unavaiable. <br /> Please, try again later.</p>
+		      			</div>
+							: <Switch>
+									<Route exact path="/" component={DefaultView} />
+									{routes.map((route, index) => (
+										<Route exact key={index} path={`/${route}`} render={() => <DefaultView category={route} />} />
+		              ))}
+		              <Route path="/post/:id" component={PostView} />
+		              <Route exat path="/post" component={NewPost} />
+	              	<Route component={RouteNotFound} />
+	            </Switch>
+	          }
+					</Fragment>
+				</div>
+			</Fragment>
 		);
 	}
 }
