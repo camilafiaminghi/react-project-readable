@@ -31,6 +31,14 @@ export class NewPost extends Component {
 		submitted: false
 	}
 
+	componentDidiMount() {
+		const category = this.props.location.state.category ? this.props.location.state.category : ''
+		this.setState((prevState) => ({
+			...prevState,
+			form: {...prevState.form, category}
+		}))
+	}
+
 	handleChange = (name, value, valid) => {
 		const form = {...this.state.form, [name]: value}
 		const validation = (this.state.validation.hasOwnProperty(name)) ? {...this.state.validation, [name]: valid} : {...this.state.validation}
@@ -60,12 +68,14 @@ export class NewPost extends Component {
 
 	render() {
 		const { categories, success } = this.props
-		const { goBack } = this.props.history
-		const { validated, submitted } = this.state
+		const { validated, submitted, form } = this.state
+		const { goBack, push } = this.props.history
+		const { category } = this.props.location.state
 
 		/* IF STATE CHANGED AND FORM IS SUBMITTED */
 		if ( success && submitted ) {
-			goBack()
+			const pathname = form.category
+			push(`/${pathname}`)
 		}
 
 		return (
@@ -83,8 +93,7 @@ export class NewPost extends Component {
 							charsLeft={false}
 							message="This field is required"
 							handleChange={this.handleChange}
-							submitted={submitted}
-							initialOption={''} />
+							submitted={submitted} />
 
 						<SelectOption
 							name="category"
@@ -92,7 +101,8 @@ export class NewPost extends Component {
 							message="This field is required"
 							handleChange={this.handleChange}
 							submitted={submitted}
-							items={categories} />
+							items={categories}
+							initialOption={category} />
 
 						<InputText
 							name="title"
@@ -128,7 +138,6 @@ const mapStateToProps = ({ categories, posts }, props) => {
 		item.value = item.path
 		return item
 	})
-
 	return {
 		categories: items,
 		success: posts.success

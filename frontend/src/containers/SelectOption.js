@@ -9,13 +9,22 @@ class SelectOption extends Component {
 		handleChange: PropTypes.func.isRequired,
 		items: PropTypes.array.isRequired,
 		message: PropTypes.string,
-		submitted: PropTypes.bool
+		submitted: PropTypes.bool,
+		initialOption: PropTypes.string
 	}
 
 	state = {
 		option: '',
 		changed: false,
 		valid: false
+	}
+
+	componentDidMount() {
+		const value = (this.props.initialOption) ? this.props.initialOption : ''
+		const { name } = this.props
+		if (value) {
+			this.handleValidation({target:{name, value}})
+		}
 	}
 
 	handleValidation = (event) => {

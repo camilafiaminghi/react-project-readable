@@ -36,7 +36,7 @@ export function loadPostsFailure () {
 
 /**/
 /**/
-export function requestVotePost (id, option) {
+export function votePostRequest (id, option) {
 	return {
 		type: VOTE_POST_REQUEST,
 		id,
@@ -44,7 +44,7 @@ export function requestVotePost (id, option) {
 	}
 }
 
-export function receiveVotePost (post) {
+export function votePostSuccess (post) {
 	return {
 		type: VOTE_POST_SUCCESS,
 		post
@@ -52,13 +52,13 @@ export function receiveVotePost (post) {
 }
 
 /**/
-export function requestSavePost () {
+export function savePostRequest () {
 	return {
 		type: SAVE_POST_REQUEST
 	}
 }
 
-export function receiveSavePost (post) {
+export function savePostSuccess (post) {
 	return {
 		type: SAVE_POST_SUCCESS,
 		post
@@ -66,14 +66,14 @@ export function receiveSavePost (post) {
 }
 
 /**/
-export function requestRemovePost (id) {
+export function removePostRequest (id) {
 	return {
 		type: REMOVE_POST_REQUEST,
 		id
 	}
 }
 
-export function receiveRemovePost (post) {
+export function removePostSuccess (post) {
 	return {
 		type: REMOVE_POST_SUCCESS,
 		post
@@ -94,12 +94,12 @@ export function handlePosts (category) {
 // Async Action votePost
 export function handleVotePost (id, option) {
 	return (dispatch) => {
-		dispatch(requestVotePost(id, option))
+		dispatch(votePostRequest(id, option))
 
 		return votePost(id, option)
 			.then((post) => {
 				if (post)
-					dispatch(receiveVotePost(post))
+					dispatch(votePostSuccess(post))
 				else
 					/* DISPATCH receivePostDownVote */
 					console.log('onError post', post)
@@ -111,12 +111,12 @@ export function handleVotePost (id, option) {
 export function handleSavePost (post) {
 	return (dispatch) => {
 		dispatch(showLoading())
-		dispatch(requestSavePost(post))
+		dispatch(savePostRequest(post))
 
 		return savePost(post)
 			.then((data) => {
 				if (data) {
-					dispatch(receiveSavePost(data))
+					dispatch(savePostSuccess(data))
 				} else {
 					/* DISPATCH ERROR */
 					console.log('onError post', data)
@@ -129,12 +129,12 @@ export function handleSavePost (post) {
 // Async Action removePost
 export function handleRemovePost (id) {
 	return (dispatch) => {
-		dispatch(requestRemovePost(id))
+		dispatch(removePostRequest(id))
 
 		return removePost(id)
 			.then((data) => {
 				if (data) {
-					dispatch(receiveRemovePost(data))
+					dispatch(removePostSuccess(data))
 				} else {
 					/* DISPATCH ERROR */
 					console.log('onError post', data)

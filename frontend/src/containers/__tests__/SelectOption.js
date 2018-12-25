@@ -5,7 +5,8 @@ const props = {
 	name: '',
 	placeholder: '',
 	handleChange: jest.fn(),
-	items: []
+	items: [],
+	initialOption: ''
 }
 
 describe('<SelectOption />', () => {

@@ -43,7 +43,7 @@ export class Post extends Component {
 		const pathname = this.props.location.pathname.split('/')[1]
 
 		/* IF SUCCESS HANDLE REMOVE GO BACK */
-		if ( action === 'remove' && success ) {
+		if ( singleView && action === 'remove' && success ) {
 			goBack()
 		}
 

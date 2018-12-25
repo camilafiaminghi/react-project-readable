@@ -12,7 +12,8 @@ const props = {
 		goBack: jest.fn()
 	},
 	categories: data.categories,
-	success: false
+	success: false,
+	location: {state: {category: ''}}
 }
 const initialState = {
 	form : {
@@ -31,6 +32,7 @@ const initialState = {
 }
 const mockStore = configureMockStore([thunk])
 let store
+let provider
 let wrapper
 const handleSubmit = jest.fn();
 
@@ -39,7 +41,7 @@ describe('<NewPost />', () => {
 
 		store = mockStore({})
 
-		const provider = mount(
+		provider = mount(
 			<Provider store={store}>
 				<NewPost {...props} />
 			</Provider>
