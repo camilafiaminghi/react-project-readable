@@ -1,14 +1,14 @@
 import React from 'react';
-import { Post } from './Post'
-import posts from '../__helpers__/posts'
+import { Comment } from './../Comment'
+import comments from './../../__helpers__/comments'
 
-let post = posts[0]
-let postId = post.id
+let comment = comments[0]
+let commentId = comment.id
 let wrapper
 
-describe('<Post />', () => {
+describe('<Comment />', () => {
 	beforeEach(() => {
-		wrapper = shallow(<Post id={postId} post={post} />)
+		wrapper = shallow(<Comment id={commentId} comment={comment} />)
 	})
 
 	it('should render', () => {

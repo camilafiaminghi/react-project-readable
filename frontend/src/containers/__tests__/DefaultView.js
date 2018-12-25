@@ -1,5 +1,5 @@
 import React from 'react';
-import DefaultView from './DefaultView'
+import DefaultView from './../DefaultView'
 
 describe('<DefaultView />', () => {
 

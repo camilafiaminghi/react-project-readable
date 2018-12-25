@@ -1,15 +1,18 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { handleVotePost, handleRemovePost } from '../actions/posts'
 import { Link, withRouter } from 'react-router-dom'
+import { handleVotePost, handleRemovePost } from '../actions/posts'
 import { timeDiff, formatTimeDiff } from '../utils/dateUtils'
 
 export class Post extends Component {
 
 	static propTypes = {
 		id: PropTypes.string.isRequired,
-		post: PropTypes.object.isRequired
+		post: PropTypes.object.isRequired,
+		singleView: PropTypes.bool.isRequired,
+		action: PropTypes.string.isRequired,
+		success: PropTypes.bool.isRequired
 	}
 
 	handleUpVote = (event) => {
@@ -35,6 +38,14 @@ export class Post extends Component {
 
 	render() {
 		const { id, voteScore, author, timestamp, title, body, commentCount } = this.props.post
+		const { singleView, action, success } = this.props
+		const { goBack } = this.props.history
+		const pathname = this.props.location.pathname.split('/')[1]
+
+		/* IF SUCCESS HANDLE REMOVE GO BACK */
+		if ( action === 'remove' && success ) {
+			goBack()
+		}
 
 		return (
 			<div className="post">
@@ -46,12 +57,18 @@ export class Post extends Component {
 					</span>
 					<span> Posted by { author } { formatTimeDiff(timeDiff(timestamp)) }</span>
 				</div>
-				<Link to={`/post/${id}`}>
-					<section>
-						<h2 className="title">{ title }</h2>
-						<p className="content">{ body }</p>
-					</section>
-				</Link>
+				{ (pathname === 'post')
+					? <section>
+							<h2 className="title">{ title }</h2>
+							<p className="content">{ body }</p>
+						</section>
+					: <Link to={`/post/${id}`}>
+							<section>
+								<h2 className="title">{ title }</h2>
+								<p className="content">{ body }</p>
+							</section>
+						</Link>
+				}
 				<div className="footer">
 					<div>
 						<button onClick={this.handleRemove}>Remove Post</button>
@@ -64,12 +81,16 @@ export class Post extends Component {
 }
 
 const mapStateToProps = ({ posts }, props) => {
-	const id = props.id
+	const { id, singleView } = props
+	const { action, success } = posts
 	const post = posts.items.filter((item) => (id === item.id))[0] || {}
 
 	return {
 		id,
-		post
+		post,
+		singleView,
+		action,
+		success
 	}
 }
 

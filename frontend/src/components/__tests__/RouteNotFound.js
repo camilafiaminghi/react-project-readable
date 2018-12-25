@@ -1,7 +1,7 @@
 import React from 'react';
-import RouteNotFound from './RouteNotFound'
 import { MemoryRouter } from 'react-router';
 import { Link } from 'react-router-dom';
+import RouteNotFound from './../RouteNotFound'
 
 let wrapper
 

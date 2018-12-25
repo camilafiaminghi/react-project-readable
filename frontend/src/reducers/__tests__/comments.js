@@ -1,6 +1,6 @@
-import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from '../actions/comments'
-import comments from './comments'
-import data from '../__helpers__/comments'
+import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from './../../actions/comments'
+import comments from './../comments'
+import data from './../../__helpers__/comments'
 
 const initialState = {
 	isFetching: false,

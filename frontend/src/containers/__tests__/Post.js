@@ -1,14 +1,26 @@
 import React from 'react';
-import { Comment } from './Comment'
-import comments from '../__helpers__/comments'
+import { Post } from './../Post'
+import posts from './../../__helpers__/posts'
 
-let comment = comments[0]
-let commentId = comment.id
+let post = posts[0]
+let postId = post.id
 let wrapper
+let goBack = jest.fn()
+let props = {
+	id: postId,
+	post: post,
+	history: {
+		goBack
+	},
+	location: {pathname: ''},
+	singleView: false,
+	action: '',
+	success: false
+}
 
-describe('<Comment />', () => {
+describe('<Post />', () => {
 	beforeEach(() => {
-		wrapper = shallow(<Comment id={commentId} comment={comment} />)
+		wrapper = shallow(<Post {...props} />)
 	})
 
 	it('should render', () => {

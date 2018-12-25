@@ -3,9 +3,9 @@ import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router'
 import configureMockStore from 'redux-mock-store'
-import { NewPost } from './NewPost'
-import ButtonGoBack from '../components/ButtonGoBack'
-import data from '../__helpers__/categories'
+import { NewPost } from './../NewPost'
+import ButtonGoBack from './../../components/ButtonGoBack'
+import data from './../../__helpers__/categories'
 
 const props = {
 	history: {

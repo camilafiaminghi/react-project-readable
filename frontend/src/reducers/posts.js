@@ -1,76 +1,88 @@
 import {
-	REQUEST_POSTS,
-	RECEIVE_POSTS,
-	REQUEST_VOTE_POST,
-	RECEIVE_VOTE_POST,
-	REQUEST_SAVE_POST,
-	RECEIVE_SAVE_POST,
-	REQUEST_REMOVE_POST,
-	RECEIVE_REMOVE_POST } from '../actions/posts'
+	LOAD_POSTS_REQUEST,
+	LOAD_POSTS_SUCCESS,
+	LOAD_POSTS_FAILURE,
+	VOTE_POST_REQUEST,
+	VOTE_POST_SUCCESS,
+	SAVE_POST_REQUEST,
+	SAVE_POST_SUCCESS,
+	REMOVE_POST_REQUEST,
+	REMOVE_POST_SUCCESS } from '../actions/posts'
 
 export default function posts (state = {
-	isFetching: false,
 	items: [],
-	errors: [],
+	action: '',
+	isFetching: false,
+	error: false,
 	success: false
 }, action) {
 	switch(action.type) {
-		case REQUEST_POSTS :
+		case LOAD_POSTS_REQUEST :
 			return {
 				...state,
-				isFetching: true
+				action: 'load',
+				isFetching: true,
+				success: false,
+				error: false
 			}
-		case RECEIVE_POSTS :
+		case LOAD_POSTS_SUCCESS :
+			return {
+				...state,
+				items: action.items,
+				action: '',
+				isFetching: false,
+				success: true
+			}
+		case LOAD_POSTS_FAILURE :
 			return {
 				...state,
 				isFetching: false,
-				items: action.items
+				error: true
 			}
-		/**/
-		case REQUEST_VOTE_POST :
+
+		case VOTE_POST_REQUEST :
 			const posts = state.items.map((item) => {
 				if (item.id === action.id)
 					item.voteScore = (action.option === 'upVote') ? item.voteScore+1 : item.voteScore-1
 				return item
 			})
-
 			return {
 				...state,
+				action: 'vote',
 				isFetching: true,
 				items: [ ...posts ]
 			}
-		case RECEIVE_VOTE_POST :
-			/* POST voteScore UPDATED BY REQUEST_VOTE_POST */
+		case VOTE_POST_SUCCESS :
+			/* POST voteScore UPDATED BY VOTE_POST_REQUEST */
 			return {
 				...state,
 				isFetching: false
 			}
-		/**/
-		case REQUEST_SAVE_POST :
+
+		case SAVE_POST_REQUEST :
 			return {
 				...state,
+				action: 'save',
 				isFetching: true,
 				success: false
 			}
-		case RECEIVE_SAVE_POST :
-			/**/
+		case SAVE_POST_SUCCESS :
 			return {
 				...state,
 				items: [...state.items, action.post],
 				success: true
 			}
-		/**/
-		case REQUEST_REMOVE_POST :
-			const items = state.items.filter((item) => (item.id !== action.id))
 
+		case REMOVE_POST_REQUEST :
+			const items = state.items.filter((item) => (item.id !== action.id))
 			return {
 				...state,
 				items,
+				action: 'remove',
 				isFetching: true,
 				success: false
 			}
-		case RECEIVE_REMOVE_POST :
-			/**/
+		case REMOVE_POST_SUCCESS :
 			return {
 				...state,
 				items: [...state.items],
@@ -81,4 +93,3 @@ export default function posts (state = {
 			return state
 	}
 }
-

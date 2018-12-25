@@ -1,9 +1,9 @@
 import React from 'react';
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import { Comments } from './Comments'
-import fetch from '../__helpers__/fetch'
-import comments from '../__helpers__/comments'
+import { Comments } from './../Comments'
+import fetch from './../../__helpers__/fetch'
+import comments from './../../__helpers__/comments'
 
 const initialState = {
 	comments: {

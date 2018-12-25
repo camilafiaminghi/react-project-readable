@@ -1,5 +1,5 @@
 import React from 'react';
-import ButtonGoBack from './ButtonGoBack'
+import ButtonGoBack from './../ButtonGoBack'
 
 let wrapper
 const goBack = jest.fn()

@@ -1,29 +1,35 @@
 import { getCategories } from '../utils/ApiServer'
 
-export const REQUEST_CATEGORIES = 'REQUEST_CATEGORIES'
-export const RECEIVE_CATEGORIES = 'RECEIVE_CATEGORIES'
+export const LOAD_CATEGORIES_REQUEST = 'LOAD_CATEGORIES_REQUEST'
+export const LOAD_CATEGORIES_SUCCESS = 'LOAD_CATEGORIES_SUCCESS'
+export const LOAD_CATEGORIES_FAILURE = 'LOAD_CATEGORIES_FAILURE'
 
-export function requestCategories () {
+export function loadCategoriesRequest () {
 	return {
-		type: REQUEST_CATEGORIES
+		type: LOAD_CATEGORIES_REQUEST
 	}
 }
 
-export function receiveCategories (items) {
+export function loadCategoriesSuccess (items) {
 	return {
-		type: RECEIVE_CATEGORIES,
+		type: LOAD_CATEGORIES_SUCCESS,
 		items
+	}
+}
+
+export function loadCategoriesFailure () {
+	return {
+		type: LOAD_CATEGORIES_FAILURE
 	}
 }
 
 // Async Action
 export function handleCategories () {
 	return (dispatch) => {
-		dispatch(requestCategories())
+		dispatch(loadCategoriesRequest())
 
 		return getCategories()
-			.then((data) => {
-				dispatch(receiveCategories(data.categories))
-			})
+			.then((data) => dispatch(loadCategoriesSuccess(data.categories)))
+			.catch((error) => dispatch(loadCategoriesFailure()))
 	}
 }

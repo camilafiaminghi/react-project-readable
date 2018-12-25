@@ -8,11 +8,9 @@ export default {
 		);
 	},
 
-	failing() {
+	failing(error) {
 		return jest.fn().mockImplementation(() =>
-			Promise.reject({
-				error: 'something went wrong',
-			}),
+			Promise.reject(error),
 		);
 	},
 };

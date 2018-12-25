@@ -1,9 +1,9 @@
-import * as ApiServer from './ApiServer'
-import generateUID from './generateUID'
-import fetch from '../__helpers__/fetch'
-import categories from '../__helpers__/categories'
-import posts from '../__helpers__/posts'
-import comments from '../__helpers__/comments'
+import * as ApiServer from './../ApiServer'
+import generateUID from './../generateUID'
+import fetch from './../../__helpers__/fetch'
+import categories from './../../__helpers__/categories'
+import posts from './../../__helpers__/posts'
+import comments from './../../__helpers__/comments'
 
 const postID = posts[0].id
 const commentID = comments[0].id

@@ -1,5 +1,5 @@
 import React from 'react';
-import InputText from './InputText'
+import InputTextArea from './../InputTextArea'
 
 const props = {
 	name: '',
@@ -8,10 +8,10 @@ const props = {
 	handleChange: jest.fn()
 }
 
-describe('<InputText />', () => {
+describe('<InputTextArea />', () => {
 
 	it('renders without crashing', () => {
-		shallow(<InputText {...props} />);
+		shallow(<InputTextArea {...props} />);
 	})
 })
 

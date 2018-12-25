@@ -1,4 +1,4 @@
-import { timeDiff, formatTimeDiff } from './dateUtils'
+import { timeDiff, formatTimeDiff } from './../dateUtils'
 
 let timestamp = 1468479767190
 let now = new Date(2018,11,18)

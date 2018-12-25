@@ -11,7 +11,7 @@ const PostView = (props) => {
 			<div className="top">
 				<ButtonGoBack goBack={props.history.goBack} />
 			</div>
-			<Post id={id} />
+			<Post id={id} singleView={true} />
 			<Comments id={id} />
 		</div>
 	)

@@ -1,20 +1,37 @@
-import { REQUEST_CATEGORIES, RECEIVE_CATEGORIES } from '../actions/categories'
+import {
+	LOAD_CATEGORIES_REQUEST,
+	LOAD_CATEGORIES_SUCCESS,
+	LOAD_CATEGORIES_FAILURE } from '../actions/categories'
 
 export default function categories (state = {
+	items: [],
 	isFetching: false,
-	items: []
+	success: false,
+	error: false
 }, action) {
 	switch(action.type) {
-		case REQUEST_CATEGORIES :
+		case LOAD_CATEGORIES_REQUEST:
 			return {
 				...state,
-				isFetching: true
+				isFetching: true,
+				success: false,
+				error: false
 			}
-		case RECEIVE_CATEGORIES :
+		case LOAD_CATEGORIES_SUCCESS:
 			return {
 				...state,
+				items: action.items,
 				isFetching: false,
-				items: action.items
+				success: true,
+				error: false
+			}
+		case LOAD_CATEGORIES_FAILURE:
+			return {
+				...state,
+				items: [],
+				isFetching: false,
+				success: false,
+				error: true
 			}
 		default :
 			return state

@@ -19,7 +19,7 @@ class DefaultView extends Component {
 	}
 
 	render() {
-		const { items } = this.props
+		const { items, location } = this.props
 
 		return (
 			<div>
@@ -28,13 +28,13 @@ class DefaultView extends Component {
 				<ul className="list">
 					{items.map((item, index) => (
 						<li key={index}>
-							<Post id={item.id} />
+							<Post id={item.id} singleView={false} />
 						</li>
 					))}
 				</ul>
 
 				<div className="btn-add-post">
-					<Link to="/post" >Add Post</Link>
+					<Link to="/post">Add Post</Link>
 				</div>
 			</div>
 		)
@@ -44,6 +44,8 @@ class DefaultView extends Component {
 const mapStateToProps = ({ posts, categories }, props) => {
 	const { category } = props
 	const items = posts.items.sort((a, b) => ( b.voteScore - a.voteScore ))
+
+	console.log(items)
 
 	return {
 		category: category,

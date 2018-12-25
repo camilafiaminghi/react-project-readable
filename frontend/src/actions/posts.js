@@ -1,32 +1,44 @@
 import { getPosts, votePost, savePost, removePost } from '../utils/ApiServer'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
-export const REQUEST_POSTS = 'REQUEST_POSTS'
-export const RECEIVE_POSTS = 'RECEIVE_POSTS'
-export const REQUEST_VOTE_POST = 'REQUEST_VOTE_POST'
-export const RECEIVE_VOTE_POST = 'RECEIVE_VOTE_POST'
-export const REQUEST_SAVE_POST = 'REQUEST_SAVE_POST'
-export const RECEIVE_SAVE_POST = 'RECEIVE_SAVE_POST'
-export const REQUEST_REMOVE_POST = 'REQUEST_REMOVE_POST'
-export const RECEIVE_REMOVE_POST = 'RECEIVE_REMOVE_POST'
+
+export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST'
+export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS'
+export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE'
+
+export const VOTE_POST_REQUEST = 'VOTE_POST_REQUEST'
+export const VOTE_POST_SUCCESS = 'VOTE_POST_SUCCESS'
+
+export const SAVE_POST_REQUEST = 'SAVE_POST_REQUEST'
+export const SAVE_POST_SUCCESS = 'SAVE_POST_SUCCESS'
+
+export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST'
+export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS'
 
 /**/
-export function requestPosts () {
+export function loadPostsRequest () {
 	return {
-		type: REQUEST_POSTS
+		type: LOAD_POSTS_REQUEST
 	}
 }
 
-export function receivePosts (items) {
+export function loadPostsSuccess (items) {
 	return {
-		type: RECEIVE_POSTS,
+		type: LOAD_POSTS_SUCCESS,
 		items
 	}
 }
 
+export function loadPostsFailure () {
+	return {
+		type: LOAD_POSTS_FAILURE
+	}
+}
+
+/**/
 /**/
 export function requestVotePost (id, option) {
 	return {
-		type: REQUEST_VOTE_POST,
+		type: VOTE_POST_REQUEST,
 		id,
 		option
 	}
@@ -34,7 +46,7 @@ export function requestVotePost (id, option) {
 
 export function receiveVotePost (post) {
 	return {
-		type: RECEIVE_VOTE_POST,
+		type: VOTE_POST_SUCCESS,
 		post
 	}
 }
@@ -42,13 +54,13 @@ export function receiveVotePost (post) {
 /**/
 export function requestSavePost () {
 	return {
-		type: REQUEST_SAVE_POST
+		type: SAVE_POST_REQUEST
 	}
 }
 
 export function receiveSavePost (post) {
 	return {
-		type: RECEIVE_SAVE_POST,
+		type: SAVE_POST_SUCCESS,
 		post
 	}
 }
@@ -56,14 +68,14 @@ export function receiveSavePost (post) {
 /**/
 export function requestRemovePost (id) {
 	return {
-		type: REQUEST_REMOVE_POST,
+		type: REMOVE_POST_REQUEST,
 		id
 	}
 }
 
 export function receiveRemovePost (post) {
 	return {
-		type: RECEIVE_REMOVE_POST,
+		type: REMOVE_POST_SUCCESS,
 		post
 	}
 }
@@ -71,12 +83,11 @@ export function receiveRemovePost (post) {
 // Async Action getPosts
 export function handlePosts (category) {
 	return (dispatch) => {
-		dispatch(requestPosts())
+		dispatch(loadPostsRequest())
 
 		return getPosts(category)
-			.then((posts) => {
-				dispatch(receivePosts(posts))
-			})
+			.then((posts) => dispatch(loadPostsSuccess(posts)))
+			.catch(() => dispatch(loadPostsFailure()))
 	}
 }
 

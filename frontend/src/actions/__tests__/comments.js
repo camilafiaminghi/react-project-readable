@@ -1,8 +1,8 @@
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import { REQUEST_COMMENTS, RECEIVE_COMMENTS,  receiveComments, requestComments, handleComments } from './comments'
-import fetch from '../__helpers__/fetch'
-import comments from '../__helpers__/comments'
+import { REQUEST_COMMENTS, RECEIVE_COMMENTS,  receiveComments, requestComments, handleComments } from './../comments'
+import fetch from './../../__helpers__/fetch'
+import comments from './../../__helpers__/comments'
 
 const configStore = configureMockStore([thunk])
 const store = configStore({

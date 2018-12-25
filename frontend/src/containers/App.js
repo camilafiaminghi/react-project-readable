@@ -13,7 +13,7 @@ class App extends Component {
 
 	static propTypes = {
 		routes: PropTypes.array.isRequired,
-		loading: PropTypes.bool.isRequired
+		loadingError: PropTypes.bool.isRequired
 	}
 
 	componentDidMount() {
@@ -22,14 +22,14 @@ class App extends Component {
 	}
 
 	render() {
-		const { loading, routes } = this.props
+		const { loadingError, routes } = this.props
 
 		return (
 			<Fragment>
 				<div className="container">
 					<LoadingBar className="loading-bar" />
 					<Fragment>
-						{ loading
+						{ loadingError
 		      		? <div className="error">
 		      				<p>Sorry! The server is unavaiable. <br /> Please, try again later.</p>
 		      			</div>
@@ -39,7 +39,7 @@ class App extends Component {
 										<Route exact key={index} path={`/${route}`} render={() => <DefaultView category={route} />} />
 		              ))}
 		              <Route path="/post/:id" component={PostView} />
-		              <Route exat path="/post" component={NewPost} />
+		              <Route exact path="/post" component={NewPost} />
 	              	<Route component={RouteNotFound} />
 	            </Switch>
 	          }
@@ -50,10 +50,10 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = ({ categories, posts, loading }) => {
+const mapStateToProps = ({ categories, posts }) => {
 	return {
 		routes: categories.items.map(item => (item.path)),
-		loading: loading.error
+		loadingError: (categories.error && posts.error)
 	}
 }
 

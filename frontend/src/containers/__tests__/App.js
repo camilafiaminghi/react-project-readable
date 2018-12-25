@@ -2,11 +2,10 @@ import React from 'react';
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import App from './App'
-import { handleCategories } from '../actions/categories'
-import DefaultView from './DefaultView'
-import fetch from '../__helpers__/fetch'
-import data from '../__helpers__/categories'
+import App from './../App'
+import DefaultView from './../DefaultView'
+import fetch from './../../__helpers__/fetch'
+import data from './../../__helpers__/categories'
 
 const initialState = {
 	categories: {
