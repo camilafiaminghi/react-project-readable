@@ -7,10 +7,11 @@ class InputText extends Component {
 		name: PropTypes.string.isRequired,
 		placeholder: PropTypes.string.isRequired,
 		maxLength: PropTypes.number.isRequired,
-		handleChange: PropTypes.func.isRequired,
+		handleOnChange: PropTypes.func.isRequired,
 		submitted: PropTypes.bool,
 		charsLeft: PropTypes.bool,
-		message: PropTypes.string
+		message: PropTypes.string,
+		value: PropTypes.string
 	}
 
 	state = {
@@ -19,8 +20,12 @@ class InputText extends Component {
 		valid: false
 	}
 
-	handleValidation = (event) => {
-		const { name, value } = event.target
+	componentDidMount() {
+		const { name, value } = this.props
+		this.handleValidation(name, value)
+	}
+
+	handleValidation = (name, value) => {
 		const valid = validationRules(name, value)
 
 		this.setState((prevState) => ({
@@ -30,13 +35,12 @@ class InputText extends Component {
 			valid
 		}))
 
-		this.props.handleChange(name, value, valid)
+		this.props.handleOnChange(name, value, valid)
 	}
 
 	render() {
-		const { name, placeholder, maxLength, message, charsLeft, submitted } = this.props
-		const { text, changed, valid } = this.state
-
+		const { changed, valid, text } = this.state
+		const { name, placeholder, maxLength, charsLeft, message, submitted } = this.props
 		const textLeft = maxLength - text.length
 
 		return (
@@ -47,15 +51,10 @@ class InputText extends Component {
 					placeholder={placeholder}
 					maxLength={maxLength}
 					value={text}
-					onChange={this.handleValidation} />
-				{ (textLeft <= 100 && charsLeft) &&
-					<span>
-						characteres left [{ textLeft }]
-					</span>
-				}
-				{	((!valid && changed) || (!valid && submitted)) &&
-					<span>{message}</span>
-				}
+					onChange={(event) => this.handleValidation(event.target.name, event.target.value)} />
+
+				{ (textLeft <= 100 && charsLeft) && (<span>characteres left [{ textLeft }]</span>) }
+				{ ((!valid && changed) || (!valid && submitted)) && (<span>{message}</span>) }
 			</div>
 		)
 	}

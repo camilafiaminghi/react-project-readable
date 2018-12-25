@@ -9,10 +9,7 @@ export class Post extends Component {
 
 	static propTypes = {
 		id: PropTypes.string.isRequired,
-		post: PropTypes.object.isRequired,
-		singleView: PropTypes.bool.isRequired,
-		action: PropTypes.string.isRequired,
-		success: PropTypes.bool.isRequired
+		post: PropTypes.object.isRequired
 	}
 
 	handleUpVote = (event) => {
@@ -37,15 +34,8 @@ export class Post extends Component {
 	}
 
 	render() {
-		const { id, voteScore, author, timestamp, title, body, commentCount } = this.props.post
-		const { singleView, action, success } = this.props
-		const { goBack } = this.props.history
+		const { id, voteScore, author, timestamp, title, body, category, commentCount } = this.props.post
 		const pathname = this.props.location.pathname.split('/')[1]
-
-		/* IF SUCCESS HANDLE REMOVE GO BACK */
-		if ( singleView && action === 'remove' && success ) {
-			goBack()
-		}
 
 		return (
 			<div className="post">
@@ -62,7 +52,7 @@ export class Post extends Component {
 							<h2 className="title">{ title }</h2>
 							<p className="content">{ body }</p>
 						</section>
-					: <Link to={`/post/${id}`}>
+					: <Link to={{pathname:`/post/${id}`, state:{ pathname }}}>
 							<section>
 								<h2 className="title">{ title }</h2>
 								<p className="content">{ body }</p>
@@ -70,9 +60,13 @@ export class Post extends Component {
 						</Link>
 				}
 				<div className="footer">
-					<div>
-						<button onClick={this.handleRemove}>Remove Post</button>
-					</div>
+					{ (pathname !== 'post')
+						? null
+						: <div>
+								<button onClick={this.handleRemove}>Remove Post</button>
+								<Link to={{pathname: `/edit/post/${id}`, state: { category }}}>Edit Post</Link>
+							</div>
+					}
 					<span>{ commentCount } { (commentCount > 1) ? `Comments` : `Comment` }</span>
 				</div>
 			</div>
@@ -81,16 +75,12 @@ export class Post extends Component {
 }
 
 const mapStateToProps = ({ posts }, props) => {
-	const { id, singleView } = props
-	const { action, success } = posts
+	const { id } = props
 	const post = posts.items.filter((item) => (id === item.id))[0] || {}
 
 	return {
 		id,
-		post,
-		singleView,
-		action,
-		success
+		post
 	}
 }
 

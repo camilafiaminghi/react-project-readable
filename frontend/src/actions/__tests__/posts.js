@@ -3,8 +3,32 @@ import configureMockStore from 'redux-mock-store'
 import {
 	LOAD_POSTS_REQUEST,
 	LOAD_POSTS_SUCCESS,
-	LOAD_POSTS_FAILURE, } from './../posts'
-import { loadPostsRequest, loadPostsSuccess, loadPostsFailure, handlePosts } from './../posts'
+	LOAD_POSTS_FAILURE,
+	VOTE_POST_REQUEST,
+	VOTE_POST_SUCCESS,
+	SAVE_POST_REQUEST,
+	SAVE_POST_SUCCESS,
+	REMOVE_POST_REQUEST,
+	REMOVE_POST_SUCCESS,
+	UPDATE_POST_REQUEST,
+	UPDATE_POST_SUCCESS } from './../posts'
+import {
+	loadPostsRequest,
+	loadPostsSuccess,
+	loadPostsFailure,
+	handlePosts,
+	votePostRequest,
+	votePostSuccess,
+	handleVotePost,
+	savePostRequest,
+	savePostSuccess,
+	handleSavePost,
+	removePostRequest,
+	removePostSuccess,
+	handleRemovePost,
+	updatePostRequest,
+	updatePostSuccess,
+	handleUpdatePost } from './../posts'
 import fetch from './../../__helpers__/fetch'
 import posts from './../../__helpers__/posts'
 
@@ -15,6 +39,9 @@ describe('posts action', () => {
 	// CLEAR ACTIONS BEFORE RUN STORE AGAIN TEST MODULE INDEPEDENT OF OTHERS MODULES
 	afterEach(() => store.clearActions())
 
+	/*
+	 * LOAD
+	 */
 	it('loadPostsRequest should return an object', () => {
 		expect(loadPostsRequest()).toEqual({
 			type: LOAD_POSTS_REQUEST
@@ -35,7 +62,6 @@ describe('posts action', () => {
 		})
 	})
 
-	// TESTS ASYNC PASS THROUGH THUNK
 	it('successful handlePosts', () => {
 		window.fetch = fetch.successful(posts)
 
@@ -45,6 +71,126 @@ describe('posts action', () => {
 		]
 
 		return store.dispatch(handlePosts())
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	/*
+	 * VOTE
+	 */
+	it('votePostRequest should return an object', () => {
+		expect(votePostRequest(posts[0].id, 'upVote')).toEqual({
+			type: VOTE_POST_REQUEST,
+			id: posts[0].id,
+			option: 'upVote'
+		})
+	})
+
+	it('votePostSuccess should return an object', () => {
+		expect(votePostSuccess(posts[0])).toEqual({
+			type: VOTE_POST_SUCCESS,
+			post: posts[0]
+		})
+	})
+
+	it('successful handleVotePost', () => {
+		window.fetch = fetch.successful(posts[0])
+
+		const expectAction = [
+			{ type: VOTE_POST_REQUEST, id: undefined, option: undefined },
+			{ type: VOTE_POST_SUCCESS, post: posts[0] },
+		]
+
+		return store.dispatch(handleVotePost())
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	/*
+	 * SAVE
+	 */
+	it('savePostRequest should return an object', () => {
+		expect(savePostRequest()).toEqual({
+			type: SAVE_POST_REQUEST
+		})
+	})
+
+	it('savePostSuccess should return an object', () => {
+		expect(savePostSuccess(posts[0])).toEqual({
+			type: SAVE_POST_SUCCESS,
+			post: posts[0]
+		})
+	})
+
+	it('successful handleSavePost', () => {
+		window.fetch = fetch.successful(posts[0])
+
+		const expectAction = [
+			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW' },
+			{ type: SAVE_POST_REQUEST },
+			{ type: SAVE_POST_SUCCESS, post: posts[0] },
+			{ payload: {args: [`/${posts[0].category}`], method: 'push'}, type: '@@router/CALL_HISTORY_METHOD'},
+			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' }
+		]
+
+		return store.dispatch(handleSavePost())
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	/*
+	 * REMOVE
+	 */
+	it('removePostRequest should return an object', () => {
+		expect(removePostRequest(posts[0].id)).toEqual({
+			type: REMOVE_POST_REQUEST,
+			id: posts[0].id
+		})
+	})
+
+	it('removePostSuccess should return an object', () => {
+		expect(removePostSuccess(posts[0])).toEqual({
+			type: REMOVE_POST_SUCCESS,
+			post: posts[0]
+		})
+	})
+
+	it('successful handleRemovePost', () => {
+		window.fetch = fetch.successful(posts[0])
+
+		const expectAction = [
+			{ type: REMOVE_POST_REQUEST },
+			{ type: REMOVE_POST_SUCCESS, post: posts[0] },
+			{ payload: {args: [`/${posts[0].category}`], method: 'push'}, type: '@@router/CALL_HISTORY_METHOD'},
+		]
+
+		return store.dispatch(handleRemovePost())
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	/*
+	 * UPDATE
+	 */
+	it('updatePostRequest should return an object', () => {
+		expect(updatePostRequest()).toEqual({
+			type: UPDATE_POST_REQUEST
+		})
+	})
+
+	it('updatePostSuccess should return an object', () => {
+		expect(updatePostSuccess(posts[0])).toEqual({
+			type: UPDATE_POST_SUCCESS,
+			post: posts[0]
+		})
+	})
+
+	it('successful handleUpdatePost', () => {
+		window.fetch = fetch.successful(posts[0])
+
+		const expectAction = [
+			{ type: UPDATE_POST_REQUEST },
+			{ type: UPDATE_POST_SUCCESS, post: posts[0] },
+			{ payload: {args: [`/post/${posts[0].id}`], method: 'push'}, type: '@@router/CALL_HISTORY_METHOD'},
+		]
+
+		return store.dispatch(handleUpdatePost())
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 })

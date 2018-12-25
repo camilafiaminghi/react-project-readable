@@ -7,7 +7,9 @@ import {
 	SAVE_POST_REQUEST,
 	SAVE_POST_SUCCESS,
 	REMOVE_POST_REQUEST,
-	REMOVE_POST_SUCCESS } from '../actions/posts'
+	REMOVE_POST_SUCCESS,
+	UPDATE_POST_REQUEST,
+	UPDATE_POST_SUCCESS } from '../actions/posts'
 
 export default function posts (state = {
 	items: [],
@@ -88,7 +90,21 @@ export default function posts (state = {
 				items: [...state.items],
 				success: true
 			}
-		/**/
+
+		case UPDATE_POST_REQUEST :
+			return {
+				...state,
+				action: 'update',
+				isFetching: true,
+				success: false
+			}
+		case UPDATE_POST_SUCCESS :
+			let postsItems = state.items.filter((item) => (item.id !== action.post.id))
+			return {
+				...state,
+				items: [...postsItems, action.post],
+				success: true
+			}
 		default :
 			return state
 	}

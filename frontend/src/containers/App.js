@@ -6,6 +6,7 @@ import { handleInitialData } from '../actions/shared'
 import DefaultView from './DefaultView'
 import PostView from '../components/PostView'
 import NewPost from './NewPost'
+import EditPost from './EditPost'
 import LoadingBar from 'react-redux-loading-bar'
 import RouteNotFound from '../components/RouteNotFound'
 
@@ -38,6 +39,7 @@ class App extends Component {
 									{routes.map((route, index) => (
 										<Route exact key={index} path={`/${route}`} render={() => <DefaultView category={route} />} />
 		              ))}
+		              <Route path="/edit/post/:id" component={EditPost} />
 		              <Route path="/post/:id" component={PostView} />
 		              <Route exact path="/post" component={NewPost} />
 	              	<Route component={RouteNotFound} />

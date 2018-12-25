@@ -1,20 +1,22 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Post from '../containers/Post'
 import Comments from '../containers/Comments'
-import ButtonGoBack from './ButtonGoBack'
 
 const PostView = (props) => {
 	const { id } = props.match.params
+	const { push } = props.history
+	const pathname = (props.location.state) ? props.location.state.pathname : ''
 
 	return (
 		<div className="post-details">
 			<div className="top">
-				<ButtonGoBack goBack={props.history.goBack} />
+				<button onClick={() => push(`/${pathname}`)}>Go Back {(!pathname) ? 'to Home': `to /${pathname}`}</button>
 			</div>
-			<Post id={id} singleView={true} />
+			<Post id={id} />
 			<Comments id={id} />
 		</div>
 	)
 }
 
-export default PostView
+export default connect()(PostView)
