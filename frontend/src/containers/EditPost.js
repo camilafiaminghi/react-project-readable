@@ -41,7 +41,7 @@ export class EditPost extends Component {
 	}
 }
 
-const mapStateToProps = ({ posts }, props) => {
+export const mapStateToProps = ({ posts }, props) => {
 	const { id } = props.match.params
 	const post = posts.items.filter((item) => (item.id === id))[0]
 

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import Nav from './Nav'
 import Post from './Post'
 
-class DefaultView extends Component {
+export class DefaultView extends Component {
 
 	static propTypes = {
 		category: PropTypes.string,
@@ -14,8 +14,10 @@ class DefaultView extends Component {
 	}
 
 	componentDidMount() {
+		const { dispatch, category } = this.props
+
 		/* HANDLE POSTS BY CATEGORY */
-		this.props.dispatch(handlePosts(this.props.category))
+		dispatch(handlePosts(category))
 	}
 
 	render() {
@@ -41,12 +43,12 @@ class DefaultView extends Component {
 	}
 }
 
-const mapStateToProps = ({ posts, categories }, props) => {
+export const mapStateToProps = ({ posts, categories }, props) => {
 	const { category } = props
-	const items = posts.items.sort((a, b) => ( b.voteScore - a.voteScore ))
+	const items = posts.items
 
 	return {
-		category: category,
+		category,
 		items
 	}
 }

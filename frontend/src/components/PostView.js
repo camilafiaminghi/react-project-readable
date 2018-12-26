@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import Post from '../containers/Post'
 import Comments from '../containers/Comments'
 
@@ -19,4 +18,4 @@ const PostView = (props) => {
 	)
 }
 
-export default connect()(PostView)
+export default PostView

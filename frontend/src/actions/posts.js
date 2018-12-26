@@ -12,6 +12,7 @@ export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST'
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS'
 export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST'
 export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS'
+export const ORDER_POSTS_BY = 'ORDERBY_POSTS'
 
 /*
  * LOAD
@@ -178,4 +179,20 @@ export function handleUpdatePost (id, post) {
 				}
 			})
 	}
+}
+
+/*
+ * ORDER BY
+ */
+export function orderPostsBy (orderBy) {
+	return {
+		type: ORDER_POSTS_BY,
+		orderBy
+	}
+}
+
+export function handleOrderPostsBy (orderBy) {
+	return (dispatch) => dispatch(orderPostsBy(orderBy))
+	// 	return
+	// }(orderBy) => orderPostsBy(orderBy)
 }

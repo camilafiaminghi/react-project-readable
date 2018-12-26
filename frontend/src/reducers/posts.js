@@ -9,11 +9,11 @@ import {
 	REMOVE_POST_REQUEST,
 	REMOVE_POST_SUCCESS,
 	UPDATE_POST_REQUEST,
-	UPDATE_POST_SUCCESS } from '../actions/posts'
+	UPDATE_POST_SUCCESS,
+	ORDER_POSTS_BY } from '../actions/posts'
 
 export default function posts (state = {
 	items: [],
-	action: '',
 	isFetching: false,
 	error: false,
 	success: false
@@ -22,7 +22,6 @@ export default function posts (state = {
 		case LOAD_POSTS_REQUEST :
 			return {
 				...state,
-				action: 'load',
 				isFetching: true,
 				success: false,
 				error: false
@@ -31,7 +30,6 @@ export default function posts (state = {
 			return {
 				...state,
 				items: action.items,
-				action: '',
 				isFetching: false,
 				success: true
 			}
@@ -50,7 +48,6 @@ export default function posts (state = {
 			})
 			return {
 				...state,
-				action: 'vote',
 				isFetching: true,
 				items: [ ...posts ]
 			}
@@ -64,7 +61,6 @@ export default function posts (state = {
 		case SAVE_POST_REQUEST :
 			return {
 				...state,
-				action: 'save',
 				isFetching: true,
 				success: false
 			}
@@ -80,7 +76,6 @@ export default function posts (state = {
 			return {
 				...state,
 				items,
-				action: 'remove',
 				isFetching: true,
 				success: false
 			}
@@ -94,7 +89,6 @@ export default function posts (state = {
 		case UPDATE_POST_REQUEST :
 			return {
 				...state,
-				action: 'update',
 				isFetching: true,
 				success: false
 			}
@@ -104,6 +98,13 @@ export default function posts (state = {
 				...state,
 				items: [...postsItems, action.post],
 				success: true
+			}
+		case ORDER_POSTS_BY :
+			const postItems = state.items.sort((a, b) => ( b[action.orderBy] - a[action.orderBy] ))
+
+			return {
+				...state,
+				items: postItems
 			}
 		default :
 			return state

@@ -11,7 +11,8 @@ import {
 	REMOVE_POST_REQUEST,
 	REMOVE_POST_SUCCESS,
 	UPDATE_POST_REQUEST,
-	UPDATE_POST_SUCCESS } from './../posts'
+	UPDATE_POST_SUCCESS,
+	ORDER_POSTS_BY } from './../posts'
 import {
 	loadPostsRequest,
 	loadPostsSuccess,
@@ -28,7 +29,9 @@ import {
 	handleRemovePost,
 	updatePostRequest,
 	updatePostSuccess,
-	handleUpdatePost } from './../posts'
+	handleUpdatePost,
+	orderPostsBy,
+	handleOrderPostsBy } from './../posts'
 import fetch from './../../__helpers__/fetch'
 import posts from './../../__helpers__/posts'
 
@@ -192,5 +195,27 @@ describe('posts action', () => {
 
 		return store.dispatch(handleUpdatePost())
 			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	/*
+	 * ORDER BY
+	 */
+	it('orderPostsBy should return an object', () => {
+		const orderBy = 'voteScore'
+
+		expect(orderPostsBy(orderBy)).toEqual({
+			type: ORDER_POSTS_BY,
+			orderBy
+		})
+	})
+
+	it('successful handleOrderPostsBy', () => {
+
+		const expectAction = [
+			{ type: ORDER_POSTS_BY, orderBy: 'voteScore' }
+		]
+
+		store.dispatch(orderPostsBy('voteScore'))
+		expect(store.getActions()).toEqual(expectAction)
 	})
 })

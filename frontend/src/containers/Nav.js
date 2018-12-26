@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import SelectOrderBy from './SelectOrderBy'
 
 class Nav extends Component {
 
@@ -11,16 +12,20 @@ class Nav extends Component {
 
 	render() {
 		return (
-			<ul role="navigation">
-				<li>
-					<NavLink to="/" exact activeClassName="active">Home</NavLink>
-				</li>
-				{this.props.items.map((item, index) => (
-					<li key={index}>
-						<NavLink to={item.path} isActive={(match, location) => (`/${item.path}` === location.pathname)} activeClassName="active">{item.name}</NavLink>
+			<nav>
+				<ul role="navigation">
+					<li>
+						<NavLink to="/" exact activeClassName="active">Home</NavLink>
 					</li>
-				))}
-			</ul>
+					{this.props.items.map((item, index) => (
+						<li key={index}>
+							<NavLink to={item.path} isActive={(match, location) => (`/${item.path}` === location.pathname)} activeClassName="active">{item.name}</NavLink>
+						</li>
+					))}
+				</ul>
+
+				<SelectOrderBy />
+			</nav>
 		)
 	}
 }

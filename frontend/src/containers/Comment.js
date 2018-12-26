@@ -30,7 +30,7 @@ export class Comment extends Component {
 	}
 }
 
-const mapStateToProps = ({ comments }, props) => {
+export const mapStateToProps = ({ comments }, props) => {
 	const { id } = props
 	const comment = comments.items.filter((comment) => (comment.id === id))[0]
 

@@ -7,13 +7,13 @@ import {
 	SAVE_POST_REQUEST,
 	SAVE_POST_SUCCESS,
 	REMOVE_POST_REQUEST,
-	REMOVE_POST_SUCCESS } from './../../actions/posts'
+	REMOVE_POST_SUCCESS,
+	ORDER_POSTS_BY } from './../../actions/posts'
 import posts from './../posts'
 import data from './../../__helpers__/posts'
 
 const initialState = {
 	items: [],
-	action: '',
 	isFetching: false,
 	error: false,
 	success: false
@@ -29,8 +29,7 @@ describe('posts reducer', () => {
 			type: LOAD_POSTS_REQUEST
 		})).toMatchObject({
 			...initialState,
-			isFetching: true,
-			action: 'load'
+			isFetching: true
 		})
 	})
 
@@ -58,7 +57,6 @@ describe('posts reducer', () => {
 			type: VOTE_POST_REQUEST
 		})).toMatchObject({
 			...initialState,
-			action: 'vote',
 			isFetching: true
 		})
 	})
@@ -77,7 +75,6 @@ describe('posts reducer', () => {
 			type: SAVE_POST_REQUEST
 		})).toMatchObject({
 			...initialState,
-			action: 'save',
 			isFetching: true
 		})
 	})
@@ -99,8 +96,7 @@ describe('posts reducer', () => {
 			type: REMOVE_POST_REQUEST
 		})).toMatchObject({
 			...initialState,
-			isFetching: true,
-			action: 'remove'
+			isFetching: true
 		})
 	})
 
@@ -110,6 +106,15 @@ describe('posts reducer', () => {
 		})).toMatchObject({
 			...initialState,
 			success: true
+		})
+	})
+
+	/**/
+	it('should handle ORDER_POSTS_BY', () => {
+		expect(posts(initialState, {
+			type: ORDER_POSTS_BY
+		})).toMatchObject({
+			...initialState
 		})
 	})
 })

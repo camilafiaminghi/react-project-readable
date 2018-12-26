@@ -30,7 +30,7 @@ export class Comments extends Component {
 	}
 }
 
-const mapStateToProps = ({ comments }, props) => {
+export const mapStateToProps = ({ comments }, props) => {
 	const { id } = props
 
 	return {

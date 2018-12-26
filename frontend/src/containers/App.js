@@ -10,7 +10,7 @@ import EditPost from './EditPost'
 import LoadingBar from 'react-redux-loading-bar'
 import RouteNotFound from '../components/RouteNotFound'
 
-class App extends Component {
+export class App extends Component {
 
 	static propTypes = {
 		routes: PropTypes.array.isRequired,
@@ -52,7 +52,7 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = ({ categories, posts }) => {
+export const mapStateToProps = ({ categories, posts }) => {
 	return {
 		routes: categories.items.map(item => (item.path)),
 		loadingError: (categories.error && posts.error)
