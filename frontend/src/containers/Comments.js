@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { handleComments, handleSaveComment } from '../actions/comments'
+import { handleComments } from '../actions/comments'
+import { handleUpdatePostComments } from '../actions/shared'
 import Comment from './Comment'
 import FormComment from './FormComment'
 
@@ -25,7 +26,8 @@ export class Comments extends Component {
 
 		/* DISPATCH IF IS VALID */
 		if (validated) {
-			dispatch(handleSaveComment(form, id))
+			dispatch(handleUpdatePostComments(form, id))
+			this.setState((prevState) => ({...prevState, show: !prevState.show}))
 		}
 	}
 
@@ -36,15 +38,19 @@ export class Comments extends Component {
 		return (
 			<div className="children-list">
 				{ (!show) &&
-					<button onClick={() => this.setState((prevState) => ({...prevState, show: !prevState.show}))}>
-						<i className="material-icons">add_circle</i> comment
+					<button
+						onClick={() => this.setState((prevState) => ({...prevState, show: !prevState.show}))}
+						className="btn-add">
+						<i className="material-icons">add_box</i>add comment
 					</button>
 				}
 
 				{ (show) &&
 					<div className="form-edit">
-						<button onClick={() => this.setState((prevState) => ({...prevState, show: !prevState.show}))}>
-							<i className="material-icons">cancel</i> cancel
+						<button
+							onClick={() => this.setState((prevState) => ({...prevState, show: !prevState.show}))}
+							className="btn-add">
+							<i className="material-icons">clear</i>cancel
 						</button>
 						<FormComment comment={{author:'',body:''}} handleSubmit={this.handleSave} />
 					</div>

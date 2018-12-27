@@ -141,14 +141,24 @@ button.disabled {
 }
 
 .btn-add {
-	position: fixed;
-	bottom: 20px;
-	right: 20px;
-	line-height: 45px;
+	color: #666666;
+	font-weight: 600;
+	margin: auto;
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+	text-decoration: none;
 }
 
-.btn-add > i {
-	font-size: 45px;
+.btn-add:hover,
+.btn-add:visited,
+.btn-add:focus {
+	color: #666666;
+}
+
+.btn-add i {
+	color: #666666;
+	margin: 0 0.2em 0 0
 }
 
 .container {
@@ -242,7 +252,7 @@ form::after {
 /* ITEMS LISTS */
 /***************/
 .children-list {
-	padding: 0.8em;
+	padding: 0.4em;
 }
 
 .bordered-top {
@@ -354,3 +364,16 @@ form::after {
 /*********************/
 /* [END] LOADING BAR */
 /*********************/
+
+/***********/
+/* HELPERS */
+/***********/
+.block {
+	display: block;
+}
+.text-center {
+	text-align: center;
+}
+/*****************/
+/* [END] HELPERS */
+/*****************/

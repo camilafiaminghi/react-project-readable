@@ -9,7 +9,8 @@ import {
 export default function comments (state = {
 	byId: {},
 	isFetching: false,
-	success: false
+	success: false,
+	saved: false
 }, action) {
 	switch(action.type) {
 		/*
@@ -22,6 +23,7 @@ export default function comments (state = {
 			}
 		case LOAD_COMMENTS_SUCCESS :
 			const byId = {};
+			action.items.sort((a, b) => (b.voteScore - a.voteScore))
 			action.items.map((item) => (byId[item.id] = item))
 
 			return {
@@ -61,13 +63,13 @@ export default function comments (state = {
 			return {
 				...state,
 				isFetching: true,
-				success: false
+				saved: false
 			}
 		case SAVE_COMMENT_SUCCESS :
 			return {
 				...state,
 				byId: {...state.byId, [action.comment.id]: action.comment},
-				success: true
+				saved: true
 			}
 		default :
 			return state

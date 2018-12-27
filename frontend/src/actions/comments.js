@@ -1,6 +1,5 @@
 import { getComments, voteComment, saveComment } from '../utils/ApiServer'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
-import connectedReactRouter from 'connected-react-router'
 export const LOAD_COMMENTS_REQUEST = 'LOAD_COMMENTS_REQUEST'
 export const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS'
 export const VOTE_COMMENT_REQUEST = 'VOTE_COMMENT_REQUEST'

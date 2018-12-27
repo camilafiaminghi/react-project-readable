@@ -27,20 +27,24 @@ export class DefaultView extends Component {
 			<div>
 				<Nav />
 
-				<ul className="items">
-					{items.map((item, index) => (
-						<li key={index} className="bordered">
-							<Post id={item.id} singleView={false} />
-						</li>
-					))}
-				</ul>
+				<div className="bordered-top">
+					<div className="block text-center">
+						<Link
+							to={{pathname: '/post', state: { category }}}
+							className="btn-add"
+							aria-label="Add Post">
+							<i className="material-icons">add_box</i>add post
+						</Link>
+					</div>
 
-				<Link
-					to={{pathname: '/post', state: { category }}}
-					className="btn-add"
-					aria-label="Add Post">
-					<i className="material-icons">add_circle</i>
-				</Link>
+					<ul className="items">
+						{items.map((item, index) => (
+							<li key={index} className="bordered">
+								<Post id={item.id} singleView={false} />
+							</li>
+						))}
+					</ul>
+				</div>
 			</div>
 		)
 	}
