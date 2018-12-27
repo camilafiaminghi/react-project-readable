@@ -1,6 +1,6 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router';
-
+import { Link } from 'react-router-dom'
 import PostView from './../PostView'
 import Post from './../../containers/Post'
 import Comments from './../../containers/Comments'
@@ -30,16 +30,9 @@ describe('<PostView />', () => {
 		expect(wrapper).toBeTruthy();
 	})
 
-	it('should render a Button', () => {
-		expect(wrapper.shallow().find('button')).toHaveLength(1)
-		expect(wrapper.shallow().find('button').props()).toHaveProperty('onClick')
-	})
-
-	it('should simulates a Click', () => {
-		const button = wrapper.shallow().find('button')
-
-		button.simulate('click')
-		expect(props.history.push).toHaveBeenCalledTimes(1)
+	it('should render a Link', () => {
+		expect(wrapper.shallow().find(Link)).toBeTruthy()
+		expect(wrapper.shallow().find(Link).props()['aria-label']).toBe('Go Back')
 	})
 
 	it('should render a Post component', () => {

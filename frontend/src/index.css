@@ -26,8 +26,10 @@ a {
 }
 
 a:visited,
-a:focus {
+a:focus,
+a:visited {
   text-decoration: none;
+  color: #252525;
 }
 
 ul {
@@ -43,7 +45,7 @@ li {
 
 nav > ul {
 	float: left;
-	margin: 0 0 1em 0;
+	margin: 0;
 }
 
 nav > ul > li {
@@ -74,7 +76,6 @@ select {
 }
 
 input,
-button,
 .btn,
 textarea,
 select {
@@ -96,6 +97,18 @@ select {
 	padding: .6em 0;
 }
 
+button {
+	color: #666666;
+	font-size: 14px;
+	font-weight: 500;
+	background-color: transparent;
+	border: none;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: .2em
+}
+
 .btn:hover,
 .btn:focus,
 .btn:visited {
@@ -103,7 +116,6 @@ select {
 }
 
 input[type=submit],
-button,
 .btn {
 	margin: .3em 0;
 	padding: .6em .8em;
@@ -132,13 +144,23 @@ button:hover,
 .container {
 	position: relative;
 	max-width: 1000px;
-	padding: 0.6em;
 	margin: 0 auto;
 }
 
 /*******/
 /* NAV */
 /*******/
+nav {
+	padding: 1em 0 .2em 0
+}
+
+nav::before,
+nav::after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
 nav ul li {
 	padding: .6em;
 }
@@ -152,6 +174,8 @@ nav ul li {
 	min-width: 120px;
 	display: inline;
 	margin: 0;
+	padding: .3em 0;
+	min-height: auto;
 }
 
 .active {
@@ -165,17 +189,12 @@ nav ul li {
 /********/
 /* FORM */
 /********/
-.form {
+form {
 	max-width: 600px;
 	margin: auto;
 }
 
-.form h1,
-.form h2,
-.form h3,
-.form h4,
-.form h5,
-.form h6{
+.form-title {
 	margin: .6em 0;
 	text-align: center;
 }
@@ -206,6 +225,14 @@ form::after {
 /***************/
 /* ITEMS LISTS */
 /***************/
+.children-list {
+	padding: 0.8em;
+}
+
+.bordered-top {
+	border-top: 1px solid #dad7d7;
+}
+
 .bordered {
 	border: 1px solid #dad7d7;
 }
@@ -294,13 +321,7 @@ form::after {
 .controls {
 	float: right;
 	text-align: center;
-}
-
-.controls button,
-.controls .btn {
-	border: none;
-	padding: 0;
-	margin: 0;
+	display: flex;
 }
 /*********************/
 /* [END] ITEMS LISTS */

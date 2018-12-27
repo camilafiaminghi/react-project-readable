@@ -96,7 +96,8 @@ export class FormPost extends Component {
 
 				<button
 					type="submit"
-					disabled={!validated}>
+					disabled={!validated}
+					className="btn">
 					Post
 				</button>
 			</form>

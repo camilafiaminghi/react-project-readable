@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { handleUpdatePost } from '../actions/posts'
 import FormPost from './FormPost'
 
@@ -20,15 +21,23 @@ export class EditPost extends Component {
 
 	render() {
 		const { post } = this.props
-		const { push } = this.props.history
 
 		return (
-			<div className="form">
+			<div>
 				{ (post) &&
 					<div>
-						<button onClick={() => push(`/post/${post.id}`)}>Go Back</button>
-						<h2 className="center">Edit Post</h2>
-						<FormPost handleSubmit={this.handleUpdate} post={post} />
+						<nav>
+							<Link
+								to={`/post/${post.id}`}
+								aria-label="Go Back">
+								<i className="material-icons">arrow_back</i>
+							</Link>
+						</nav>
+
+						<div className="bordered-top">
+							<h2 className="form-title">Edit Post</h2>
+							<FormPost handleSubmit={this.handleUpdate} post={post} />
+						</div>
 					</div>
 				}
 			</div>

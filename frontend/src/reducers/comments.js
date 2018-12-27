@@ -2,7 +2,9 @@ import {
 	LOAD_COMMENTS_REQUEST,
 	LOAD_COMMENTS_SUCCESS,
 	VOTE_COMMENT_REQUEST,
-	VOTE_COMMENT_SUCCESS } from '../actions/comments'
+	VOTE_COMMENT_SUCCESS,
+	SAVE_COMMENT_REQUEST,
+	SAVE_COMMENT_SUCCESS } from '../actions/comments'
 
 export default function comments (state = {
 	byId: {},
@@ -51,6 +53,21 @@ export default function comments (state = {
 			return {
 				...state,
 				isFetching: false
+			}
+		/*
+		 * SAVE
+		 */
+		case SAVE_COMMENT_REQUEST :
+			return {
+				...state,
+				isFetching: true,
+				success: false
+			}
+		case SAVE_COMMENT_SUCCESS :
+			return {
+				...state,
+				byId: {...state.byId, [action.comment.id]: action.comment},
+				success: true
 			}
 		default :
 			return state

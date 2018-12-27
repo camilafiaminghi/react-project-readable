@@ -73,7 +73,6 @@ export class Post extends Component {
 						: <div className="controls">
 								<Link
 									to={{pathname: `/edit/post/${id}`, state: { category }}}
-									className="btn"
 									aria-label="Edit Post">
 									<i className="material-icons md-24">edit</i>
 								</Link>

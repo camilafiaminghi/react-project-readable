@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
 import { EditPost, mapStateToProps } from './../EditPost'
+import { Link } from 'react-router-dom'
 import FormPost from './../FormPost'
 import fetch from './../../__helpers__/fetch'
 import posts from './../../__helpers__/posts'
@@ -33,16 +34,9 @@ describe('<EditPost />', () => {
 		expect(wrapper).toBeTruthy()
 	})
 
-	it('should render a Button', () => {
-		expect(wrapper.find('button')).toHaveLength(1)
-		expect(wrapper.find('button').props()).toHaveProperty('onClick')
-	})
-
-	it('should simulates a Click', () => {
-		const button = wrapper.find('button')
-
-		button.simulate('click')
-		expect(props.history.push).toHaveBeenCalledTimes(1)
+	it('should render a Link', () => {
+		expect(wrapper.find(Link)).toHaveLength(1)
+		expect(wrapper.find(Link).props()['aria-label']).toBe('Go Back')
 	})
 
 	it('should renders default elements', () => {

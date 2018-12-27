@@ -19,13 +19,20 @@ export class Comments extends Component {
 		const { success, byId } = this.props.comments
 
 		return (
-			<ul className="items">
-				{ (success) && Object.keys(byId).map((key, index) => (
-					<li key={index} className="item bordered">
-						<Comment id={key} />
-					</li>
-				))}
-			</ul>
+			<div className="children-list">
+				<button
+					onClick={() => {}}>
+					<i className="material-icons">add_box</i>Comment
+				</button>
+
+				<ul className="items">
+					{ (success) && Object.keys(byId).map((key, index) => (
+						<li key={index} className="item bordered">
+							<Comment id={key} />
+						</li>
+					))}
+				</ul>
+			</div>
 		)
 	}
 }

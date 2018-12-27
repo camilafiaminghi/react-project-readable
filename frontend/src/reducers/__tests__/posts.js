@@ -23,7 +23,9 @@ describe('posts reducer', () => {
 	it('should handle initial state', () => {
 		expect(posts(initialState, {})).toEqual(initialState)
 	})
-
+	/*
+	 * LOAD
+	 */
 	it('should handle LOAD_POSTS_REQUEST', () => {
 		expect(posts(initialState, {
 			type: LOAD_POSTS_REQUEST
@@ -50,8 +52,9 @@ describe('posts reducer', () => {
 			isFetching: false
 		})
 	})
-
-	/**/
+	/*
+	 * VOTE
+	 */
 	it('should handle VOTE_POST_REQUEST', () => {
 		expect(posts(initialState, {
 			type: VOTE_POST_REQUEST
@@ -68,8 +71,9 @@ describe('posts reducer', () => {
 			...initialState
 		})
 	})
-
-	/**/
+	/*
+	 * SAVE
+	 */
 	it('should handle SAVE_POST_REQUEST', () => {
 		expect(posts(initialState, {
 			type: SAVE_POST_REQUEST
@@ -89,8 +93,9 @@ describe('posts reducer', () => {
 			success: true
 		})
 	})
-
-	/**/
+	/*
+	 * REMOVE
+	 */
 	it('should handle REMOVE_POST_REQUEST', () => {
 		expect(posts(initialState, {
 			type: REMOVE_POST_REQUEST
@@ -108,8 +113,9 @@ describe('posts reducer', () => {
 			success: true
 		})
 	})
-
-	/**/
+	/*
+	 * ORDER
+	 */
 	it('should handle ORDER_POSTS_BY', () => {
 		expect(posts(initialState, {
 			type: ORDER_POSTS_BY

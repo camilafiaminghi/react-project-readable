@@ -4,14 +4,19 @@ import {
 	LOAD_COMMENTS_REQUEST,
 	LOAD_COMMENTS_SUCCESS,
 	VOTE_COMMENT_REQUEST,
-	VOTE_COMMENT_SUCCESS  } from './../comments'
+	VOTE_COMMENT_SUCCESS,
+	SAVE_COMMENT_REQUEST,
+	SAVE_COMMENT_SUCCESS } from './../comments'
 import {
 	loadCommentsRequest,
 	loadCommentsSuccess,
 	handleComments,
 	voteCommentRequest,
 	voteCommentSuccess,
-	handleVoteComment } from './../comments'
+	handleVoteComment,
+	saveCommentRequest,
+	saveCommentSuccess,
+	handleSaveComment } from './../comments'
 import fetch from './../../__helpers__/fetch'
 import data from './../../__helpers__/comments'
 
@@ -85,6 +90,36 @@ describe('comments action creators', () => {
 		]
 
 		return store.dispatch(handleVoteComment())
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	/*
+	 * SAVE
+	 */
+	it('saveCommentRequest should return an object', () => {
+		expect(saveCommentRequest()).toEqual({
+			type: SAVE_COMMENT_REQUEST
+		})
+	})
+
+	it('saveCommentSuccess should return an object', () => {
+		expect(saveCommentSuccess(data[0])).toEqual({
+			type: SAVE_COMMENT_SUCCESS,
+			post: data[0]
+		})
+	})
+
+	it('successful handleSaveComment', () => {
+		window.fetch = fetch.successful(data[0])
+
+		const expectAction = [
+			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW' },
+			{ type: SAVE_COMMENT_REQUEST },
+			{ type: SAVE_COMMENT_SUCCESS, post: data[0] },
+			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' }
+		]
+
+		return store.dispatch(handleSaveComment())
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 })
