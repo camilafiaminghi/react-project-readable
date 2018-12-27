@@ -35,7 +35,7 @@ export class App extends Component {
 		      				<p>Sorry! The server is unavaiable. <br /> Please, try again later.</p>
 		      			</div>
 							: <Switch>
-									<Route exact path="/" component={DefaultView} />
+									<Route exact path="/" render={() => <DefaultView category="" />} />
 									{routes.map((route, index) => (
 										<Route exact key={index} path={`/${route}`} render={() => <DefaultView category={route} />} />
 		              ))}

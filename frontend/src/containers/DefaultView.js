@@ -27,7 +27,7 @@ export class DefaultView extends Component {
 			<div>
 				<Nav />
 
-				<ul className="post-list">
+				<ul className="items">
 					{items.map((item, index) => (
 						<li key={index}>
 							<Post id={item.id} singleView={false} />
@@ -35,9 +35,12 @@ export class DefaultView extends Component {
 					))}
 				</ul>
 
-				<div className="btn-add-post">
-					<Link to={{pathname: '/post', state: { category }}}>Add Post</Link>
-				</div>
+				<Link
+					to={{pathname: '/post', state: { category }}}
+					className="btn-add"
+					aria-label="Add Post">
+					<i className="material-icons">add_circle</i>
+				</Link>
 			</div>
 		)
 	}

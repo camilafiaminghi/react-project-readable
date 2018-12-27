@@ -23,16 +23,12 @@ export class EditPost extends Component {
 		const { push } = this.props.history
 
 		return (
-			<div className="new-post">
+			<div className="form">
 				{ (post) &&
 					<div>
-						<div className="top">
-							<button onClick={() => push(`/post/${post.id}`)}>Go Back</button>
-						</div>
-						<div>
-							<h2 className="center">Edit Post</h2>
-							<FormPost handleSubmit={this.handleUpdate} category={post.category} post={post} />
-						</div>
+						<button onClick={() => push(`/post/${post.id}`)}>Go Back</button>
+						<h2 className="center">Edit Post</h2>
+						<FormPost handleSubmit={this.handleUpdate} post={post} />
 					</div>
 				}
 			</div>

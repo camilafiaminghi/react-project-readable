@@ -20,16 +20,10 @@ export class NewPost extends Component {
 		const post = {author: '', title: '', body: '', category}
 
 		return (
-			<div className="new-post">
-				<div>
-					<div className="top">
-						<button onClick={() => push(`/${category}`)}>Go Back {(!category) ? 'to Home': `to /${category}`}</button>
-					</div>
-					<div>
-						<h2 className="center">Compose new Post</h2>
-						<FormPost handleSubmit={this.handleSave} category={category} post={post} />
-					</div>
-				</div>
+			<div className="form">
+					<button onClick={() => push(`/${category}`)}>Go Back {(!category) ? 'to Home': `to /${category}`}</button>
+					<h2 className="center">Compose new Post</h2>
+					<FormPost handleSubmit={this.handleSave} post={post} />
 			</div>
 		)
 	}

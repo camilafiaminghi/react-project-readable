@@ -38,37 +38,52 @@ export class Post extends Component {
 		const pathname = this.props.location.pathname.split('/')[1]
 
 		return (
-			<div className="post">
-				<div className="header">
-					<span>
-						Score [{ voteScore }]
-						<button onClick={this.handleUpVote}>+</button>
-						<button onClick={this.handleDownVote}>-</button>
-					</span>
-					<span> Posted by { author } { formatTimeDiff(timeDiff(timestamp)) }</span>
+			<div className="item bordered">
+				<div className="vote-score">
+					<button
+						onClick={this.handleUpVote}
+						aria-label="Increase Vote Score">
+						<i className="material-icons md-48">expand_less</i>
+					</button>
+					<span>{ voteScore }</span>
+					<button
+						onClick={this.handleDownVote}
+						aria-label="Decrease Vote Score">
+						<i className="material-icons md-48">expand_more</i>
+					</button>
 				</div>
-				{ (pathname === 'post')
-					? <section>
-							<h2 className="title">{ title }</h2>
-							<p className="content">{ body }</p>
-						</section>
-					: <Link to={{pathname:`/post/${id}`, state:{ pathname }}}>
-							<section>
+				<div className="details">
+					<span className="author"> Posted by { author } { formatTimeDiff(timeDiff(timestamp)) }</span>
+					{ (pathname === 'post')
+						? <section>
 								<h2 className="title">{ title }</h2>
 								<p className="content">{ body }</p>
 							</section>
-						</Link>
-				}
-				<div className="footer">
+						: <Link to={{pathname:`/post/${id}`, state:{ pathname }}}>
+								<section>
+									<h2 className="title">{ title }</h2>
+									<p className="content">{ body }</p>
+								</section>
+							</Link>
+					}
+					<span className="count">{ commentCount } { (commentCount > 1) ? `Comments` : `Comment` }</span>
+				</div>
 					{ (pathname !== 'post')
 						? null
-						: <div>
-								<button onClick={this.handleRemove}>Remove Post</button>
-								<Link to={{pathname: `/edit/post/${id}`, state: { category }}}>Edit Post</Link>
+						: <div className="controls">
+								<Link
+									to={{pathname: `/edit/post/${id}`, state: { category }}}
+									className="btn"
+									aria-label="Edit Post">
+									<i className="material-icons md-24">edit</i>
+								</Link>
+								<button
+									onClick={this.handleRemove}
+									aria-label="Remove Post">
+									<i className="material-icons md-24">close</i>
+								</button>
 							</div>
 					}
-					<span>{ commentCount } { (commentCount > 1) ? `Comments` : `Comment` }</span>
-				</div>
 			</div>
 		)
 	}

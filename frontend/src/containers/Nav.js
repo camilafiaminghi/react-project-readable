@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import SelectOrderBy from './SelectOrderBy'
 
 export class Nav extends Component {
@@ -24,10 +24,10 @@ export class Nav extends Component {
 							<NavLink to={item.path} isActive={(match, location) => (`/${item.path}` === location.pathname)} activeClassName="active">{item.name}</NavLink>
 						</li>
 					))}
-					<li>
-						Order by: <SelectOrderBy />
-					</li>
 				</ul>
+				<div className="orderby-control">
+					Order by: <SelectOrderBy />
+				</div>
 			</nav>
 		)
 	}

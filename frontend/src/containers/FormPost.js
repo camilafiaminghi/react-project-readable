@@ -10,16 +10,15 @@ export class FormPost extends Component {
 
 	static propTypes = {
 		handleSubmit: PropTypes.func.isRequired,
-		category: PropTypes.string,
 		post: PropTypes.object
 	}
 
 	state = {
 		form: {
-			author: this.props.post.author || '',
-			title: this.props.post.title || '',
-			body: this.props.post.body || '',
-			category: this.props.post.category | ''
+			author: this.props.post.author,
+			title: this.props.post.title,
+			body: this.props.post.body,
+			category: this.props.post.category
 		},
 		validation: {
 			author: false,
@@ -55,8 +54,7 @@ export class FormPost extends Component {
 
 	render() {
 		const { validated, submitted, form } = this.state
-		const { title, author, body } = form
-		const { category } = this.props
+		const { title, author, body, category } = form
 
 		return (
 			<form onSubmit={this.handleOnSubmit}>
