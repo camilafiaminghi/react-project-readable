@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { validationRules } from '../utils/validation'
 
-class SelectCategory extends Component {
+export class SelectCategory extends Component {
 	static propTypes = {
 		name: PropTypes.string.isRequired,
 		placeholder: PropTypes.string.isRequired,
@@ -65,41 +65,7 @@ class SelectCategory extends Component {
 	}
 }
 
-// export default SeInputTextArea
-
-// class SelectCategory extends Input {
-// 	static propTypes = {
-// 		items: PropTypes.array.isRequired
-// 	}
-
-// 	render() {
-// 		const { name, placeholder, items } = this.props
-// 		const { text } = this.state
-// 		const messageHelper = this.messageHelper()
-
-// 		return (
-// 			<div>
-// 				<select
-// 					name={name}
-// 					value={text}
-//  					onChange={(event) => this.handleValidation(name, event.target.value)}>
-//  					<option value="" disabled="disabled">{placeholder}</option>
-//  					{items.map((item, index) => {
-//  						const { value, name } = item
-//  						return (
-// 							<option
-// 								key={index}
-// 								value={value}>{name}</option>
-// 						)
-// 					})}
-// 				</select>
-// 				{ messageHelper }
-// 			</div>
-// 		)
-// 	}
-// }
-
-const mapStateToProps = ({ categories }, props) => {
+export const mapStateToProps = ({ categories }, props) => {
 	const items = categories.items.map((item) => {
 		item.value = item.path
 		return item

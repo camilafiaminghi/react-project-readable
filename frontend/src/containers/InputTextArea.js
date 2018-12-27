@@ -60,23 +60,3 @@ class InputTextArea extends Component {
 }
 
 export default InputTextArea
-
-
-// class InputTextArea extends Input {
-// 	render() {
-// 		const { name, placeholder, maxLength } = this.props
-// 		const { text } = this.state
-// 		const messageLeft = this.messageLeft()
-// 		const messageHelper = this.messageHelper()
-
-// 		return (
-// 			<div>
-
-// 				{	messageLeft }
-// 				{ messageHelper }
-// 			</div>
-// 		)
-// 	}
-// }
-
-// export default InputTextArea

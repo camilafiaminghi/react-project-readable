@@ -12,7 +12,6 @@ export class EditPost extends Component {
 
 	handleUpdate = (validated, form) => {
 		const { dispatch, post } = this.props
-
 		/* DISPATCH IF IS VALID */
 		if (validated) {
 			dispatch(handleUpdatePost(post.id, form))

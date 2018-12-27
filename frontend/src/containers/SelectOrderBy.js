@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { handleOrderPostsBy } from './../actions/posts'
 
-class SelectOrderBy extends Component {
+export class SelectOrderBy extends Component {
 
 	static propTypes = {
 		success: PropTypes.bool.isRequired
@@ -47,7 +47,7 @@ class SelectOrderBy extends Component {
 	}
 }
 
-function mapStateToProps ({ posts }, props) {
+export const mapStateToProps = ({ posts }, props) => {
 	const { success } = posts
 
 	return {

@@ -12,7 +12,6 @@ let store
 let props
 let provider
 let wrapper
-let wrapperMount
 
 describe('<EditPost />', () => {
 
@@ -22,7 +21,7 @@ describe('<EditPost />', () => {
 		props = {
 			post: posts[0],
 			history: {push: jest.fn()},
-			dispatch: store.dispatch
+			dispatch: jest.fn()
 		}
 		provider = shallow(<Provider store={store}><EditPost {...props} /></Provider>)
 		wrapper = provider.find(EditPost).shallow()
@@ -52,6 +51,12 @@ describe('<EditPost />', () => {
 
 	it('should contains a FormPost component', () => {
 	  expect(wrapper.find(FormPost).exists()).toBeTruthy()
+	})
+
+	it('should contains a handleUpdate method', () => {
+		const instance = wrapper.instance()
+		instance.handleUpdate(true, {})
+		expect(props.dispatch).toHaveBeenCalledTimes(1)
 	})
 
 	it('should mapStateToProps return props', () => {
