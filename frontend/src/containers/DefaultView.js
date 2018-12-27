@@ -27,7 +27,7 @@ export class DefaultView extends Component {
 			<div>
 				<Nav />
 
-				<ul className="list">
+				<ul className="post-list">
 					{items.map((item, index) => (
 						<li key={index}>
 							<Post id={item.id} singleView={false} />

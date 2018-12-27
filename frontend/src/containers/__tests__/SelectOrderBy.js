@@ -32,7 +32,7 @@ describe('<SelectOrderBy />', () => {
 	})
 
 	it('should contains option elements', () => {
-		expect(wrapper.find('option')).toHaveLength(3)
+		expect(wrapper.find('option')).toHaveLength(2)
 	})
 
 	it('should contains a handleOnSubmit method', () => {

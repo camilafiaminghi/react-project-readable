@@ -8,7 +8,7 @@ const PostView = (props) => {
 	const pathname = (props.location.state) ? props.location.state.pathname : ''
 
 	return (
-		<div className="post-details">
+		<div className="post-info">
 			<div className="top">
 				<button onClick={() => push(`/${pathname}`)}>Go Back {(!pathname) ? 'to Home': `to /${pathname}`}</button>
 			</div>

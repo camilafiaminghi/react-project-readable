@@ -24,9 +24,10 @@ export class Nav extends Component {
 							<NavLink to={item.path} isActive={(match, location) => (`/${item.path}` === location.pathname)} activeClassName="active">{item.name}</NavLink>
 						</li>
 					))}
+					<li>
+						Order by: <SelectOrderBy />
+					</li>
 				</ul>
-
-				<SelectOrderBy />
 			</nav>
 		)
 	}

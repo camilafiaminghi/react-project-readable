@@ -39,7 +39,6 @@ export class SelectOrderBy extends Component {
 			<select
 				value={option}
 				onChange={(event) => this.handleOnChange(event.target.value)}>
-				<option value="" disabled="disabled">Order by:</option>
 				<option value="voteScore">Vote Score</option>
 				<option value="timestamp">Created Date</option>
 			</select>
