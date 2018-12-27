@@ -1,10 +1,17 @@
-import { REQUEST_COMMENTS, RECEIVE_COMMENTS } from './../../actions/comments'
+import {
+	LOAD_COMMENTS_REQUEST,
+	LOAD_COMMENTS_SUCCESS,
+	VOTE_COMMENT_REQUEST,
+	VOTE_COMMENT_SUCCESS } from './../../actions/comments'
 import comments from './../comments'
 import data from './../../__helpers__/comments'
 
+const dataComments = {}
+data.map((item) => (dataComments[item.id] = item))
 const initialState = {
+	byId: {},
 	isFetching: false,
-	items: []
+	success: false
 }
 
 describe('comments reducer', () => {
@@ -12,18 +19,43 @@ describe('comments reducer', () => {
 		expect(comments(initialState, {})).toEqual(initialState)
 	})
 
-	it('should handle REQUEST_COMMENTS', () => {
+	it('should handle LOAD_COMMENTS_REQUEST', () => {
 		expect(comments(initialState, {
-			type: REQUEST_COMMENTS,
+			type: LOAD_COMMENTS_REQUEST
+		})).toMatchObject({
+			...initialState,
 			isFetching: true
-		})).toMatchObject({})
+		})
 	})
 
-	it('should handle RECEIVE_COMMENTS', () => {
-		expect(comments(initialState, {
-			type: RECEIVE_COMMENTS,
-			isFetching: false,
+	it('should handle LOAD_COMMENTS_SUCCESS', () => {
+		expect(comments({...initialState, byId: dataComments, success: true}, {
+			type: LOAD_COMMENTS_SUCCESS,
 			items: data
-		})).toMatchObject({})
+		})).toMatchObject({
+			isFetching: false,
+			byId: dataComments,
+			success: true
+		})
+	})
+
+	/**/
+	it('should handle VOTE_COMMENT_REQUEST', () => {
+		expect(comments({...initialState, byId: dataComments}, {
+			type: VOTE_COMMENT_REQUEST,
+			id: data[0].id,
+			option: 'upVote'
+		})).toMatchObject({
+			...initialState,
+			isFetching: true
+		})
+	})
+
+	it('should handle VOTE_COMMENT_SUCCESS', () => {
+		expect(comments(initialState, {
+			type: VOTE_COMMENT_SUCCESS
+		})).toMatchObject({
+			...initialState
+		})
 	})
 })

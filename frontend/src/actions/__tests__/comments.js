@@ -1,44 +1,90 @@
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import { REQUEST_COMMENTS, RECEIVE_COMMENTS,  receiveComments, requestComments, handleComments } from './../comments'
+import {
+	LOAD_COMMENTS_REQUEST,
+	LOAD_COMMENTS_SUCCESS,
+	VOTE_COMMENT_REQUEST,
+	VOTE_COMMENT_SUCCESS  } from './../comments'
+import {
+	loadCommentsRequest,
+	loadCommentsSuccess,
+	handleComments,
+	voteCommentRequest,
+	voteCommentSuccess,
+	handleVoteComment } from './../comments'
 import fetch from './../../__helpers__/fetch'
-import comments from './../../__helpers__/comments'
+import data from './../../__helpers__/comments'
 
+const dataComments = {}
+data.map((item) => (dataComments[item.id] = item))
 const configStore = configureMockStore([thunk])
 const store = configStore({
-	items: undefined
+	byId: dataComments,
+	isFetching: false,
+	success: false
 })
 
 describe('comments action creators', () => {
 	// CLEAR ACTIONS BEFORE RUN STORE AGAIN TEST MODULE INDEPEDENT OF OTHERS MODULES
 	afterEach(() => store.clearActions())
 
-	it('receiveComments should return an object', () => {
-		expect(receiveComments()).toEqual({
-			type: RECEIVE_COMMENTS,
+	/*
+	 * LOAD
+	 */
+	it('loadCommentsRequest should return an object', () => {
+		expect(loadCommentsRequest()).toEqual({
+			type: LOAD_COMMENTS_REQUEST
+		})
+	})
+
+	it('loadCommentsSuccess should return an object', () => {
+		expect(loadCommentsSuccess()).toEqual({
+			type: LOAD_COMMENTS_SUCCESS,
 			items: undefined
 		})
 	})
 
-	it('requestComments should return an object', () => {
-		expect(requestComments()).toEqual({
-			type: REQUEST_COMMENTS,
-			items: undefined
-		})
-	})
-
-	// TEST ASYNC PASS THROUGH THUNK
-	it('successful handleComments calls receiveComments', () => {
-		window.fetch = fetch.successful(comments)
+	it('successful handleComments calls loadCommentsRequest', () => {
+		window.fetch = fetch.successful(data)
 
 		const expectAction = [
 			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW'},
-			{ type: REQUEST_COMMENTS },
-			{ type: RECEIVE_COMMENTS, items: comments },
+			{ type: LOAD_COMMENTS_REQUEST },
+			{ type: LOAD_COMMENTS_SUCCESS, items: data },
 			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE'}
 		]
 
 		return store.dispatch(handleComments())
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	/*
+	 * VOTE
+	 */
+	it('voteCommentRequest should return an object', () => {
+		expect(voteCommentRequest(data[0].id, 'upVote')).toEqual({
+			type: VOTE_COMMENT_REQUEST,
+			id: data[0].id,
+			option: 'upVote'
+		})
+	})
+
+	it('voteCommentSuccess should return an object', () => {
+		expect(voteCommentSuccess(data[0])).toEqual({
+			type: VOTE_COMMENT_SUCCESS,
+			comment: data[0]
+		})
+	})
+
+	it('successful handleVoteComment', () => {
+		window.fetch = fetch.successful(data[0])
+
+		const expectAction = [
+			{ type: VOTE_COMMENT_REQUEST, id: undefined, option: undefined },
+			{ type: VOTE_COMMENT_SUCCESS, comment: data[0] },
+		]
+
+		return store.dispatch(handleVoteComment())
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 })

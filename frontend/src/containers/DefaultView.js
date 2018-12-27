@@ -29,7 +29,7 @@ export class DefaultView extends Component {
 
 				<ul className="items">
 					{items.map((item, index) => (
-						<li key={index}>
+						<li key={index} className="bordered">
 							<Post id={item.id} singleView={false} />
 						</li>
 					))}

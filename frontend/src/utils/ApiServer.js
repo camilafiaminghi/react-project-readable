@@ -172,27 +172,14 @@ export const getCommentById = (id) =>
 /*
  * POST /posts/:id
  * Increment comment vote score.
+ * @param {String} id
  * @param {Object} option - {option: 'upVote'}
  */
-export const upVoteComment = (id) =>
+export const voteComment = (id, option) =>
 	fetch(`${api}/comments/${id}`, {
 		...options,
 		method: 'POST',
-		body: JSON.stringify({ option: 'upVote' })
-	})
-		.then(response => response.json())
-		.then(data => data)
-
-/*
- * POST /posts/:id
- * Decrement comment vote score.
- * @param {Object} option - {option: 'downVote'}
- */
-export const downVoteComment = (id) =>
-	fetch(`${api}/comments/${id}`, {
-		...options,
-		method: 'POST',
-		body: JSON.stringify({ option: 'downVote' })
+		body: JSON.stringify({ option })
 	})
 		.then(response => response.json())
 		.then(data => data)

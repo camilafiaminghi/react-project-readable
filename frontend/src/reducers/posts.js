@@ -19,6 +19,9 @@ export default function posts (state = {
 	success: false
 }, action) {
 	switch(action.type) {
+		/*
+		 * LOAD
+		 */
 		case LOAD_POSTS_REQUEST :
 			return {
 				...state,
@@ -39,7 +42,9 @@ export default function posts (state = {
 				isFetching: false,
 				error: true
 			}
-
+		/*
+		 * VOTE
+		 */
 		case VOTE_POST_REQUEST :
 			const posts = state.items.map((item) => {
 				if (item.id === action.id)
@@ -57,7 +62,9 @@ export default function posts (state = {
 				...state,
 				isFetching: false
 			}
-
+		/*
+		 * SAVE
+		 */
 		case SAVE_POST_REQUEST :
 			return {
 				...state,
@@ -70,7 +77,9 @@ export default function posts (state = {
 				items: [...state.items, action.post],
 				success: true
 			}
-
+		/*
+		 * REMOVE
+		 */
 		case REMOVE_POST_REQUEST :
 			const items = state.items.filter((item) => (item.id !== action.id))
 			return {
@@ -85,7 +94,9 @@ export default function posts (state = {
 				items: [...state.items],
 				success: true
 			}
-
+		/*
+		 * UPDATE
+		 */
 		case UPDATE_POST_REQUEST :
 			return {
 				...state,

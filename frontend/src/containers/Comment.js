@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { handleVoteComment } from '../actions/comments'
 import { timeDiff, formatTimeDiff } from '../utils/dateUtils'
 
 export class Comment extends Component {
@@ -9,21 +10,43 @@ export class Comment extends Component {
 		comment: PropTypes.object.isRequired
 	}
 
+	handleUpVote = (event) => {
+		event.preventDefault()
+		const { dispatch, id } = this.props
+
+		dispatch(handleVoteComment(id, 'upVote'))
+	}
+
+	handleDownVote = (event) => {
+		event.preventDefault()
+		const { dispatch, id } = this.props
+
+		dispatch(handleVoteComment(id, 'downVote'))
+	}
+
 	render() {
-		const { id, voteScore, author, body, timestamp } = this.props.comment
+		const { voteScore, author, body, timestamp } = this.props.comment
 
 		return (
-			<div className="comment">
-				<div className="header">
-					<span>Score [{ voteScore }] </span>
-					<span>Commented by { author } { formatTimeDiff(timeDiff(timestamp)) }</span>
+			<div>
+				<div className="vote-score">
+					<button
+						onClick={this.handleUpVote}
+						aria-label="Increase Vote Score">
+						<i className="material-icons">expand_less</i>
+					</button>
+					<span>{ voteScore }</span>
+					<button
+						onClick={this.handleDownVote}
+						aria-label="Decrease Vote Score">
+						<i className="material-icons">expand_more</i>
+					</button>
 				</div>
-				<section>
-					<h2>Comment {id}</h2>
-					<div className="content">{ body }</div>
-				</section>
-				<div className="footer">
-					<span></span>
+				<div className="details">
+					<section>
+						<h2>Commented by { author } { formatTimeDiff(timeDiff(timestamp)) }</h2>
+						<p>{ body }</p>
+					</section>
 				</div>
 			</div>
 		)
@@ -32,7 +55,7 @@ export class Comment extends Component {
 
 export const mapStateToProps = ({ comments }, props) => {
 	const { id } = props
-	const comment = comments.items.filter((comment) => (comment.id === id))[0]
+	const comment = (comments.success) ? comments.byId[id] : {}
 
 	return {
 		comment

@@ -17,6 +17,10 @@ h1, h2, h3, h4, h5, h6, p {
 	margin: 0;
 }
 
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 400;
+}
+
 a {
   color: #252525;
 }
@@ -27,7 +31,8 @@ a:focus {
 }
 
 ul {
-  padding-left: 0;
+	margin: 0;
+  padding: 0;
 }
 
 li {
@@ -73,7 +78,7 @@ button,
 .btn,
 textarea,
 select {
-	background-color: transparent;
+	background-color: #ffffff;
 	border-radius: 4px;
 	border: 1px solid #dad7d7;
 	font-size: 14px;
@@ -201,15 +206,19 @@ form::after {
 /***************/
 /* ITEMS LISTS */
 /***************/
+.bordered {
+	border: 1px solid #dad7d7;
+}
+
 .items li {
 	width: 100%;
   display: flex;
   flex-direction: column;
   cursor: pointer;
+  margin: 0.8em 0;
 }
 
 .item {
-  border: 1px solid #dad7d7;
   border-radius: 3px;
   padding: 0.6em;
 }
@@ -233,11 +242,10 @@ form::after {
 }
 
 .vote-score {
-	min-width: 40px;
 	display: flex;
   flex-direction: column;
   align-items: center;
-  margin: .6em .6em 0 0;
+  margin: 0 .8em 0 0;
 }
 
 .vote-score button,
@@ -253,6 +261,10 @@ form::after {
 	font-size: 22px;
 	font-weight: bold;
 	color: #999999;
+}
+
+.vote-score button i {
+	font-size: 34px;
 }
 
 .vote-score button {

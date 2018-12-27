@@ -94,20 +94,11 @@ describe('ApiServer', () => {
 		expect(response).toMatchObject(comments[0])
   })
 
-  it('should increment vote score for a comment', async () => {
+  it('should vote score for a comment', async () => {
   	const comment = comments[0]
   	comment.voteScore++
 		window.fetch = fetch.successful(comment)
-		const response = await ApiServer.upVoteComment(commentID)
-
-		expect(response).toMatchObject(comment)
-  })
-
-  it('should decrement vote score for a comment', async () => {
-  	const comment = comments[0]
-  	comment.voteScore--
-		window.fetch = fetch.successful(comment)
-		const response = await ApiServer.downVoteComment(commentID)
+		const response = await ApiServer.voteComment(commentID, {option: 'upVote'})
 
 		expect(response).toMatchObject(comment)
   })

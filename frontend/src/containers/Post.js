@@ -38,18 +38,18 @@ export class Post extends Component {
 		const pathname = this.props.location.pathname.split('/')[1]
 
 		return (
-			<div className="item bordered">
+			<div className="item">
 				<div className="vote-score">
 					<button
 						onClick={this.handleUpVote}
 						aria-label="Increase Vote Score">
-						<i className="material-icons md-48">expand_less</i>
+						<i className="material-icons">expand_less</i>
 					</button>
 					<span>{ voteScore }</span>
 					<button
 						onClick={this.handleDownVote}
 						aria-label="Decrease Vote Score">
-						<i className="material-icons md-48">expand_more</i>
+						<i className="material-icons">expand_more</i>
 					</button>
 				</div>
 				<div className="details">
@@ -61,8 +61,8 @@ export class Post extends Component {
 							</section>
 						: <Link to={{pathname:`/post/${id}`, state:{ pathname }}}>
 								<section>
-									<h2 className="title">{ title }</h2>
-									<p className="content">{ body }</p>
+									<h2>{ title }</h2>
+									<p>{ body }</p>
 								</section>
 							</Link>
 					}

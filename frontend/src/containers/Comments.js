@@ -7,7 +7,7 @@ import Comment from './Comment'
 export class Comments extends Component {
 
 	static propTypes = {
-		comments: PropTypes.array
+		comments: PropTypes.object
 	}
 
 	componentDidMount() {
@@ -16,13 +16,13 @@ export class Comments extends Component {
 	}
 
 	render() {
-		const { comments } = this.props
+		const { success, byId } = this.props.comments
 
 		return (
-			<ul className="list">
-				{comments.map((comment, index) => (
-					<li key={index}>
-						<Comment id={comment.id} />
+			<ul className="items">
+				{ (success) && Object.keys(byId).map((key, index) => (
+					<li key={index} className="item bordered">
+						<Comment id={key} />
 					</li>
 				))}
 			</ul>
@@ -35,7 +35,7 @@ export const mapStateToProps = ({ comments }, props) => {
 
 	return {
 		id,
-		comments: comments.items
+		comments
 	}
 }
 
