@@ -105,7 +105,7 @@ describe('comments action creators', () => {
 	it('saveCommentSuccess should return an object', () => {
 		expect(saveCommentSuccess(data[0])).toEqual({
 			type: SAVE_COMMENT_SUCCESS,
-			post: data[0]
+			comment: data[0]
 		})
 	})
 
@@ -115,7 +115,7 @@ describe('comments action creators', () => {
 		const expectAction = [
 			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW' },
 			{ type: SAVE_COMMENT_REQUEST },
-			{ type: SAVE_COMMENT_SUCCESS, post: data[0] },
+			{ type: SAVE_COMMENT_SUCCESS, comment: data[0] },
 			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' }
 		]
 

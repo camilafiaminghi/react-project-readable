@@ -1,6 +1,6 @@
 export function validationRules (name, value) {
 	const rule = {
-		author: !!value.trim() && value.length > 6,
+		author: !!value.trim() && value.length > 3,
 		title: !!value.trim() && value.length > 6,
 		body: !!value.trim() && value.length > 6,
 		category: !!value.trim()

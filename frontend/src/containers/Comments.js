@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { handleComments } from '../actions/comments'
+import { handleComments, handleSaveComment } from '../actions/comments'
 import Comment from './Comment'
+import FormComment from './FormComment'
 
 export class Comments extends Component {
 
@@ -10,20 +11,44 @@ export class Comments extends Component {
 		comments: PropTypes.object
 	}
 
+	state = {
+		show: false
+	}
+
 	componentDidMount() {
 		/* HANDLE COMMENTS BY POST */
 		this.props.dispatch(handleComments(this.props.id))
 	}
 
+	handleSave = (validated, form) => {
+		const { dispatch, id } = this.props
+
+		/* DISPATCH IF IS VALID */
+		if (validated) {
+			dispatch(handleSaveComment(form, id))
+		}
+	}
+
 	render() {
 		const { success, byId } = this.props.comments
+		const { show } = this.state
 
 		return (
 			<div className="children-list">
-				<button
-					onClick={() => {}}>
-					<i className="material-icons">add_box</i>Comment
-				</button>
+				{ (!show) &&
+					<button onClick={() => this.setState((prevState) => ({...prevState, show: !prevState.show}))}>
+						<i className="material-icons">add_circle</i> comment
+					</button>
+				}
+
+				{ (show) &&
+					<div className="form-edit">
+						<button onClick={() => this.setState((prevState) => ({...prevState, show: !prevState.show}))}>
+							<i className="material-icons">cancel</i> cancel
+						</button>
+						<FormComment comment={{author:'',body:''}} handleSubmit={this.handleSave} />
+					</div>
+				}
 
 				<ul className="items">
 					{ (success) && Object.keys(byId).map((key, index) => (

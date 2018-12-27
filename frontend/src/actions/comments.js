@@ -1,5 +1,6 @@
 import { getComments, voteComment, saveComment } from '../utils/ApiServer'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
+import connectedReactRouter from 'connected-react-router'
 export const LOAD_COMMENTS_REQUEST = 'LOAD_COMMENTS_REQUEST'
 export const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS'
 export const VOTE_COMMENT_REQUEST = 'VOTE_COMMENT_REQUEST'
@@ -23,12 +24,12 @@ export function loadCommentsSuccess (items) {
 	}
 }
 
-export function handleComments (postId) {
+export function handleComments (commentId) {
 	return (dispatch) => {
 		dispatch(showLoading())
 		dispatch(loadCommentsRequest())
 
-		return getComments(postId)
+		return getComments(commentId)
 			.then((comments) => {
 				dispatch(loadCommentsSuccess(comments))
 				dispatch(hideLoading())
@@ -78,25 +79,26 @@ export function saveCommentRequest () {
 	}
 }
 
-export function saveCommentSuccess (post) {
+export function saveCommentSuccess (comment) {
 	return {
 		type: SAVE_COMMENT_SUCCESS,
-		post
+		comment
 	}
 }
 
-export function handleSaveComment (post) {
+export function handleSaveComment (comment, parentId) {
 	return (dispatch) => {
 		dispatch(showLoading())
-		dispatch(saveCommentRequest(post))
+		dispatch(saveCommentRequest(comment))
 
-		return saveComment(post)
+		return saveComment(comment, parentId)
 			.then((data) => {
 				if (data) {
 					dispatch(saveCommentSuccess(data))
+					// dispatch(reload(`/post/${parentId}`))
 				} else {
 					/* DISPATCH ERROR */
-					console.log('onError post', data)
+					console.log('onError comment', data)
 				}
 				dispatch(hideLoading())
 			})

@@ -43,9 +43,9 @@ export class Comment extends Component {
 					</button>
 				</div>
 				<div className="details">
+					<span className="author"> Posted by { author } { formatTimeDiff(timeDiff(timestamp)) }</span>
 					<section>
-						<h2>Commented by { author } { formatTimeDiff(timeDiff(timestamp)) }</h2>
-						<p>{ body }</p>
+						<h3>{ body }</h3>
 					</section>
 				</div>
 			</div>

@@ -3,27 +3,23 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import InputText from './InputText'
 import InputTextArea from './InputTextArea'
-import SelectCategory from './SelectCategory'
 import { isValid } from '../utils/validation'
 
-export class FormPost extends Component {
+export class FormComment extends Component {
 
 	static propTypes = {
 		handleSubmit: PropTypes.func.isRequired,
-		post: PropTypes.object
+		comment: PropTypes.object
 	}
 
 	state = {
 		form: {
-			author: this.props.post.author,
-			title: this.props.post.title,
-			body: this.props.post.body,
-			category: this.props.post.category
+			author: this.props.comment.author,
+			body: this.props.comment.body,
 		},
 		validation: {
 			author: false,
-			title: false,
-			category: false
+			body: false
 		},
 		validated: false,
 		submitted: false
@@ -54,7 +50,7 @@ export class FormPost extends Component {
 
 	render() {
 		const { validated, submitted, form } = this.state
-		const { title, author, body, category } = form
+		const { author, body } = form
 
 		return (
 			<form onSubmit={this.handleOnSubmit}>
@@ -68,36 +64,19 @@ export class FormPost extends Component {
 					handleOnChange={this.handleOnChange}
 					submitted={submitted} />
 
-				<SelectCategory
-					name="category"
-					placeholder="Choose a category..."
-					message="This field is required"
-					value={category}
-					handleOnChange={this.handleOnChange}
-					submitted={submitted} />
-
-				<InputText
-					name="title"
-					placeholder="Title"
-					maxLength={122}
-					charsLeft={true}
-					message="This field is required"
-					value={title}
-					handleOnChange={this.handleOnChange}
-					submitted={submitted} />
-
 				<InputTextArea
 					name="body"
 					placeholder="Text"
 					maxLength={280}
 					charsLeft={true}
+					message="This field is required"
 					value={body}
 					handleOnChange={this.handleOnChange} />
 
 				<button
 					type="submit"
 					disabled={!validated}
-					className="btn">
+					className={validated ? 'btn' : 'btn disabled'}>
 					Save
 				</button>
 			</form>
@@ -105,4 +84,4 @@ export class FormPost extends Component {
 	}
 }
 
-export default connect()(FormPost)
+export default connect()(FormComment)

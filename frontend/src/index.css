@@ -77,6 +77,7 @@ select {
 
 input,
 .btn,
+button.btn,
 textarea,
 select {
 	background-color: #ffffff;
@@ -116,18 +117,27 @@ button {
 }
 
 input[type=submit],
-.btn {
+.btn,
+button.btn {
 	margin: .3em 0;
-	padding: .6em .8em;
+	padding: .6em 1.2em;
 	cursor: pointer;
+	display: inline-block;
+	min-width: 120px;
+	text-align: center;
 }
 
 input[type=submit]:focus,
 input[type=submit]:hover,
 button:focus,
-button:hover,
+button:hover
 .btn {
-	background-color: transparent;
+	background-color: #f2f2f2;
+}
+
+.btn.disabled,
+button.disabled {
+	opacity: .5
 }
 
 .btn-add {
@@ -189,6 +199,12 @@ nav ul li {
 /********/
 /* FORM */
 /********/
+.form-edit {
+	padding: .6em .6em 1em .6em;
+	border-radius: 6px;
+	background-color: #eeeeee;
+}
+
 form {
 	max-width: 600px;
 	margin: auto;
@@ -231,6 +247,8 @@ form::after {
 
 .bordered-top {
 	border-top: 1px solid #dad7d7;
+	margin: .5em 0 0 0;
+	padding: .9em 0 0 0;
 }
 
 .bordered {
@@ -238,8 +256,7 @@ form::after {
 }
 
 .items li {
-	width: 100%;
-  display: flex;
+	display: flex;
   flex-direction: column;
   cursor: pointer;
   margin: 0.8em 0;
@@ -285,16 +302,15 @@ form::after {
 }
 
 .vote-score span {
-	font-size: 22px;
+	font-size: 20px;
+	line-height: 20px;
 	font-weight: bold;
 	color: #999999;
 }
 
-.vote-score button i {
-	font-size: 34px;
-}
-
 .vote-score button {
+	padding: 0;
+	margin: 0;
 	opacity: .8;
 }
 
@@ -303,7 +319,7 @@ form::after {
 }
 
 .details {
-	min-width: 85%;
+	max-width: 88%;
 }
 
 .details section,

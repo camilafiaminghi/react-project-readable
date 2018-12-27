@@ -30,6 +30,23 @@ const formatPost = (post) => {
 }
 
 /*
+ * HELPER FORMAT COMMENT
+ * @param {Object} comment - { body, author }
+ */
+const formatComment = (post, parentId) => {
+  return {
+  	...post,
+  	parentId,
+    id: generateUID(),
+    timestamp: Date.now(),
+    voteScore: 1,
+    deleted: false,
+    commentCount: 0,
+    parentDeleted: false
+  }
+}
+
+/*
  * GET /categories
  * All categories.
  */
@@ -145,13 +162,14 @@ export const getComments = (id) =>
 /*
  * POST /comments
  * Add a comment to a post.
- * @param {Object} comment - {id, timestamp, body, author, parentId, parentDeleted, voteScore, deleted}
+ * @param {String} parentId - ''
+ * @param {Object} comment - {body, author}
  */
-export const saveComment = (comment) =>
+export const saveComment = (comment, parentId) =>
 	fetch(`${api}/comments`, {
 		...options,
 		method: 'POST',
-		body: JSON.stringify(comment)
+		body: JSON.stringify(formatComment(comment, parentId))
 	})
 		.then(response => response.json())
 		.then(data => data)
