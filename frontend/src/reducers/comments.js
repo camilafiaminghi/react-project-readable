@@ -6,14 +6,17 @@ import {
 	SAVE_COMMENT_REQUEST,
 	SAVE_COMMENT_SUCCESS,
 	REMOVE_COMMENT_REQUEST,
-	REMOVE_COMMENT_SUCCESS } from '../actions/comments'
+	REMOVE_COMMENT_SUCCESS,
+	UPDATE_COMMENT_REQUEST,
+	UPDATE_COMMENT_SUCCESS } from '../actions/comments'
 
 export default function comments (state = {
 	byId: {},
 	isFetching: false,
 	success: false,
 	saved: false,
-	removed: false
+	removed: false,
+	updated: false
 }, action) {
 	switch(action.type) {
 		/*
@@ -95,6 +98,21 @@ export default function comments (state = {
 			return {
 				...state,
 				removed: true
+			}
+		/*
+		 * UPDATE
+		 */
+		case UPDATE_COMMENT_REQUEST :
+			return {
+				...state,
+				isFetching: true,
+				updated: false
+			}
+		case UPDATE_COMMENT_SUCCESS :
+			return {
+				...state,
+				byId: {...state.byId, [action.comment.id]: action.comment},
+				updated: true
 			}
 		default :
 			return state

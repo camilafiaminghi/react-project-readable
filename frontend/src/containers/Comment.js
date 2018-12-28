@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { handleVoteComment } from '../actions/comments'
+import { handleVoteComment, handleUpdateComment } from '../actions/comments'
 import { handleRemovePostComments } from '../actions/shared'
 import { timeDiff, formatTimeDiff } from '../utils/dateUtils'
 import FormComment from './FormComment'
@@ -35,9 +35,12 @@ export class Comment extends Component {
 		dispatch(handleRemovePostComments(id))
 	}
 
-	handleUpdate = () => {
-		// const { dispatch, id } = this.props
-		// dispatch(handleUpdateComment(id))
+	handleUpdate = (validated, form) => {
+		const { dispatch, id } = this.props
+		if (validated) {
+			dispatch(handleUpdateComment(id, form))
+			this.setState((prevState) => ({...prevState, editComment: !prevState.editComment}))
+		}
 	}
 
 	render() {
@@ -66,13 +69,13 @@ export class Comment extends Component {
 					</section>
 				</div>
 				<div className="controls">
-					{/* (!editComment) &&
+					{ (!editComment) &&
 						<button
 							onClick={() => this.setState((prevState) => ({...prevState, editComment: !prevState.editComment}))}
 							aria-label="Edit Post">
 							<i className="material-icons md-24">edit</i>
 						</button>
-					*/}
+					}
 					<button
 						onClick={this.handleRemove}
 						aria-label="Remove Post">

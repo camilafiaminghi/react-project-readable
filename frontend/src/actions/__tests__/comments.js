@@ -8,7 +8,9 @@ import {
 	SAVE_COMMENT_REQUEST,
 	SAVE_COMMENT_SUCCESS,
 	REMOVE_COMMENT_REQUEST,
-	REMOVE_COMMENT_SUCCESS, } from './../comments'
+	REMOVE_COMMENT_SUCCESS,
+	UPDATE_COMMENT_REQUEST,
+	UPDATE_COMMENT_SUCCESS } from './../comments'
 import {
 	loadCommentsRequest,
 	loadCommentsSuccess,
@@ -21,7 +23,10 @@ import {
 	handleSaveComment,
 	removeCommentRequest,
 	removeCommentSuccess,
-	handleRemoveComment, } from './../comments'
+	handleRemoveComment,
+	updateCommentRequest,
+	updateCommentSuccess,
+	handleUpdateComment } from './../comments'
 import fetch from './../../__helpers__/fetch'
 import data from './../../__helpers__/comments'
 
@@ -156,4 +161,33 @@ describe('comments action creators', () => {
 		return store.dispatch(handleRemoveComment())
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
+
+	/*
+	 * UPDATE
+	 */
+	it('updateCommentRequest should return an object', () => {
+		expect(updateCommentRequest()).toEqual({
+			type: UPDATE_COMMENT_REQUEST
+		})
+	})
+
+	it('updateCommentSuccess should return an object', () => {
+		expect(updateCommentSuccess(data[0])).toEqual({
+			type: UPDATE_COMMENT_SUCCESS,
+			comment: data[0]
+		})
+	})
+
+	it('successful handleUpdateComment', () => {
+		window.fetch = fetch.successful(data[0])
+
+		const expectAction = [
+			{ type: UPDATE_COMMENT_REQUEST },
+			{ type: UPDATE_COMMENT_SUCCESS, comment: data[0] }
+		]
+
+		return store.dispatch(handleUpdateComment())
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
 })
