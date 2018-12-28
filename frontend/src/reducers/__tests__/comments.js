@@ -4,7 +4,9 @@ import {
 	VOTE_COMMENT_REQUEST,
 	VOTE_COMMENT_SUCCESS,
 	SAVE_COMMENT_REQUEST,
-	SAVE_COMMENT_SUCCESS } from './../../actions/comments'
+	SAVE_COMMENT_SUCCESS,
+	REMOVE_COMMENT_REQUEST,
+	REMOVE_COMMENT_SUCCESS } from './../../actions/comments'
 import comments from './../comments'
 import data from './../../__helpers__/comments'
 
@@ -13,7 +15,8 @@ data.map((item) => (dataComments[item.id] = item))
 const initialState = {
 	byId: {},
 	isFetching: false,
-	success: false
+	success: false,
+	removed: false,
 }
 
 describe('comments reducer', () => {
@@ -84,6 +87,28 @@ describe('comments reducer', () => {
 			byId: {[data[0].id]: dataComments[data[0].id]},
 			isFetching: false,
 			success: true
+		})
+	})
+	/*
+	 * REMOVE
+	 */
+	it('should handle REMOVE_COMMENT_REQUEST', () => {
+		expect(comments(initialState, {
+			type: REMOVE_COMMENT_REQUEST
+		})).toMatchObject({
+			...initialState,
+			isFetching: true,
+			removed: false
+		})
+	})
+
+	it('should handle REMOVE_COMMENT_SUCCESS', () => {
+		expect(comments(initialState, {
+			type: REMOVE_COMMENT_SUCCESS
+		})).toMatchObject({
+			...initialState,
+			isFetching: false,
+			removed: true
 		})
 	})
 })

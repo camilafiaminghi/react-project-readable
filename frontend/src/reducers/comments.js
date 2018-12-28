@@ -4,13 +4,16 @@ import {
 	VOTE_COMMENT_REQUEST,
 	VOTE_COMMENT_SUCCESS,
 	SAVE_COMMENT_REQUEST,
-	SAVE_COMMENT_SUCCESS } from '../actions/comments'
+	SAVE_COMMENT_SUCCESS,
+	REMOVE_COMMENT_REQUEST,
+	REMOVE_COMMENT_SUCCESS } from '../actions/comments'
 
 export default function comments (state = {
 	byId: {},
 	isFetching: false,
 	success: false,
-	saved: false
+	saved: false,
+	removed: false
 }, action) {
 	switch(action.type) {
 		/*
@@ -51,7 +54,7 @@ export default function comments (state = {
 				}
 			}
 		case VOTE_COMMENT_SUCCESS :
-			/* POST voteScore UPDATED BY VOTE_POST_REQUEST */
+			/* COMMENT voteScore UPDATED BY VOTE_COMMENT_REQUEST */
 			return {
 				...state,
 				isFetching: false
@@ -70,6 +73,28 @@ export default function comments (state = {
 				...state,
 				byId: {...state.byId, [action.comment.id]: action.comment},
 				saved: true
+			}
+		/*
+		 * REMOVE
+		 */
+		case REMOVE_COMMENT_REQUEST :
+			const commentsById = Object.keys(state.byId).reduce((object, key) => {
+				if (key !== action.id) {
+			  	object[key] = state.byId[key]
+				}
+				return object
+			}, {})
+
+			return {
+				...state,
+				byId: commentsById,
+				isFetching: true,
+				removed: false
+			}
+		case REMOVE_COMMENT_SUCCESS :
+			return {
+				...state,
+				removed: true
 			}
 		default :
 			return state

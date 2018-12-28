@@ -2,12 +2,18 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { handleVoteComment } from '../actions/comments'
+import { handleRemovePostComments } from '../actions/shared'
 import { timeDiff, formatTimeDiff } from '../utils/dateUtils'
+import FormComment from './FormComment'
 
 export class Comment extends Component {
 
 	static propTypes = {
 		comment: PropTypes.object.isRequired
+	}
+
+	state = {
+		editComment: false
 	}
 
 	handleUpVote = (event) => {
@@ -24,8 +30,19 @@ export class Comment extends Component {
 		dispatch(handleVoteComment(id, 'downVote'))
 	}
 
+	handleRemove = () => {
+		const { dispatch, id } = this.props
+		dispatch(handleRemovePostComments(id))
+	}
+
+	handleUpdate = () => {
+		// const { dispatch, id } = this.props
+		// dispatch(handleUpdateComment(id))
+	}
+
 	render() {
 		const { voteScore, author, body, timestamp } = this.props.comment
+		const { editComment } = this.state
 
 		return (
 			<div>
@@ -43,11 +60,36 @@ export class Comment extends Component {
 					</button>
 				</div>
 				<div className="details">
-					<span className="author"> Posted by { author } { formatTimeDiff(timeDiff(timestamp)) }</span>
+					<span className="author"> Commented by { author } { formatTimeDiff(timeDiff(timestamp)) }</span>
 					<section>
 						<h3>{ body }</h3>
 					</section>
 				</div>
+				<div className="controls">
+					{/* (!editComment) &&
+						<button
+							onClick={() => this.setState((prevState) => ({...prevState, editComment: !prevState.editComment}))}
+							aria-label="Edit Post">
+							<i className="material-icons md-24">edit</i>
+						</button>
+					*/}
+					<button
+						onClick={this.handleRemove}
+						aria-label="Remove Post">
+						<i className="material-icons md-24">close</i>
+					</button>
+				</div>
+
+				{ (editComment) &&
+					<div className="form-edit">
+						<button
+							onClick={() => this.setState((prevState) => ({...prevState, editComment: !prevState.editComment}))}
+							className="btn-add">
+							<i className="material-icons">remove_circle_outline</i>cancel
+						</button>
+						<FormComment comment={{author,body}} handleSubmit={this.handleUpdate} />
+					</div>
+				}
 			</div>
 		)
 	}

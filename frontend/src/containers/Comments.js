@@ -13,7 +13,7 @@ export class Comments extends Component {
 	}
 
 	state = {
-		show: false
+		addComment: false
 	}
 
 	componentDidMount() {
@@ -27,30 +27,30 @@ export class Comments extends Component {
 		/* DISPATCH IF IS VALID */
 		if (validated) {
 			dispatch(handleUpdatePostComments(form, id))
-			this.setState((prevState) => ({...prevState, show: !prevState.show}))
+			this.setState((prevState) => ({...prevState, addComment: !prevState.addComment}))
 		}
 	}
 
 	render() {
 		const { success, byId } = this.props.comments
-		const { show } = this.state
+		const { addComment } = this.state
 
 		return (
 			<div className="children-list">
-				{ (!show) &&
+				{ (!addComment) &&
 					<button
-						onClick={() => this.setState((prevState) => ({...prevState, show: !prevState.show}))}
+						onClick={() => this.setState((prevState) => ({...prevState, addComment: !prevState.addComment}))}
 						className="btn-add">
-						<i className="material-icons">add_box</i>add comment
+						<i className="material-icons">add_circle_outline</i>add comment
 					</button>
 				}
 
-				{ (show) &&
+				{ (addComment) &&
 					<div className="form-edit">
 						<button
-							onClick={() => this.setState((prevState) => ({...prevState, show: !prevState.show}))}
+							onClick={() => this.setState((prevState) => ({...prevState, addComment: !prevState.addComment}))}
 							className="btn-add">
-							<i className="material-icons">clear</i>cancel
+							<i className="material-icons">remove_circle_outline</i>cancel
 						</button>
 						<FormComment comment={{author:'',body:''}} handleSubmit={this.handleSave} />
 					</div>

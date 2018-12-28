@@ -212,7 +212,8 @@ nav ul li {
 .form-edit {
 	padding: .6em .6em 1em .6em;
 	border-radius: 6px;
-	background-color: #eeeeee;
+	background-color: #f6f6f6;
+	clear: both;
 }
 
 form {

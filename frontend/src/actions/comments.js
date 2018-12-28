@@ -1,4 +1,4 @@
-import { getComments, voteComment, saveComment } from '../utils/ApiServer'
+import { getComments, voteComment, saveComment, removeComment } from '../utils/ApiServer'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
 export const LOAD_COMMENTS_REQUEST = 'LOAD_COMMENTS_REQUEST'
 export const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS'
@@ -6,6 +6,8 @@ export const VOTE_COMMENT_REQUEST = 'VOTE_COMMENT_REQUEST'
 export const VOTE_COMMENT_SUCCESS = 'VOTE_COMMENT_SUCCESS'
 export const SAVE_COMMENT_REQUEST = 'SAVE_COMMENT_REQUEST'
 export const SAVE_COMMENT_SUCCESS = 'SAVE_COMMENT_SUCCESS'
+export const REMOVE_COMMENT_REQUEST = 'REMOVE_COMMENT_REQUEST'
+export const REMOVE_COMMENT_SUCCESS = 'REMOVE_COMMENT_SUCCESS'
 
 /*
  * LOAD
@@ -94,12 +96,44 @@ export function handleSaveComment (comment, parentId) {
 			.then((data) => {
 				if (data) {
 					dispatch(saveCommentSuccess(data))
-					// dispatch(reload(`/post/${parentId}`))
 				} else {
 					/* DISPATCH ERROR */
 					console.log('onError comment', data)
 				}
 				dispatch(hideLoading())
+			})
+	}
+}
+
+/*
+ * REMOVE
+ */
+export function removeCommentRequest (id) {
+	return {
+		type: REMOVE_COMMENT_REQUEST,
+		id
+	}
+}
+
+export function removeCommentSuccess (comment) {
+	return {
+		type: REMOVE_COMMENT_SUCCESS,
+		comment
+	}
+}
+
+export function handleRemoveComment (id) {
+	return (dispatch) => {
+		dispatch(removeCommentRequest(id))
+
+		return removeComment(id)
+			.then((data) => {
+				if (data) {
+					dispatch(removeCommentSuccess(data))
+				} else {
+					/* DISPATCH ERROR */
+					console.log('onError post', data)
+				}
 			})
 	}
 }

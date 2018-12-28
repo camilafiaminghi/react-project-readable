@@ -6,7 +6,9 @@ import {
 	VOTE_COMMENT_REQUEST,
 	VOTE_COMMENT_SUCCESS,
 	SAVE_COMMENT_REQUEST,
-	SAVE_COMMENT_SUCCESS } from './../comments'
+	SAVE_COMMENT_SUCCESS,
+	REMOVE_COMMENT_REQUEST,
+	REMOVE_COMMENT_SUCCESS, } from './../comments'
 import {
 	loadCommentsRequest,
 	loadCommentsSuccess,
@@ -16,7 +18,10 @@ import {
 	handleVoteComment,
 	saveCommentRequest,
 	saveCommentSuccess,
-	handleSaveComment } from './../comments'
+	handleSaveComment,
+	removeCommentRequest,
+	removeCommentSuccess,
+	handleRemoveComment, } from './../comments'
 import fetch from './../../__helpers__/fetch'
 import data from './../../__helpers__/comments'
 
@@ -120,6 +125,35 @@ describe('comments action creators', () => {
 		]
 
 		return store.dispatch(handleSaveComment())
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	/*
+	 * REMOVE
+	 */
+	it('removeCommentRequest should return an object', () => {
+		expect(removeCommentRequest(data[0].id)).toEqual({
+			type: REMOVE_COMMENT_REQUEST,
+			id: data[0].id
+		})
+	})
+
+	it('removeCommentSuccess should return an object', () => {
+		expect(removeCommentSuccess(data[0])).toEqual({
+			type: REMOVE_COMMENT_SUCCESS,
+			comment: data[0]
+		})
+	})
+
+	it('successful handleRemoveComment', () => {
+		window.fetch = fetch.successful(data[0])
+
+		const expectAction = [
+			{ type: REMOVE_COMMENT_REQUEST },
+			{ type: REMOVE_COMMENT_SUCCESS, comment: data[0] }
+		]
+
+		return store.dispatch(handleRemoveComment())
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 })
