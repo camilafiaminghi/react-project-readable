@@ -7,23 +7,21 @@ export default function categories (state = {
 	items: [],
 	isFetching: false,
 	success: false,
-	error: false
+	error: false,
 }, action) {
 	switch(action.type) {
 		case LOAD_CATEGORIES_REQUEST:
 			return {
 				...state,
 				isFetching: true,
-				success: false,
-				error: false
+				success: false
 			}
 		case LOAD_CATEGORIES_SUCCESS:
 			return {
 				...state,
 				items: action.items,
 				isFetching: false,
-				success: true,
-				error: false
+				success: true
 			}
 		case LOAD_CATEGORIES_FAILURE:
 			return {

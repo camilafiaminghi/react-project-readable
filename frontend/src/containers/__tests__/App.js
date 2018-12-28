@@ -29,7 +29,7 @@ describe('<App />', () => {
 		store = mockStore({categories: {items:data.categories, error:false}, posts: {items: posts, error: false}})
 		props = {
 			routes: data.categories.map(item => (`/${item.path}`)),
-			loadingError: false,
+			initialDataError: false,
 			dispatch: store.dispatch
 		}
 		provider = shallow(<Provider store={store}><App {...props} /></Provider>)
@@ -49,12 +49,12 @@ describe('<App />', () => {
 	})
 
 	it('should renders a div className .error if error', () => {
-		wrapper = provider.find(App).dive().setProps({loadingError: true})
+		wrapper = provider.find(App).dive().setProps({initialDataError: true})
 		expect(wrapper.find('.error').exists()).toBeTruthy()
 	})
 
 	it('should mapStateToProps return props', () => {
 		 expect(mapStateToProps(store.getState())).toHaveProperty('routes', ['react', 'redux', 'udacity'])
-		 expect(mapStateToProps(store.getState())).toHaveProperty('loadingError', false)
+		 expect(mapStateToProps(store.getState())).toHaveProperty('initialDataError', false)
 	})
 })

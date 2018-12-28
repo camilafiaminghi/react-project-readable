@@ -116,7 +116,6 @@ export const votePost = (id, option) =>
 	})
 		.then(response => response.json())
 		.then(data => data)
-		.catch(error => console.log('Error: ', error))
 
 /*
  * PUT /posts/:id

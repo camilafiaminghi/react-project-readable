@@ -5,18 +5,22 @@ import {
 	LOAD_COMMENTS_SUCCESS,
 	VOTE_COMMENT_REQUEST,
 	VOTE_COMMENT_SUCCESS,
+	VOTE_COMMENT_FAILURE,
 	SAVE_COMMENT_REQUEST,
 	SAVE_COMMENT_SUCCESS,
 	REMOVE_COMMENT_REQUEST,
 	REMOVE_COMMENT_SUCCESS,
 	UPDATE_COMMENT_REQUEST,
-	UPDATE_COMMENT_SUCCESS } from './../comments'
+	UPDATE_COMMENT_SUCCESS,
+	SHOW_COMMENT_FAILURE,
+	HIDE_COMMENT_FAILURE } from './../comments'
 import {
 	loadCommentsRequest,
 	loadCommentsSuccess,
 	handleComments,
 	voteCommentRequest,
 	voteCommentSuccess,
+	voteCommentFailure,
 	handleVoteComment,
 	saveCommentRequest,
 	saveCommentSuccess,
@@ -26,7 +30,9 @@ import {
 	handleRemoveComment,
 	updateCommentRequest,
 	updateCommentSuccess,
-	handleUpdateComment } from './../comments'
+	handleUpdateComment,
+	showCommentFailure,
+	hideCommentFailure } from './../comments'
 import fetch from './../../__helpers__/fetch'
 import data from './../../__helpers__/comments'
 
@@ -91,15 +97,35 @@ describe('comments action creators', () => {
 		})
 	})
 
+	it('voteCommentFailure should return an object', () => {
+		expect(voteCommentFailure(data[0].id, 'upVote')).toEqual({
+			type: VOTE_COMMENT_FAILURE,
+			id: data[0].id,
+			option: 'upVote'
+		})
+	})
+
 	it('successful handleVoteComment', () => {
 		window.fetch = fetch.successful(data[0])
 
 		const expectAction = [
-			{ type: VOTE_COMMENT_REQUEST, id: undefined, option: undefined },
+			{ type: VOTE_COMMENT_REQUEST, id: data[0].id, option: 'upVote' },
 			{ type: VOTE_COMMENT_SUCCESS, comment: data[0] },
 		]
 
-		return store.dispatch(handleVoteComment())
+		return store.dispatch(handleVoteComment(data[0].id, 'upVote'))
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	it('failure handleVoteComment', () => {
+		window.fetch = fetch.failing()
+
+		const expectAction = [
+			{ type: VOTE_COMMENT_REQUEST, id: data[0].id, option: 'upVote' },
+			{ type: VOTE_COMMENT_FAILURE, id: data[0].id, option: 'upVote', failure: 'vote' },
+		]
+
+		return store.dispatch(handleVoteComment(data[0].id, 'upVote'))
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 
@@ -129,7 +155,21 @@ describe('comments action creators', () => {
 			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' }
 		]
 
-		return store.dispatch(handleSaveComment())
+		return store.dispatch(handleSaveComment(data[0], ''))
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	it('failure handleSaveComment', () => {
+		window.fetch = fetch.failing()
+
+		const expectAction = [
+			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW' },
+			{ type: SAVE_COMMENT_REQUEST },
+			{ type: SHOW_COMMENT_FAILURE, failure: 'save' },
+			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' }
+		]
+
+		return store.dispatch(handleSaveComment(data[0], ''))
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 
@@ -137,16 +177,15 @@ describe('comments action creators', () => {
 	 * REMOVE
 	 */
 	it('removeCommentRequest should return an object', () => {
-		expect(removeCommentRequest(data[0].id)).toEqual({
-			type: REMOVE_COMMENT_REQUEST,
-			id: data[0].id
+		expect(removeCommentRequest()).toEqual({
+			type: REMOVE_COMMENT_REQUEST
 		})
 	})
 
 	it('removeCommentSuccess should return an object', () => {
-		expect(removeCommentSuccess(data[0])).toEqual({
+		expect(removeCommentSuccess(data[0].id)).toEqual({
 			type: REMOVE_COMMENT_SUCCESS,
-			comment: data[0]
+			id: data[0].id
 		})
 	})
 
@@ -155,10 +194,22 @@ describe('comments action creators', () => {
 
 		const expectAction = [
 			{ type: REMOVE_COMMENT_REQUEST },
-			{ type: REMOVE_COMMENT_SUCCESS, comment: data[0] }
+			{ type: REMOVE_COMMENT_SUCCESS, id: undefined }
 		]
 
 		return store.dispatch(handleRemoveComment())
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	it('failure handleRemoveComment', () => {
+		window.fetch = fetch.failing()
+
+		const expectAction = [
+			{ type: REMOVE_COMMENT_REQUEST },
+			{ type: SHOW_COMMENT_FAILURE, failure: 'remove' }
+		]
+
+		return store.dispatch(handleRemoveComment(data[0].id))
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 
@@ -186,8 +237,35 @@ describe('comments action creators', () => {
 			{ type: UPDATE_COMMENT_SUCCESS, comment: data[0] }
 		]
 
-		return store.dispatch(handleUpdateComment())
+		return store.dispatch(handleUpdateComment(data[0].id, data[0]))
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 
+	it('failure handleUpdateComment', () => {
+		window.fetch = fetch.failing()
+
+		const expectAction = [
+			{ type: UPDATE_COMMENT_REQUEST },
+			{ type: SHOW_COMMENT_FAILURE, failure: 'edit' }
+		]
+
+		return store.dispatch(handleUpdateComment(data[0].id, data[0]))
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	/*
+	 * FAILURE
+	 */
+	it('showCommentFailure should return an object', () => {
+		expect(showCommentFailure('update')).toEqual({
+			type: SHOW_COMMENT_FAILURE,
+			failure: 'update'
+		})
+	})
+
+	it('hideCommentFailure should return an object', () => {
+		expect(hideCommentFailure()).toEqual({
+			type: HIDE_COMMENT_FAILURE
+		})
+	})
 })

@@ -35,8 +35,16 @@ import {
 import fetch from './../../__helpers__/fetch'
 import posts from './../../__helpers__/posts'
 
+let byId = {};
+posts.map((item) => (byId[item.id] = item))
 const configStore = configureMockStore([thunk])
-const store = configStore({})
+const store = configStore({
+	byId,
+	items: posts,
+	isFetching: false,
+	error: false,
+	success: true
+})
 
 describe('posts action', () => {
 	// CLEAR ACTIONS BEFORE RUN STORE AGAIN TEST MODULE INDEPEDENT OF OTHERS MODULES
@@ -89,9 +97,8 @@ describe('posts action', () => {
 	})
 
 	it('votePostSuccess should return an object', () => {
-		expect(votePostSuccess(posts[0])).toEqual({
-			type: VOTE_POST_SUCCESS,
-			post: posts[0]
+		expect(votePostSuccess()).toEqual({
+			type: VOTE_POST_SUCCESS
 		})
 	})
 
@@ -99,11 +106,11 @@ describe('posts action', () => {
 		window.fetch = fetch.successful(posts[0])
 
 		const expectAction = [
-			{ type: VOTE_POST_REQUEST, id: undefined, option: undefined },
-			{ type: VOTE_POST_SUCCESS, post: posts[0] },
+			{ type: VOTE_POST_REQUEST, id: posts[0].id, option: 'upVote' },
+			{ type: VOTE_POST_SUCCESS },
 		]
 
-		return store.dispatch(handleVotePost())
+		return store.dispatch(handleVotePost(posts[0].id, 'upVote'))
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 

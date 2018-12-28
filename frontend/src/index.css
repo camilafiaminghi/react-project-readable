@@ -338,9 +338,9 @@ form::after {
 	margin: .4em 0;
 }
 
-.author,
-.count {
-	font-weight: bold;
+.count,
+.author {
+	font-weight: 500;
 	color: #999999;
   font-style: italic;
 }
@@ -378,3 +378,64 @@ form::after {
 /*****************/
 /* [END] HELPERS */
 /*****************/
+
+/*********/
+/* ERROR */
+/*********/
+.error {
+	padding: 2em;
+	text-align: center;
+	font-size: 16px;
+	font-weight: 400;
+}
+/*****************/
+/* [END] HELPERS */
+/*****************/
+
+/*********/
+/* MODAL */
+/*********/
+.modal {
+	z-index: 1;
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: rgba(0,0,0,.5);
+	text-align: center;
+}
+.modal-content {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: #ffffff;
+	padding: 1em;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+.modal-content button {
+	position: absolute;
+	top: 1em;
+	right: 1em;
+}
+.modal-content p {
+	font-weight: 500;
+	font-size: 18px
+}
+@media screen and (min-width: 992px) {
+  .modal-content {
+		top: 30%;
+		left: 30%;
+		bottom: 30%;
+		right: 30%;
+		border-radius: 6px;
+  }
+}
+/***************/
+/* [END] MODAL */
+/***************/

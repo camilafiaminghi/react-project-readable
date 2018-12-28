@@ -9,6 +9,7 @@ let goBack = jest.fn()
 let props = {
 	id: postId,
 	post: post,
+	pathname: 'post',
 	history: {
 		goBack
 	},

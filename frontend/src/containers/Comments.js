@@ -9,7 +9,8 @@ import FormComment from './FormComment'
 export class Comments extends Component {
 
 	static propTypes = {
-		comments: PropTypes.object
+		parentId: PropTypes.string.isRequired,
+		items: PropTypes.array.isRequired
 	}
 
 	state = {
@@ -18,21 +19,21 @@ export class Comments extends Component {
 
 	componentDidMount() {
 		/* HANDLE COMMENTS BY POST */
-		this.props.dispatch(handleComments(this.props.id))
+		this.props.dispatch(handleComments(this.props.parentId))
 	}
 
 	handleSave = (validated, form) => {
-		const { dispatch, id } = this.props
+		const { dispatch, parentId } = this.props
 
 		/* DISPATCH IF IS VALID */
 		if (validated) {
-			dispatch(handleUpdatePostComments(form, id))
+			dispatch(handleUpdatePostComments(form, parentId))
 			this.setState((prevState) => ({...prevState, addComment: !prevState.addComment}))
 		}
 	}
 
 	render() {
-		const { success, byId } = this.props.comments
+		const { items } = this.props
 		const { addComment } = this.state
 
 		return (
@@ -57,7 +58,7 @@ export class Comments extends Component {
 				}
 
 				<ul className="items">
-					{ (success) && Object.keys(byId).map((key, index) => (
+					{ items.map((key, index) => (
 						<li key={index} className="item bordered">
 							<Comment id={key} />
 						</li>
@@ -69,11 +70,12 @@ export class Comments extends Component {
 }
 
 export const mapStateToProps = ({ comments }, props) => {
-	const { id } = props
+	const { parentId } = props
+	const items = (comments.success) ? Object.keys(comments.byId) : []
 
 	return {
-		id,
-		comments
+		parentId,
+		items
 	}
 }
 

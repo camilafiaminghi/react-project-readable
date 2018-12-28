@@ -4,15 +4,25 @@ import { push } from 'connected-react-router'
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST'
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS'
 export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE'
+
 export const VOTE_POST_REQUEST = 'VOTE_POST_REQUEST'
 export const VOTE_POST_SUCCESS = 'VOTE_POST_SUCCESS'
+export const VOTE_POST_FAILURE = 'VOTE_POST_FAILURE'
+
 export const SAVE_POST_REQUEST = 'SAVE_POST_REQUEST'
 export const SAVE_POST_SUCCESS = 'SAVE_POST_SUCCESS'
+export const SAVE_POST_FAILURE = 'SAVE_POST_FAILURE'
+
 export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST'
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS'
+export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE'
+
 export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST'
 export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS'
+export const UPDATE_POST_FAILURE = 'UPDATE_POST_FAILURE'
+
 export const ORDER_POSTS_BY = 'ORDERBY_POSTS'
+export const CLEAN_POST_FAILURE = 'CLEAN_POST_FAILURE'
 
 /*
  * LOAD
@@ -57,10 +67,17 @@ export function votePostRequest (id, option) {
 	}
 }
 
-export function votePostSuccess (post) {
+export function votePostSuccess () {
 	return {
-		type: VOTE_POST_SUCCESS,
-		post
+		type: VOTE_POST_SUCCESS
+	}
+}
+
+export function votePostFailure (id, option) {
+	return {
+		type: VOTE_POST_FAILURE,
+		id,
+		option
 	}
 }
 
@@ -73,8 +90,7 @@ export function handleVotePost (id, option) {
 				if (post)
 					dispatch(votePostSuccess(post))
 				else
-					/* DISPATCH receivePostDownVote */
-					console.log('onError post', post)
+					dispatch(votePostFailure(id, option))
 			})
 	}
 }
@@ -95,6 +111,12 @@ export function savePostSuccess (post) {
 	}
 }
 
+export function savePostFailure () {
+	return {
+		type: SAVE_POST_FAILURE
+	}
+}
+
 export function handleSavePost (post) {
 	return (dispatch) => {
 		dispatch(showLoading())
@@ -106,9 +128,12 @@ export function handleSavePost (post) {
 					dispatch(savePostSuccess(data))
 					dispatch(push(`/${data.category}`))
 				} else {
-					/* DISPATCH ERROR */
-					console.log('onError post', data)
+					dispatch(savePostFailure())
 				}
+				dispatch(hideLoading())
+			})
+			.catch(() => {
+				dispatch(savePostFailure())
 				dispatch(hideLoading())
 			})
 	}
@@ -131,6 +156,13 @@ export function removePostSuccess (post) {
 	}
 }
 
+export function removePostFailure (post) {
+	return {
+		type: REMOVE_POST_FAILURE,
+		post
+	}
+}
+
 export function handleRemovePost (id) {
 	return (dispatch) => {
 		dispatch(removePostRequest(id))
@@ -141,10 +173,10 @@ export function handleRemovePost (id) {
 					dispatch(removePostSuccess(data))
 					dispatch(push(`/${data.category}`))
 				} else {
-					/* DISPATCH ERROR */
-					console.log('onError post', data)
+					dispatch(removePostFailure())
 				}
 			})
+			.catch(() => dispatch(removePostFailure()))
 	}
 }
 
@@ -164,6 +196,12 @@ export function updatePostSuccess (post) {
 	}
 }
 
+export function updatePostFailure () {
+	return {
+		type: UPDATE_POST_FAILURE
+	}
+}
+
 export function handleUpdatePost (id, post) {
 	return (dispatch) => {
 		dispatch(updatePostRequest())
@@ -174,10 +212,10 @@ export function handleUpdatePost (id, post) {
 					dispatch(updatePostSuccess(data))
 					dispatch(push(`/post/${data.id}`))
 				} else {
-					/* DISPATCH ERROR */
-					console.log('onError post', data)
+					dispatch(updatePostFailure())
 				}
 			})
+			.catch(() => dispatch(updatePostFailure()))
 	}
 }
 
@@ -193,6 +231,17 @@ export function orderPostsBy (orderBy) {
 
 export function handleOrderPostsBy (orderBy) {
 	return (dispatch) => dispatch(orderPostsBy(orderBy))
-	// 	return
-	// }(orderBy) => orderPostsBy(orderBy)
+}
+
+/*
+ * CLEAN
+ */
+export function cleanPostFailure () {
+	return {
+		type: CLEAN_POST_FAILURE
+	}
+}
+
+export function handleCleanPostFailure () {
+	return (dispatch) => dispatch(cleanPostFailure())
 }

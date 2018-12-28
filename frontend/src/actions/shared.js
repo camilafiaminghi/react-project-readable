@@ -1,6 +1,6 @@
 import { handleCategories } from './categories'
-import { handlePosts } from './posts'
-import { handleSaveComment, handleRemoveComment } from './comments'
+import { handlePosts, handleCleanPostFailure } from './posts'
+import { handleSaveComment, handleRemoveComment, hideCommentFailure } from './comments'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
 
 export function handleInitialData () {
@@ -37,5 +37,15 @@ export function handleRemovePostComments (id) {
 	    dispatch(handlePosts())
 	   ])
 	  	.then(() => dispatch(hideLoading()))
+	}
+}
+
+export function handleCleanAllFailures (id) {
+	return (dispatch) => {
+
+		return Promise.all([
+			dispatch(handleCleanPostFailure()),
+	    dispatch(hideCommentFailure())
+	   ])
 	}
 }

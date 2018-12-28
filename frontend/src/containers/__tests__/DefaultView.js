@@ -10,6 +10,8 @@ import fetch from './../../__helpers__/fetch'
 import posts from './../../__helpers__/posts'
 import data from './../../__helpers__/categories'
 
+const postsById = {}
+posts.map((item) => (postsById[item.id] = item))
 const mockStore = configureMockStore([thunk])
 let store
 let props
@@ -57,7 +59,7 @@ describe('<DefaultView />', () => {
 
 	it('should mapStateToProps return props', () => {
 		expect(mapStateToProps(store.getState(), {category: ''})).toHaveProperty('category', '')
-		expect(mapStateToProps(store.getState(), {category: ''})).toHaveProperty('items', posts)
+		expect(mapStateToProps(store.getState(), {posts: ''})).toHaveProperty('items', [])
 	})
 })
 

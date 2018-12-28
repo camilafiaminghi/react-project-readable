@@ -40,7 +40,7 @@ export class DefaultView extends Component {
 					<ul className="items">
 						{items.map((item, index) => (
 							<li key={index} className="bordered">
-								<Post id={item.id} singleView={false} />
+								<Post id={item} singleView={false} />
 							</li>
 						))}
 					</ul>
@@ -50,9 +50,9 @@ export class DefaultView extends Component {
 	}
 }
 
-export const mapStateToProps = ({ posts, categories }, props) => {
+export const mapStateToProps = ({ posts }, props) => {
 	const { category } = props
-	const items = posts.items
+	const items = (posts.success) ? Object.keys(posts.byId) : []
 
 	return {
 		category,

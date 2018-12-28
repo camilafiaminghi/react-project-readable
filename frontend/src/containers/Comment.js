@@ -63,7 +63,7 @@ export class Comment extends Component {
 					</button>
 				</div>
 				<div className="details">
-					<span className="author"> Commented by { author } { formatTimeDiff(timeDiff(timestamp)) }</span>
+					<span className="author"> Commented by <strong>{ author }</strong> { formatTimeDiff(timeDiff(timestamp)) }</span>
 					<section>
 						<h3>{ body }</h3>
 					</section>
@@ -73,13 +73,13 @@ export class Comment extends Component {
 						<button
 							onClick={() => this.setState((prevState) => ({...prevState, editComment: !prevState.editComment}))}
 							aria-label="Edit Post">
-							<i className="material-icons md-24">edit</i>
+							<i className="material-icons">edit</i>
 						</button>
 					}
 					<button
 						onClick={this.handleRemove}
 						aria-label="Remove Post">
-						<i className="material-icons md-24">close</i>
+						<i className="material-icons">close</i>
 					</button>
 				</div>
 

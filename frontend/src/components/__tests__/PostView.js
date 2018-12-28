@@ -42,7 +42,7 @@ describe('<PostView />', () => {
 
 	it('should render a Comments component', () => {
 		expect(wrapper.shallow().find(Comments)).toHaveLength(1)
-		expect(wrapper.shallow().find(Comments).props()).toHaveProperty('id')
+		expect(wrapper.shallow().find(Comments).props()).toHaveProperty('parentId')
 	})
 })
 
