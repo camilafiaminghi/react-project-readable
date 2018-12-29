@@ -152,7 +152,6 @@ export function handleRemoveComment (id) {
 				if (data) {
 					dispatch(removeCommentSuccess(id))
 				} else {
-					/* DISPATCH ERROR */
 					dispatch(showCommentFailure('remove'))
 				}
 			})

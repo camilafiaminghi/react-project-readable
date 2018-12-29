@@ -6,13 +6,16 @@ import {
 	LOAD_POSTS_FAILURE,
 	VOTE_POST_REQUEST,
 	VOTE_POST_SUCCESS,
+	VOTE_POST_FAILURE,
 	SAVE_POST_REQUEST,
 	SAVE_POST_SUCCESS,
 	REMOVE_POST_REQUEST,
 	REMOVE_POST_SUCCESS,
 	UPDATE_POST_REQUEST,
 	UPDATE_POST_SUCCESS,
-	ORDER_POSTS_BY } from './../posts'
+	ORDER_POSTS_BY,
+	SHOW_POST_FAILURE,
+	HIDE_POST_FAILURE } from './../posts'
 import {
 	loadPostsRequest,
 	loadPostsSuccess,
@@ -20,6 +23,7 @@ import {
 	handlePosts,
 	votePostRequest,
 	votePostSuccess,
+	votePostFailure,
 	handleVotePost,
 	savePostRequest,
 	savePostSuccess,
@@ -31,7 +35,9 @@ import {
 	updatePostSuccess,
 	handleUpdatePost,
 	orderPostsBy,
-	handleOrderPostsBy } from './../posts'
+	handleOrderPostsBy,
+	showPostFailure,
+	hidePostFailure } from './../posts'
 import fetch from './../../__helpers__/fetch'
 import posts from './../../__helpers__/posts'
 
@@ -78,7 +84,7 @@ describe('posts action', () => {
 
 		const expectAction = [
 			{ type: LOAD_POSTS_REQUEST },
-			{ type: LOAD_POSTS_SUCCESS, items: posts },
+			{ type: LOAD_POSTS_SUCCESS, items: posts }
 		]
 
 		return store.dispatch(handlePosts())
@@ -102,12 +108,32 @@ describe('posts action', () => {
 		})
 	})
 
+	it('votePostFailure should return an object', () => {
+		expect(votePostFailure(posts[0].id, 'upVote')).toEqual({
+			type: VOTE_POST_FAILURE,
+			id: posts[0].id,
+			option: 'upVote'
+		})
+	})
+
 	it('successful handleVotePost', () => {
 		window.fetch = fetch.successful(posts[0])
 
 		const expectAction = [
 			{ type: VOTE_POST_REQUEST, id: posts[0].id, option: 'upVote' },
-			{ type: VOTE_POST_SUCCESS },
+			{ type: VOTE_POST_SUCCESS }
+		]
+
+		return store.dispatch(handleVotePost(posts[0].id, 'upVote'))
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	it('failure handleVotePost', () => {
+		window.fetch = fetch.failing()
+
+		const expectAction = [
+			{ type: VOTE_POST_REQUEST, id: posts[0].id, option: 'upVote' },
+			{ type: VOTE_POST_FAILURE, id: posts[0].id, option: 'upVote' }
 		]
 
 		return store.dispatch(handleVotePost(posts[0].id, 'upVote'))
@@ -145,6 +171,20 @@ describe('posts action', () => {
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 
+	it('failure handleSavePost', () => {
+		window.fetch = fetch.failing()
+
+		const expectAction = [
+			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW' },
+			{ type: SAVE_POST_REQUEST },
+			{ type: SHOW_POST_FAILURE, failure: 'save' },
+			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' }
+		]
+
+		return store.dispatch(handleSavePost())
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
 	/*
 	 * REMOVE
 	 */
@@ -166,12 +206,24 @@ describe('posts action', () => {
 		window.fetch = fetch.successful(posts[0])
 
 		const expectAction = [
-			{ type: REMOVE_POST_REQUEST },
+			{ type: REMOVE_POST_REQUEST, id: posts[0].id },
 			{ type: REMOVE_POST_SUCCESS, post: posts[0] },
 			{ payload: {args: [`/${posts[0].category}`], method: 'push'}, type: '@@router/CALL_HISTORY_METHOD'},
 		]
 
-		return store.dispatch(handleRemovePost())
+		return store.dispatch(handleRemovePost(posts[0].id))
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	it('failure handleRemovePost', () => {
+		window.fetch = fetch.failing()
+
+		const expectAction = [
+			{ type: REMOVE_POST_REQUEST, id: posts[0].id },
+			{ type: SHOW_POST_FAILURE, failure: 'remove' }
+		]
+
+		return store.dispatch(handleRemovePost(posts[0].id))
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 
@@ -195,12 +247,24 @@ describe('posts action', () => {
 		window.fetch = fetch.successful(posts[0])
 
 		const expectAction = [
-			{ type: UPDATE_POST_REQUEST },
+			{ type: UPDATE_POST_REQUEST},
 			{ type: UPDATE_POST_SUCCESS, post: posts[0] },
 			{ payload: {args: [`/post/${posts[0].id}`], method: 'push'}, type: '@@router/CALL_HISTORY_METHOD'},
 		]
 
-		return store.dispatch(handleUpdatePost())
+		return store.dispatch(handleUpdatePost(posts[0].id, posts[0]))
+			.then(() => expect(store.getActions()).toEqual(expectAction))
+	})
+
+	it('failure handleUpdatePost', () => {
+		window.fetch = fetch.failing()
+
+		const expectAction = [
+			{ type: UPDATE_POST_REQUEST},
+			{ type: SHOW_POST_FAILURE, failure: 'edit' }
+		]
+
+		return store.dispatch(handleUpdatePost(posts[0].id, posts[0]))
 			.then(() => expect(store.getActions()).toEqual(expectAction))
 	})
 
@@ -224,5 +288,21 @@ describe('posts action', () => {
 
 		store.dispatch(orderPostsBy('voteScore'))
 		expect(store.getActions()).toEqual(expectAction)
+	})
+
+	/*
+	 * FAILURE
+	 */
+	it('showPostFailure should return an object', () => {
+		expect(showPostFailure('remove')).toEqual({
+			type: SHOW_POST_FAILURE,
+			failure: 'remove'
+		})
+	})
+
+	it('hidePostFailure should return an object', () => {
+		expect(hidePostFailure()).toEqual({
+			type: HIDE_POST_FAILURE
+		})
 	})
 })

@@ -41,7 +41,8 @@ export class Comments extends Component {
 				{ (!addComment) &&
 					<button
 						onClick={() => this.setState((prevState) => ({...prevState, addComment: !prevState.addComment}))}
-						className="btn-add">
+						className="btn-add"
+						aria-label="Add Comment">
 						<i className="material-icons">add_circle_outline</i>add comment
 					</button>
 				}
@@ -50,7 +51,8 @@ export class Comments extends Component {
 					<div className="form-edit">
 						<button
 							onClick={() => this.setState((prevState) => ({...prevState, addComment: !prevState.addComment}))}
-							className="btn-add">
+							className="btn-add"
+							aria-label="Cancel Comment">
 							<i className="material-icons">remove_circle_outline</i>cancel
 						</button>
 						<FormComment comment={{author:'',body:''}} handleSubmit={this.handleSave} />

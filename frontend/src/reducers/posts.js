@@ -7,15 +7,13 @@ import {
 	VOTE_POST_FAILURE,
 	SAVE_POST_REQUEST,
 	SAVE_POST_SUCCESS,
-	SAVE_POST_FAILURE,
 	REMOVE_POST_REQUEST,
 	REMOVE_POST_SUCCESS,
-	REMOVE_POST_FAILURE,
 	UPDATE_POST_REQUEST,
 	UPDATE_POST_SUCCESS,
-	UPDATE_POST_FAILURE,
 	ORDER_POSTS_BY,
-	CLEAN_POST_FAILURE } from '../actions/posts'
+	SHOW_POST_FAILURE,
+	HIDE_POST_FAILURE } from '../actions/posts'
 
 export default function posts (state = {
 	items: [],
@@ -100,11 +98,6 @@ export default function posts (state = {
 				...state,
 				items: [...state.items, action.post]
 			}
-		case SAVE_POST_FAILURE :
-			return {
-				...state,
-				failure: 'save'
-			}
 		/*
 		 * REMOVE
 		 */
@@ -124,12 +117,6 @@ export default function posts (state = {
 				...state,
 				byId: postsById
 			}
-		case REMOVE_POST_FAILURE :
-			return {
-				...state,
-				isFetching: false,
-				failure: 'remove'
-			}
 		/*
 		 * UPDATE
 		 */
@@ -144,12 +131,6 @@ export default function posts (state = {
 				...state,
 				items: [...postsItems, action.post]
 			}
-		case UPDATE_POST_FAILURE :
-			return {
-				...state,
-				isFetching: false,
-				failure: 'edit'
-			}
 		/*
 		 * ORDER
 		 */
@@ -162,9 +143,14 @@ export default function posts (state = {
 				byId: itemsById
 			}
 		/*
-		 * CLEAN
+		 * FAILURE
 		 */
-		case CLEAN_POST_FAILURE :
+		case SHOW_POST_FAILURE :
+			return {
+				...state,
+				failure: action.failure
+			}
+		case HIDE_POST_FAILURE :
 			return {
 				...state,
 				failure: ''

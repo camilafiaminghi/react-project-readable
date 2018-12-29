@@ -22,7 +22,7 @@ export class Messages extends Component {
 			<Fragment>
 				{ (postFailure || commentFailure) &&
 					<div className="modal">
-						<div className="modal-mask"></div>
+						<div className="modal-trigger"></div>
 						<div className="modal-content">
 
 							<button

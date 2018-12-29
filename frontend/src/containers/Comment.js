@@ -72,13 +72,13 @@ export class Comment extends Component {
 					{ (!editComment) &&
 						<button
 							onClick={() => this.setState((prevState) => ({...prevState, editComment: !prevState.editComment}))}
-							aria-label="Edit Post">
+							aria-label="Edit Comment">
 							<i className="material-icons">edit</i>
 						</button>
 					}
 					<button
 						onClick={this.handleRemove}
-						aria-label="Remove Post">
+						aria-label="Remove Comment">
 						<i className="material-icons">close</i>
 					</button>
 				</div>
@@ -87,7 +87,7 @@ export class Comment extends Component {
 					<div className="form-edit">
 						<button
 							onClick={() => this.setState((prevState) => ({...prevState, editComment: !prevState.editComment}))}
-							className="btn-add">
+							aria-label="Cancel Comment">
 							<i className="material-icons">remove_circle_outline</i>cancel
 						</button>
 						<FormComment comment={{author,body}} handleSubmit={this.handleUpdate} />
