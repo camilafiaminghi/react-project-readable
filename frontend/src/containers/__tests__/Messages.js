@@ -13,10 +13,11 @@ let props
 describe('<Messages />', () => {
 
 	beforeEach(() => {
-		store = mockStore({categories: {items: categories}})
+		store = mockStore({categories: {failure: 'vote'}, posts: {failure: ''}})
 		props = {
-			postFailure: false,
-			commentFailure: false
+			postFailure: 'vote',
+			commentFailure: '',
+			dispatch: jest.fn()
 		}
 		provider = shallow(<Provider store={store}><Messages {...props} /></Provider>)
 		wrapper = provider.find(Messages).shallow()
@@ -26,17 +27,29 @@ describe('<Messages />', () => {
 		expect(wrapper).toBeTruthy()
 	})
 
-	it('should render a nav element', () => {
-		expect(wrapper.find('nav').exists()).toBeTruthy()
+	it('renders default elements', () => {
+		expect(wrapper.find('.modal')).toBeTruthy()
+		expect(wrapper.find('.modal-mask')).toBeTruthy()
+	  expect(wrapper.find('.modal-content')).toBeTruthy()
+	  expect(wrapper.find('button[aria-label="Close alert"]')).toBeTruthy()
 	})
 
-	it('should contains an ul element', () => {
-		expect(wrapper.find('ul').exists()).toBeTruthy()
+	it('should handleClose from button', () => {
+		const handleClose = jest.spyOn(wrapper.instance(), 'handleClose')
+		const button = wrapper.find('button[aria-label="Close alert"]')
+		button.simulate('click', {preventDefault(){}})
+		expect(props.dispatch).toHaveBeenCalled()
 	})
 
-	it('should contains SelectOrderBy components', () => {
-		expect(wrapper.find(SelectOrderBy).exists()).toBeTruthy()
-		expect(wrapper.find(SelectOrderBy)).toHaveLength(1)
+	it('should handleClose from mask', () => {
+		const handleClose = jest.spyOn(wrapper.instance(), 'handleClose')
+		const button = wrapper.find('.modal-mask')
+		button.simulate('click', {preventDefault(){}})
+		expect(props.dispatch).toHaveBeenCalled()
+	})
+
+	it('should mapStateToProps return props', () => {
+		expect(mapStateToProps({comments: {failure: ''}, posts: {failure: 'vote'}})).toHaveProperty('postFailure', 'vote')
 	})
 })
 

@@ -4,11 +4,16 @@ import {
 	LOAD_POSTS_FAILURE,
 	VOTE_POST_REQUEST,
 	VOTE_POST_SUCCESS,
+	VOTE_POST_FAILURE,
 	SAVE_POST_REQUEST,
 	SAVE_POST_SUCCESS,
 	REMOVE_POST_REQUEST,
 	REMOVE_POST_SUCCESS,
-	ORDER_POSTS_BY } from './../../actions/posts'
+	UPDATE_POST_REQUEST,
+	UPDATE_POST_SUCCESS,
+	ORDER_POSTS_BY,
+	SHOW_POST_FAILURE,
+	HIDE_POST_FAILURE } from './../../actions/posts'
 import posts from './../posts'
 import data from './../../__helpers__/posts'
 
@@ -16,6 +21,7 @@ let byId = {};
 data.map((item) => (byId[item.id] = item))
 const initialState = {
 	byId,
+	items: data,
 	isFetching: false,
 	error: false,
 	success: false
@@ -84,6 +90,25 @@ describe('posts reducer', () => {
 			...initialState
 		})
 	})
+
+	it('should handle VOTE_POST_FAILURE', () => {
+		expect(posts({
+			...initialState,
+			byId: {
+					...initialState.byId,
+					[data[0].id]: {
+						...initialState.byId[data[0].id],
+						voteScore: initialState.byId[data[0].id].voteScore+1
+					}
+				}
+		}, {
+			type: VOTE_POST_FAILURE,
+			id: data[0].id,
+			option: 'upVote'
+		})).toMatchObject({
+			...initialState
+		})
+	})
 	/*
 	 * SAVE
 	 */
@@ -96,16 +121,14 @@ describe('posts reducer', () => {
 		})
 	})
 
-	// it('should handle SAVE_POST_SUCCESS', () => {
-	// 	expect(posts({...initialState, success: true, item: data}, {
-	// 		type: SAVE_POST_SUCCESS,
-	// 		post: data[0]
-	// 	})).toMatchObject({
-	// 		...initialState,
-	// 		items: data,
-	// 		success: true
-	// 	})
-	// })
+	it('should handle SAVE_POST_SUCCESS', () => {
+		expect(posts(initialState, {
+			type: SAVE_POST_SUCCESS,
+			post: data[0]
+		})).toMatchObject({
+			...initialState
+		})
+	})
 	/*
 	 * REMOVE
 	 */
@@ -127,6 +150,26 @@ describe('posts reducer', () => {
 		})
 	})
 	/*
+	 * UPDATE
+	 */
+	it('should handle UPDATE_POST_REQUEST', () => {
+		expect(posts(initialState, {
+			type: UPDATE_POST_REQUEST
+		})).toMatchObject({
+			...initialState,
+			isFetching: true
+		})
+	})
+
+	it('should handle UPDATE_POST_SUCCESS,', () => {
+		expect(posts(initialState, {
+			type: UPDATE_POST_SUCCESS,
+			post: data[0]
+		})).toMatchObject({
+			...initialState
+		})
+	})
+	/*
 	 * ORDER
 	 */
 	it('should handle ORDER_POSTS_BY', () => {
@@ -137,4 +180,7 @@ describe('posts reducer', () => {
 			items: data
 		})
 	})
+	/*
+	 * FAILURE
+	 */
 })

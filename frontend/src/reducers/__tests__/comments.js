@@ -18,7 +18,7 @@ import data from './../../__helpers__/comments'
 const commentsById = {}
 data.map((item) => (commentsById[item.id] = item))
 const initialState = {
-	byId: {},
+	byId: commentsById,
 	isFetching: false,
 	success: false,
 	failure: ''
@@ -53,22 +53,53 @@ describe('comments reducer', () => {
 	/*
 	 * VOTE
 	 */
-	// it('should handle VOTE_COMMENT_REQUEST', () => {
-	// 	expect(comments(initialState, {
-	// 		type: VOTE_COMMENT_REQUEST,
-	// 		id: data[0].id,
-	// 		option: 'upVote'
-	// 	})).toMatchObject({
-	// 		...initialState,
-	// 		isFetching: true
-	// 	})
-	// })
+	it('should handle VOTE_COMMENT_REQUEST', () => {
+		expect(comments({
+			...initialState,
+			isFetching: true,
+			byId: {
+					...initialState.byId,
+					[data[0].id]: {
+						...initialState.byId[data[0].id],
+						voteScore: initialState.byId[data[0].id].voteScore-1
+					}
+				}
+		}, {
+			type: VOTE_COMMENT_REQUEST,
+			id: data[0].id,
+			option: 'upVote'
+		})).toMatchObject({
+			...initialState,
+			isFetching: true
+		})
+	})
 
 	it('should handle VOTE_COMMENT_SUCCESS', () => {
 		expect(comments(initialState, {
 			type: VOTE_COMMENT_SUCCESS
 		})).toMatchObject({
 			...initialState
+		})
+	})
+
+	it('should handle VOTE_COMMENT_FAILURE', () => {
+		expect(comments({
+			...initialState,
+			byId: {
+					...initialState.byId,
+					[data[0].id]: {
+						...initialState.byId[data[0].id],
+						voteScore: initialState.byId[data[0].id].voteScore+1
+					}
+				}
+		}, {
+			type: VOTE_COMMENT_FAILURE,
+			id: data[0].id,
+			option: 'upVote',
+			failure: 'vote'
+		})).toMatchObject({
+			...initialState,
+			failure: 'vote'
 		})
 	})
 	/*
@@ -112,6 +143,46 @@ describe('comments reducer', () => {
 		})).toMatchObject({
 			...initialState,
 			isFetching: false
+		})
+	})
+	/*
+	 * UPDATE
+	 */
+	it('should handle UPDATE_COMMENT_REQUEST', () => {
+		expect(comments(initialState, {
+			type: UPDATE_COMMENT_REQUEST
+		})).toMatchObject({
+			...initialState,
+			isFetching: true
+		})
+	})
+
+	it('should handle UPDATE_COMMENT_SUCCESS', () => {
+		expect(comments(initialState, {
+			type: UPDATE_COMMENT_SUCCESS,
+			comment: data[0]
+		})).toMatchObject({
+			...initialState,
+			isFetching: false
+		})
+	})
+	/*
+	 * FAILURE
+	 */
+	it('should handle SHOW_COMMENT_FAILURE', () => {
+		expect(comments(initialState, {
+			type: SHOW_COMMENT_FAILURE,
+			failure: 'save'
+		})).toMatchObject({
+			...initialState,
+			failure: 'save'
+		})
+	})
+	it('should handle HIDE_COMMENT_FAILURE', () => {
+		expect(comments(initialState, {
+			type: HIDE_COMMENT_FAILURE
+		})).toMatchObject({
+			...initialState
 		})
 	})
 })

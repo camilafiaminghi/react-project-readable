@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Link, withRouter } from 'react-router-dom'
-import { push } from 'connected-react-router'
 import { handleVotePost, handleRemovePost } from '../actions/posts'
 import { timeDiff, formatTimeDiff } from '../utils/dateUtils'
 
@@ -102,7 +101,7 @@ export class Post extends Component {
 	}
 }
 
-const mapStateToProps = ({ posts }, props) => {
+export const mapStateToProps = ({ posts }, props) => {
 	const { id } = props
 	const post = posts.byId[id]
 	const pathname = props.location.pathname.split('/')[1]

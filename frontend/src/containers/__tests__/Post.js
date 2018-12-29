@@ -1,40 +1,86 @@
 import React from 'react';
-import { Post } from './../Post'
+import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
+import { Provider } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Post, mapStateToProps } from './../Post'
+import FormPost from './../FormPost'
+import fetch from './../../__helpers__/fetch'
 import posts from './../../__helpers__/posts'
 
-let post = posts[0]
-let postId = post.id
+const byId = {}
+posts.map((item) => (byId[item.id] = item))
+const mockStore = configureMockStore([thunk])
+let store
+let comment = posts[0]
+let provider
 let wrapper
-let goBack = jest.fn()
-let props = {
-	id: postId,
-	post: post,
-	pathname: 'post',
-	history: {
-		goBack
-	},
-	location: {pathname: ''},
-	singleView: false,
-	action: '',
-	success: false
-}
+let props
 
 describe('<Post />', () => {
 	beforeEach(() => {
-		wrapper = shallow(<Post {...props} />)
+		window.fetch = fetch.successful()
+		store = mockStore({success: true, byId})
+		props = {
+			id: posts[0].id,
+			post: posts[0],
+			pathname: 'post',
+			dispatch: jest.fn()
+		}
+		provider = shallow(<Provider store={store}><Post {...props} /></Provider>)
+		wrapper = provider.find(Post).shallow()
 	})
+
+	afterEach(() => store.clearActions())
 
 	it('should render', () => {
 		expect(wrapper).toBeTruthy();
 	})
 
 	it('renders default elements', () => {
+		expect(wrapper.find('.vote-score')).toBeTruthy()
+		expect(wrapper.find('.details')).toBeTruthy()
+	  expect(wrapper.find('.controls')).toBeTruthy()
+	  expect(wrapper.find('.count')).toBeTruthy()
 
-		expect(wrapper.find('.header')).toBeDefined()
-		expect(wrapper.find('section')).toBeDefined()
-	  expect(wrapper.find('h2')).toBeDefined()
-	  expect(wrapper.find('.content')).toBeDefined()
-	  expect(wrapper.find('.footer')).toBeDefined()
+	  expect(wrapper.find('button[aria-label="Increase Vote Score"]')).toBeTruthy()
+		expect(wrapper.find('button[aria-label="Decrease Vote Score"]')).toBeTruthy()
+	  expect(wrapper.find('button[aria-label="Remove Post"]')).toBeTruthy()
+	  expect(wrapper.find(Link)).toBeTruthy()
+	  expect(wrapper.find('a[aria-label="Edit Post"]')).toBeTruthy()
+	})
+
+	it('should handleUpVote method', () => {
+		const handleUpVote = jest.spyOn(wrapper.instance(), 'handleUpVote')
+		wrapper.update()
+
+		const button = wrapper.find('button[aria-label="Increase Vote Score"]')
+		button.simulate('click', {preventDefault() {}})
+		expect(props.dispatch).toHaveBeenCalled()
+	})
+
+	it('should handleDownVote method', () => {
+		const handleDownVote = jest.spyOn(wrapper.instance(), 'handleDownVote')
+		wrapper.update()
+
+		const button = wrapper.find('button[aria-label="Decrease Vote Score"]')
+		button.simulate('click', {preventDefault() {}})
+		expect(props.dispatch).toHaveBeenCalled()
+	})
+
+	it('should handleRemove method', () => {
+		const handleRemove = jest.spyOn(wrapper.instance(), 'handleRemove')
+		wrapper.update()
+
+		const button = wrapper.find('button[aria-label="Remove Post"]')
+		button.simulate('click', {preventDefault() {}})
+		expect(props.dispatch).toHaveBeenCalled()
+	})
+
+	it('should mapStateToProps return props', () => {
+		expect(mapStateToProps({posts: store.getState()}, {id: posts[0].id, location:{pathname:'post'}})).toHaveProperty('id', posts[0].id)
+		expect(mapStateToProps({posts: store.getState()}, {id: posts[0].id, location:{pathname:'post'}})).toHaveProperty('post', posts[0])
+		expect(mapStateToProps({posts: store.getState()}, {id: posts[0].id, location:{pathname:'post'}})).toHaveProperty('pathname', undefined)
 	})
 })
 

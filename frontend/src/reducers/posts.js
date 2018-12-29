@@ -94,9 +94,14 @@ export default function posts (state = {
 				isFetching: true
 			}
 		case SAVE_POST_SUCCESS :
+			const postsById = {};
+			const items = [...state.items, action.post]
+			items.sort((a, b) => ( b[action.orderBy] - a[action.orderBy] ))
+			items.map((item) => (postsById[item.id] = item))
+
 			return {
 				...state,
-				items: [...state.items, action.post]
+				byId: postsById
 			}
 		/*
 		 * REMOVE
@@ -107,7 +112,7 @@ export default function posts (state = {
 				isFetching: true
 			}
 		case REMOVE_POST_SUCCESS :
-			const postsById = Object.keys(state.byId).reduce((object, key) => {
+			const removedPostsById = Object.keys(state.byId).reduce((object, key) => {
 				if (key !== action.id) {
 			  	object[key] = state.byId[key]
 				}
@@ -115,7 +120,7 @@ export default function posts (state = {
 			}, {})
 			return {
 				...state,
-				byId: postsById
+				byId: removedPostsById
 			}
 		/*
 		 * UPDATE

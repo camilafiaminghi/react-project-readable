@@ -22,7 +22,9 @@ export class Messages extends Component {
 			<Fragment>
 				{ (postFailure || commentFailure) &&
 					<div className="modal">
-						<div className="modal-trigger"></div>
+						<div
+							onClick={this.handleClose}
+							className="modal-mask"></div>
 						<div className="modal-content">
 
 							<button
@@ -45,9 +47,6 @@ export class Messages extends Component {
 }
 
 export const mapStateToProps = ({ posts, comments }) => {
-
-	console.log(posts, comments)
-
 	const postFailure = posts.failure
 	const commentFailure = comments.failure
 	return {
