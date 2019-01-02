@@ -131,10 +131,9 @@ export default function posts (state = {
 				isFetching: true
 			}
 		case UPDATE_POST_SUCCESS :
-			let postsItems = state.items.filter((item) => (item.id !== action.post.id))
 			return {
 				...state,
-				items: [...postsItems, action.post]
+				byId: {...state.byId, [action.post.id]: action.post}
 			}
 		/*
 		 * ORDER
