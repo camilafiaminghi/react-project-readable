@@ -249,7 +249,7 @@ describe('posts action', () => {
 		const expectAction = [
 			{ type: UPDATE_POST_REQUEST},
 			{ type: UPDATE_POST_SUCCESS, post: posts[0] },
-			{ payload: {args: [`/post/${posts[0].id}`], method: 'push'}, type: '@@router/CALL_HISTORY_METHOD'},
+			{ payload: {args: [`/${posts[0].category}/${posts[0].id}`], method: 'push'}, type: '@@router/CALL_HISTORY_METHOD'},
 		]
 
 		return store.dispatch(handleUpdatePost(posts[0].id, posts[0]))

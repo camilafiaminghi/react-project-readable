@@ -10,7 +10,7 @@ export class Post extends Component {
 	static propTypes = {
 		id: PropTypes.string.isRequired,
 		post: PropTypes.object,
-		pathname: PropTypes.string.isRequired
+		singleView: PropTypes.bool.isRequired
 	}
 
 	handleUpVote = (event) => {
@@ -35,11 +35,10 @@ export class Post extends Component {
 	}
 
 	render() {
-		const { post } = this.props
+		const { post, singleView } = this.props
 
 		if ( post ) {
 			const { id, voteScore, author, timestamp, title, body, category, commentCount } = post
-			const { pathname } = this.props
 
 			return (
 				<div className="item">
@@ -58,12 +57,12 @@ export class Post extends Component {
 					</div>
 					<div className="details">
 						<span className="author"> Posted by <strong>{ author }</strong> { formatTimeDiff(timeDiff(timestamp)) }</span>
-						{ (pathname === 'post')
+						{ (singleView)
 							? <section>
 									<h2 className="title">{ title }</h2>
 									<p className="content">{ body }</p>
 								</section>
-							: <Link to={{pathname:`/post/${id}`, state:{ pathname }}}>
+							: <Link to={`/${category}/${id}`}>
 									<section>
 										<h2>{ title }</h2>
 										<p>{ body }</p>
@@ -74,11 +73,10 @@ export class Post extends Component {
 							<strong>{ commentCount }</strong> { (commentCount > 1) ? `comments` : `comment` }
 						</span>
 					</div>
-						{ (pathname !== 'post')
-							? null
-							: <div className="controls">
+						{ (singleView)
+							? <div className="controls">
 									<Link
-										to={{pathname: `/edit/post/${id}`, state: { category }}}
+										to={`/edit/${id}`}
 										aria-label="Edit Post">
 										<i className="material-icons">edit</i>
 									</Link>
@@ -88,6 +86,7 @@ export class Post extends Component {
 										<i className="material-icons">close</i>
 									</button>
 								</div>
+							: null
 						}
 				</div>
 			)
@@ -102,14 +101,13 @@ export class Post extends Component {
 }
 
 export const mapStateToProps = ({ posts }, props) => {
-	const { id } = props
+	const { id, singleView } = props
 	const post = posts.byId[id]
-	const pathname = props.location.pathname.split('/')[1]
 
 	return {
 		id,
 		post,
-		pathname
+		singleView
 	}
 }
 

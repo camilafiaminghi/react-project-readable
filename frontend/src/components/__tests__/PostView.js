@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom'
 import PostView from './../PostView'
 import Post from './../../containers/Post'
 import Comments from './../../containers/Comments'
+import posts from './../../__helpers__/posts'
 
 let router
 let wrapper
 const props = {
-	match: {params : {id: '8xf0y6ziyjabvozdd253nd'}},
+	match: {params : {id: posts[0].id, category: posts[0].category}},
 	referer: '/',
 	history: {push: jest.fn()},
 	location: {state: {pathname: ''}}

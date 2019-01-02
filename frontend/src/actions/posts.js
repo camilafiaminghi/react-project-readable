@@ -193,7 +193,7 @@ export function handleUpdatePost (id, post) {
 			.then((data) => {
 				if (data) {
 					dispatch(updatePostSuccess(data))
-					dispatch(push(`/post/${data.id}`))
+					dispatch(push(`/${data.category}/${data.id}`))
 				} else {
 					dispatch(showPostFailure(action))
 				}

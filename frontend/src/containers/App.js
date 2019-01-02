@@ -41,9 +41,9 @@ export class App extends Component {
 						{routes.map((route, index) => (
 							<Route exact key={index} path={`/${route}`} render={() => <DefaultView category={route} />} />
             ))}
-            <Route path="/edit/post/:id" component={EditPost} />
+            <Route path="/edit/:id" component={EditPost} />
             <Route exact path="/post" component={NewPost} />
-            <Route path="/post/:id" component={PostView} />
+            <Route path="/:category/:id" component={PostView} />
             <Route component={RouteNotFound} />
         	</Switch>
 					<Messages />

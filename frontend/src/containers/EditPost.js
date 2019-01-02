@@ -28,7 +28,7 @@ export class EditPost extends Component {
 					<div>
 						<nav>
 							<Link
-								to={`/post/${post.id}`}
+								to={`/${post.category}/${post.id}`}
 								aria-label="Go Back">
 								<i className="material-icons">arrow_back</i>
 							</Link>

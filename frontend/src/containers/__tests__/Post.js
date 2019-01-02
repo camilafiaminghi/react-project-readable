@@ -24,8 +24,8 @@ describe('<Post />', () => {
 		props = {
 			id: posts[0].id,
 			post: posts[0],
-			pathname: 'post',
-			dispatch: jest.fn()
+			dispatch: jest.fn(),
+			singleView: true
 		}
 		provider = shallow(<Provider store={store}><Post {...props} /></Provider>)
 		wrapper = provider.find(Post).shallow()
@@ -78,9 +78,9 @@ describe('<Post />', () => {
 	})
 
 	it('should mapStateToProps return props', () => {
-		expect(mapStateToProps({posts: store.getState()}, {id: posts[0].id, location:{pathname:'post'}})).toHaveProperty('id', posts[0].id)
-		expect(mapStateToProps({posts: store.getState()}, {id: posts[0].id, location:{pathname:'post'}})).toHaveProperty('post', posts[0])
-		expect(mapStateToProps({posts: store.getState()}, {id: posts[0].id, location:{pathname:'post'}})).toHaveProperty('pathname', undefined)
+		expect(mapStateToProps({posts: store.getState()}, {id: posts[0].id})).toHaveProperty('id', posts[0].id)
+		expect(mapStateToProps({posts: store.getState()}, {id: posts[0].id})).toHaveProperty('post', posts[0])
+		expect(mapStateToProps({posts: store.getState()}, {id: posts[0].id})).toHaveProperty('pathname', undefined)
 	})
 })
 
