@@ -20,7 +20,7 @@ export class App extends Component {
 
 	componentDidMount() {
 		/* HANDLE INITIAL DATA */
-		this.props.dispatch(handleInitialData())
+		this.props.handleInitialData()
 	}
 
 	render() {
@@ -62,4 +62,10 @@ export const mapStateToProps = ({ categories, posts }) => {
 	}
 }
 
-export default connect(mapStateToProps)(App)
+export const mapDispatchToProps = (dispatch) => {
+  return {
+    handleInitialData: () => dispatch(handleInitialData())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

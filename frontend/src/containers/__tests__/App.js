@@ -3,7 +3,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
-import { App, mapStateToProps } from './../App'
+import { App, mapStateToProps, mapDispatchToProps } from './../App'
 
 import DefaultView from './../DefaultView'
 import PostView from './../../components/PostView'
@@ -30,7 +30,8 @@ describe('<App />', () => {
 		props = {
 			routes: data.categories.map(item => (`/${item.path}`)),
 			initialDataError: false,
-			dispatch: store.dispatch
+			dispatch: store.dispatch,
+			handleInitialData: jest.fn()
 		}
 		provider = shallow(<Provider store={store}><App {...props} /></Provider>)
 		wrapper = provider.find(App).shallow()
@@ -40,6 +41,11 @@ describe('<App />', () => {
 
 	it('should render', () => {
 		expect(wrapper).toBeTruthy();
+  })
+
+  it('should dispatch handleInitialData on componentDidMount', () => {
+  	wrapper.instance().componentDidMount()
+  	expect(props.handleInitialData).toHaveBeenCalled()
   })
 
 	it('should contains components: LoadingBar, Switch, Route', () => {
@@ -54,7 +60,11 @@ describe('<App />', () => {
 	})
 
 	it('should mapStateToProps return props', () => {
-		 expect(mapStateToProps(store.getState())).toHaveProperty('routes', ['react', 'redux', 'udacity'])
-		 expect(mapStateToProps(store.getState())).toHaveProperty('initialDataError', false)
+		expect(mapStateToProps(store.getState())).toHaveProperty('routes', ['react', 'redux', 'udacity'])
+		expect(mapStateToProps(store.getState())).toHaveProperty('initialDataError', false)
+	})
+
+	it('should mapDispatchToProps return props', () => {
+		expect(mapDispatchToProps(store.dispatch)).toHaveProperty('handleInitialData')
 	})
 })
