@@ -45,7 +45,7 @@ describe('<App />', () => {
 	it('should contains components: LoadingBar, Switch, Route', () => {
 		expect(wrapper.find(LoadingBar).exists()).toBeTruthy()
 		expect(wrapper.find(Switch).exists()).toBeTruthy()
-		expect(wrapper.find(Route)).toHaveLength(8)
+		expect(wrapper.find(Route)).toHaveLength(9)
 	})
 
 	it('should renders a div className .error if error', () => {

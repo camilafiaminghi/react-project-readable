@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const RouteNotFound = () => (
-	<div>
+	<nav>
 		<h2>Route not found</h2>
 		<Link to="/">go to home</Link>
-	</div>
+	</nav>
 );
 
 export default RouteNotFound;

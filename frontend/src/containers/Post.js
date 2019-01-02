@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, Redirect, withRouter } from 'react-router-dom'
 import { handleVotePost, handleRemovePost } from '../actions/posts'
 import { timeDiff, formatTimeDiff } from '../utils/dateUtils'
 
@@ -91,11 +91,7 @@ export class Post extends Component {
 				</div>
 			)
 		} else {
-			return (
-				<div className="error">
-  				<p>Sorry! The server is unavaiable. <br /> Please, try again later.</p>
-  			</div>
-			)
+			return (<Redirect to="/not-found" />)
 		}
 	}
 }

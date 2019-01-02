@@ -43,8 +43,9 @@ export class App extends Component {
             ))}
             <Route path="/edit/:id" component={EditPost} />
             <Route exact path="/post" component={NewPost} />
-            <Route path="/:category/:id" component={PostView} />
+            <Route exact strict path="/:category/:id" component={PostView} />
             <Route component={RouteNotFound} />
+            <Route path="/not-found" component={RouteNotFound} />
         	</Switch>
 					<Messages />
 				</div>
