@@ -2,7 +2,7 @@ import React from 'react';
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
-import { EditPost, mapStateToProps } from './../EditPost'
+import { EditPost, mapStateToProps, mapDispatchToProps } from './../EditPost'
 import { Link } from 'react-router-dom'
 import FormPost from './../FormPost'
 import fetch from './../../__helpers__/fetch'
@@ -22,7 +22,7 @@ describe('<EditPost />', () => {
 		props = {
 			post: posts[0],
 			history: {push: jest.fn()},
-			dispatch: jest.fn()
+			handleUpdate: jest.fn()
 		}
 		provider = shallow(<Provider store={store}><EditPost {...props} /></Provider>)
 		wrapper = provider.find(EditPost).shallow()
@@ -47,13 +47,17 @@ describe('<EditPost />', () => {
 	  expect(wrapper.find(FormPost).exists()).toBeTruthy()
 	})
 
-	it('should contains a handleUpdate method', () => {
+	it('should contains a handleOnUpdate method', () => {
 		const instance = wrapper.instance()
-		instance.handleUpdate(true, {})
-		expect(props.dispatch).toHaveBeenCalledTimes(1)
+		instance.handleOnUpdate(true, {})
+		expect(props.handleUpdate).toHaveBeenCalledTimes(1)
 	})
 
 	it('should mapStateToProps return props', () => {
 		expect(mapStateToProps(store.getState(), {match: {params: {id: posts[0].id}}})).toHaveProperty('post', posts[0])
+	})
+
+	it('should mapDispatchToProps return props', () => {
+		expect(mapDispatchToProps(store.dispatch)).toHaveProperty('handleUpdate')
 	})
 })

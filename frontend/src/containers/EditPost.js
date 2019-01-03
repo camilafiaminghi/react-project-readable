@@ -11,11 +11,11 @@ export class EditPost extends Component {
 		post: PropTypes.object
 	}
 
-	handleUpdate = (validated, form) => {
-		const { dispatch, post } = this.props
+	handleOnUpdate = (validated, form) => {
+		const { handleUpdate, post } = this.props
 		/* DISPATCH IF IS VALID */
 		if (validated) {
-			dispatch(handleUpdatePost(post.id, form))
+			handleUpdate(post.id, form)
 		}
 	}
 
@@ -36,7 +36,7 @@ export class EditPost extends Component {
 
 						<div className="bordered-top">
 							<h2 className="form-title">Edit Post</h2>
-							<FormPost handleSubmit={this.handleUpdate} post={post} />
+							<FormPost handleSubmit={this.handleOnUpdate} post={post} />
 						</div>
 					</div>
 				}
@@ -54,4 +54,10 @@ export const mapStateToProps = ({ posts }, props) => {
 	}
 }
 
-export default connect(mapStateToProps)(EditPost)
+export const mapDispatchToProps = (dispatch) => {
+  return {
+    handleUpdate: (id, form) => dispatch(handleUpdatePost(id, form))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditPost)
