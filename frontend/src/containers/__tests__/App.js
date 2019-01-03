@@ -13,10 +13,16 @@ import RouteNotFound from './../../components/RouteNotFound'
 import LoadingBar from 'react-redux-loading-bar'
 
 import fetch from './../../__helpers__/fetch'
-import data from './../../__helpers__/categories'
-import posts from './../../__helpers__/posts'
+import dataCategories from './../../__helpers__/categories'
+import dataPosts from './../../__helpers__/posts'
+
+let postsById = {};
+dataPosts.map((item) => (postsById[item.id] = item))
+let categoriesByPath = [];
+dataCategories.categories.map((item) => (categoriesByPath.push(item.path)))
 
 const mockStore = configureMockStore([thunk])
+let mock
 let store
 let props
 let provider
@@ -25,12 +31,16 @@ let wrapper
 describe('<App />', () => {
 
 	beforeEach(() => {
-		window.fetch = fetch.successful({data: data})
-		store = mockStore({categories: {items:data.categories, error:false}, posts: {items: posts, error: false}})
+		window.fetch = fetch.successful()
+		mock = {categories: {byPath: categoriesByPath, success:true}, posts: {byId: postsById, success: true}}
+		store = mockStore(mock)
 		props = {
 			initialDataError: false,
 			dispatch: store.dispatch,
-			handleInitialData: jest.fn()
+			handleInitialData: jest.fn(),
+			success: true,
+			posts: mock.posts,
+			categories: mock.categories
 		}
 		provider = shallow(<Provider store={store}><App {...props} /></Provider>)
 		wrapper = provider.find(App).shallow()
@@ -53,13 +63,10 @@ describe('<App />', () => {
 		expect(wrapper.find(Route)).toHaveLength(7)
 	})
 
-	it('should renders a div className .error if error', () => {
-		wrapper = provider.find(App).dive().setProps({initialDataError: true})
-		expect(wrapper.find('.error').exists()).toBeTruthy()
-	})
-
 	it('should mapStateToProps return props', () => {
-		expect(mapStateToProps(store.getState())).toHaveProperty('initialDataError', false)
+		expect(mapStateToProps(store.getState())).toHaveProperty('success')
+		expect(mapStateToProps(store.getState())).toHaveProperty('categories')
+		expect(mapStateToProps(store.getState())).toHaveProperty('posts')
 	})
 
 	it('should mapDispatchToProps return props', () => {

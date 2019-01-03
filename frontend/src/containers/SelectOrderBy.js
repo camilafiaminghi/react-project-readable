@@ -13,10 +13,8 @@ export class SelectOrderBy extends Component {
 		option: ''
 	}
 
-	componentDidUpdate(prevState) {
-		if ( !this.props.items.every((item) => (prevState.items.includes(item))) ) {
-			this.handleOnChange('voteScore')
-		}
+	componentDidMount() {
+		this.handleOnChange('voteScore')
 	}
 
 	handleOnChange = (option) => {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { handlePosts } from '../actions/posts'
 import { Link } from 'react-router-dom'
 import Nav from './Nav'
 import Post from './Post'
@@ -9,26 +8,12 @@ import Post from './Post'
 export class DefaultView extends Component {
 
 	static propTypes = {
-		items: PropTypes.array.isRequired
-	}
-
-	componentDidMount() {
-		const { handlePosts } = this.props
-		const { category } = this.props.match.params
-		handlePosts(category)
-	}
-
-	componentDidUpdate(prevState) {
-		const { handlePosts } = this.props
-		const { category } = this.props.match.params
-		if ( prevState.match.params.category !== category ) {
-			handlePosts(category)
-		}
+		items: PropTypes.array.isRequired,
+		category: PropTypes.string
 	}
 
 	render() {
-		const { items } = this.props
-		const { category } = this.props.match.params
+		const { items, category } = this.props
 
 		return (
 			<div>
@@ -58,16 +43,13 @@ export class DefaultView extends Component {
 }
 
 export const mapStateToProps = ({ posts }, props) => {
-	const items = (posts.success) ? Object.keys(posts.byId) : []
+	const category = props.match.params.category
+	const items = posts.success ? (category ? Object.keys(posts.byId).filter((key) => (posts.byId[key].category === category)) : Object.keys(posts.byId)) : []
+
 	return {
-		items
+		items,
+		category
 	}
 }
 
-export const mapDispatchToProps = (dispatch) => {
-  return {
-    handlePosts: (category) => dispatch(handlePosts(category))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(DefaultView)
+export default connect(mapStateToProps)(DefaultView)

@@ -7,7 +7,7 @@ export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE'
 
 export const VOTE_POST_REQUEST = 'VOTE_POST_REQUEST'
 export const VOTE_POST_SUCCESS = 'VOTE_POST_SUCCESS'
-export const VOTE_POST_FAILURE = 'VOTE_POST_FAILURE'
+export const VOTE_POSTS_FAILURE = 'VOTE_POSTS_FAILURE'
 
 export const SAVE_POST_REQUEST = 'SAVE_POST_REQUEST'
 export const SAVE_POST_SUCCESS = 'SAVE_POST_SUCCESS'
@@ -19,8 +19,8 @@ export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST'
 export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS'
 
 export const ORDER_POSTS_BY = 'ORDERBY_POSTS'
-export const SHOW_POST_FAILURE = 'SHOW_POST_FAILURE'
-export const HIDE_POST_FAILURE = 'HIDE_POST_FAILURE'
+export const SHOW_POSTS_FAILURE = 'SHOW_POSTS_FAILURE'
+export const HIDE_POSTS_FAILURE = 'HIDE_POSTS_FAILURE'
 
 /*
  * LOAD
@@ -40,7 +40,8 @@ export function loadPostsSuccess (items) {
 
 export function loadPostsFailure () {
 	return {
-		type: LOAD_POSTS_FAILURE
+		type: LOAD_POSTS_FAILURE,
+		failure: 'load'
 	}
 }
 
@@ -71,9 +72,9 @@ export function votePostSuccess () {
 	}
 }
 
-export function votePostFailure (id, option) {
+export function votePostsFailure (id, option) {
 	return {
-		type: VOTE_POST_FAILURE,
+		type: VOTE_POSTS_FAILURE,
 		id,
 		option
 	}
@@ -88,9 +89,9 @@ export function handleVotePost (id, option) {
 				if (post)
 					dispatch(votePostSuccess(post))
 				else
-					dispatch(votePostFailure(id, option))
+					dispatch(votePostsFailure(id, option))
 			})
-			.catch(() => dispatch(votePostFailure(id, option)))
+			.catch(() => dispatch(votePostsFailure(id, option)))
 	}
 }
 
@@ -122,12 +123,12 @@ export function handleSavePost (post) {
 					dispatch(savePostSuccess(data))
 					dispatch(push(`/${data.category}`))
 				} else {
-					dispatch(showPostFailure(action))
+					dispatch(showPostsFailure(action))
 				}
 				dispatch(hideLoading())
 			})
 			.catch(() => {
-				dispatch(showPostFailure(action))
+				dispatch(showPostsFailure(action))
 				dispatch(hideLoading())
 			})
 	}
@@ -136,10 +137,9 @@ export function handleSavePost (post) {
 /*
  * REMOVE
  */
-export function removePostRequest (id) {
+export function removePostRequest () {
 	return {
-		type: REMOVE_POST_REQUEST,
-		id
+		type: REMOVE_POST_REQUEST
 	}
 }
 
@@ -161,10 +161,10 @@ export function handleRemovePost (id) {
 					dispatch(removePostSuccess(data))
 					dispatch(push(`/${data.category}`))
 				} else {
-					dispatch(showPostFailure(action))
+					dispatch(showPostsFailure(action))
 				}
 			})
-			.catch(() => dispatch(showPostFailure(action)))
+			.catch(() => dispatch(showPostsFailure(action)))
 	}
 }
 
@@ -195,10 +195,10 @@ export function handleUpdatePost (id, post) {
 					dispatch(updatePostSuccess(data))
 					dispatch(push(`/${data.category}/${data.id}`))
 				} else {
-					dispatch(showPostFailure(action))
+					dispatch(showPostsFailure(action))
 				}
 			})
-			.catch(() => dispatch(showPostFailure(action)))
+			.catch(() => dispatch(showPostsFailure(action)))
 	}
 }
 
@@ -219,15 +219,15 @@ export function handleOrderPostsBy (orderBy) {
 /*
  * FAILURE
  */
-export function showPostFailure (failure) {
+export function showPostsFailure (failure) {
 	return {
-		type: SHOW_POST_FAILURE,
+		type: SHOW_POSTS_FAILURE,
 		failure
 	}
 }
 
-export function hidePostFailure () {
+export function hidePostsFailure () {
 	return {
-		type: HIDE_POST_FAILURE
+		type: HIDE_POSTS_FAILURE
 	}
 }

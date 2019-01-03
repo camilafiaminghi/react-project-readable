@@ -9,7 +9,7 @@ const initialState = {
 	items: [],
 	isFetching: false,
 	success: false,
-	error: false
+	failure: ''
 }
 
 describe('categories reducer', () => {
@@ -30,14 +30,14 @@ describe('categories reducer', () => {
 		})).toMatchObject({
 			items: data.categories,
 			isFetching: false,
-			success: true,
-			error: false
+			success: true
 		})
 	})
 
 	it('should handle LOAD_CATEGORIES_FAILURE', () => {
 		expect(categories(initialState, {
-			type: LOAD_CATEGORIES_FAILURE
-		})).toMatchObject({...initialState, error: true})
+			type: LOAD_CATEGORIES_FAILURE,
+			failure: 'load'
+		})).toMatchObject({...initialState, failure: 'load'})
 	})
 })

@@ -33,7 +33,8 @@ describe('categories action', () => {
 
 	it('loadCategoriesFailure should return an object', () => {
 		expect(loadCategoriesFailure()).toEqual({
-			type: LOAD_CATEGORIES_FAILURE
+			type: LOAD_CATEGORIES_FAILURE,
+			failure: 'load'
 		})
 	})
 

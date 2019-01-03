@@ -6,16 +6,17 @@ import { handleCleanAllFailures } from '../actions/shared'
 export class Messages extends Component {
 
 	static propTypes = {
-		postFailure: PropTypes.string,
+		categoriesFailure: PropTypes.string,
+		postsFailure: PropTypes.string,
 		commentFailure: PropTypes.string
 	}
 
 	render() {
-		const { postFailure, commentFailure, handleCleanAllFailures } = this.props
+		const { categoriesFailure, postsFailure, commentFailure, handleCleanAllFailures } = this.props
 
 		return (
 			<Fragment>
-				{ (postFailure || commentFailure) &&
+				{ ( categoriesFailure || postsFailure || commentFailure ) &&
 					<div className="modal">
 						<div
 							onClick={() => handleCleanAllFailures()}
@@ -29,7 +30,7 @@ export class Messages extends Component {
 							</button>
 
 							<p>
-								Sorry, an error occured while you are trying to <strong>{ postFailure || commentFailure }</strong>.
+								Sorry, an error occured while you are trying to <strong>{ categoriesFailure || postsFailure || commentFailure }</strong>.
 								<br />
 								Please, try again later.
 							</p>
@@ -41,12 +42,15 @@ export class Messages extends Component {
 	}
 }
 
-export const mapStateToProps = ({ posts, comments }) => {
-	const postFailure = posts.failure
+export const mapStateToProps = ({ categories, posts, comments }) => {
+	const categoriesFailure = categories.failure
+	const postsFailure = posts.failure
 	const commentFailure = comments.failure
+
 	return {
-		postFailure,
-		commentFailure
+		postsFailure,
+		commentFailure,
+		categoriesFailure
 	}
 }
 

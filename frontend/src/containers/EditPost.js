@@ -24,22 +24,20 @@ export class EditPost extends Component {
 
 		return (
 			<div>
-				{ (post) &&
-					<div>
-						<nav>
-							<Link
-								to={`/${post.category}/${post.id}`}
-								aria-label="Go Back">
-								<i className="material-icons">arrow_back</i>
-							</Link>
-						</nav>
+				<div>
+					<nav>
+						<Link
+							to={`/${post.category}/${post.id}`}
+							aria-label="Go Back">
+							<i className="material-icons">arrow_back</i>
+						</Link>
+					</nav>
 
-						<div className="bordered-top">
-							<h2 className="form-title">Edit Post</h2>
-							<FormPost handleSubmit={this.handleOnUpdate} post={post} />
-						</div>
+					<div className="bordered-top">
+						<h2 className="form-title">Edit Post</h2>
+						<FormPost handleSubmit={this.handleOnUpdate} post={post} />
 					</div>
-				}
+				</div>
 			</div>
 		)
 	}

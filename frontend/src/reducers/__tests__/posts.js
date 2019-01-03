@@ -4,7 +4,7 @@ import {
 	LOAD_POSTS_FAILURE,
 	VOTE_POST_REQUEST,
 	VOTE_POST_SUCCESS,
-	VOTE_POST_FAILURE,
+	VOTE_POSTS_FAILURE,
 	SAVE_POST_REQUEST,
 	SAVE_POST_SUCCESS,
 	REMOVE_POST_REQUEST,
@@ -12,8 +12,8 @@ import {
 	UPDATE_POST_REQUEST,
 	UPDATE_POST_SUCCESS,
 	ORDER_POSTS_BY,
-	SHOW_POST_FAILURE,
-	HIDE_POST_FAILURE } from './../../actions/posts'
+	SHOW_POSTS_FAILURE,
+	HIDE_POSTS_FAILURE } from './../../actions/posts'
 import posts from './../posts'
 import data from './../../__helpers__/posts'
 
@@ -23,7 +23,6 @@ const initialState = {
 	byId,
 	items: data,
 	isFetching: false,
-	error: false,
 	success: false
 }
 
@@ -54,10 +53,12 @@ describe('posts reducer', () => {
 	})
 
 	it('should handle LOAD_POSTS_FAILURE', () => {
-		expect(posts(initialState, {
-			type: LOAD_POSTS_FAILURE
+		expect(posts({...initialState, byId: {}} , {
+			type: LOAD_POSTS_FAILURE,
+			failure: 'load'
 		})).toMatchObject({
-			isFetching: false
+			isFetching: false,
+			failure: 'load'
 		})
 	})
 	/*
@@ -91,7 +92,7 @@ describe('posts reducer', () => {
 		})
 	})
 
-	it('should handle VOTE_POST_FAILURE', () => {
+	it('should handle VOTE_POSTS_FAILURE', () => {
 		expect(posts({
 			...initialState,
 			byId: {
@@ -102,7 +103,7 @@ describe('posts reducer', () => {
 					}
 				}
 		}, {
-			type: VOTE_POST_FAILURE,
+			type: VOTE_POSTS_FAILURE,
 			id: data[0].id,
 			option: 'upVote'
 		})).toMatchObject({
@@ -142,11 +143,13 @@ describe('posts reducer', () => {
 	})
 
 	it('should handle REMOVE_POST_SUCCESS', () => {
-		expect(posts({...initialState, success: true}, {
-			type: REMOVE_POST_SUCCESS
+		expect(posts({...initialState, isFetching: false}, {
+			type: REMOVE_POST_SUCCESS,
+			post: data[0]
 		})).toMatchObject({
 			...initialState,
-			success: true
+			byId: {},
+			isFetching: false
 		})
 	})
 	/*

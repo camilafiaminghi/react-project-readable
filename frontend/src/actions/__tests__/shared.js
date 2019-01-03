@@ -4,11 +4,12 @@ import {
 	LOAD_POSTS_REQUEST,
 	LOAD_POSTS_SUCCESS,
 	LOAD_POSTS_FAILURE,
-	HIDE_POST_FAILURE } from './../posts'
+	HIDE_POSTS_FAILURE } from './../posts'
 import {
 	LOAD_CATEGORIES_REQUEST,
 	LOAD_CATEGORIES_SUCCESS,
-	LOAD_CATEGORIES_FAILURE } from './../categories'
+	LOAD_CATEGORIES_FAILURE,
+	HIDE_CATEGORIES_FAILURE } from './../categories'
 import {
 	SAVE_COMMENT_REQUEST,
 	SAVE_COMMENT_SUCCESS,
@@ -43,9 +44,9 @@ describe('shared action', () => {
 		const expectAction = [
 			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW' },
 			{ type: LOAD_CATEGORIES_REQUEST },
-			// { type: LOAD_POSTS_REQUEST },
+			{ type: LOAD_POSTS_REQUEST },
 			{ type: LOAD_CATEGORIES_SUCCESS, items: categories },
-			// { type: LOAD_POSTS_SUCCESS, items: { categories: categories, posts: posts } },
+			{ type: LOAD_POSTS_SUCCESS, items: { categories: categories, posts: posts } },
 			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' },
 		]
 
@@ -60,7 +61,9 @@ describe('shared action', () => {
 		const expectAction = [
 			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW' },
 			{ type: LOAD_CATEGORIES_REQUEST },
-			{ type: LOAD_CATEGORIES_FAILURE },
+			{ type: LOAD_POSTS_REQUEST },
+			{ type: LOAD_CATEGORIES_FAILURE, failure: 'load' },
+			{ type: LOAD_POSTS_FAILURE, failure: 'load' },
 			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' }
 		]
 
@@ -80,7 +83,7 @@ describe('shared action', () => {
 			{ type: LOAD_POSTS_REQUEST },
 			{ type: SHOW_COMMENT_FAILURE, failure: 'save' },
 			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' },
-			{ type: LOAD_POSTS_FAILURE }
+			{ type: LOAD_POSTS_FAILURE, failure: 'load' }
 		]
 
 		return store.dispatch(handleUpdatePostComments(comments[0], posts[0].id))
@@ -99,7 +102,7 @@ describe('shared action', () => {
 			{ type: LOAD_POSTS_REQUEST },
 			{ type: SHOW_COMMENT_FAILURE, failure: 'save' },
 			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' },
-			{ type: LOAD_POSTS_FAILURE }
+			{ type: LOAD_POSTS_FAILURE, failure: 'load' }
 		]
 
 		return store.dispatch(handleUpdatePostComments(comments[0], posts[0].id))
@@ -117,7 +120,7 @@ describe('shared action', () => {
 			{ type: REMOVE_COMMENT_REQUEST },
 			{ type: LOAD_POSTS_REQUEST },
 			{ type: SHOW_COMMENT_FAILURE, failure: 'remove' },
-			{ type: LOAD_POSTS_FAILURE },
+			{ type: LOAD_POSTS_FAILURE, failure: 'load' },
 			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' }
 		]
 
@@ -130,8 +133,9 @@ describe('shared action', () => {
 	 */
 	it('successful handleCleanAllFailures', () => {
 		const expectAction = [
-			{ type: HIDE_POST_FAILURE },
-			{ type: HIDE_COMMENT_FAILURE }
+			{ type: HIDE_POSTS_FAILURE },
+			{ type: HIDE_COMMENT_FAILURE },
+			{ type: HIDE_CATEGORIES_FAILURE }
 		]
 
 		return store.dispatch(handleCleanAllFailures())

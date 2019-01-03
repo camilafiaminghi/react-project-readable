@@ -4,7 +4,7 @@ import {
 	LOAD_POSTS_FAILURE,
 	VOTE_POST_REQUEST,
 	VOTE_POST_SUCCESS,
-	VOTE_POST_FAILURE,
+	VOTE_POSTS_FAILURE,
 	SAVE_POST_REQUEST,
 	SAVE_POST_SUCCESS,
 	REMOVE_POST_REQUEST,
@@ -12,15 +12,14 @@ import {
 	UPDATE_POST_REQUEST,
 	UPDATE_POST_SUCCESS,
 	ORDER_POSTS_BY,
-	SHOW_POST_FAILURE,
-	HIDE_POST_FAILURE } from '../actions/posts'
+	SHOW_POSTS_FAILURE,
+	HIDE_POSTS_FAILURE } from '../actions/posts'
 
 export default function posts (state = {
 	items: [],
 	byId: {},
 	isFetching: false,
 	success: false,
-	error: false,
 	failure: ''
 }, action) {
 	switch(action.type) {
@@ -49,7 +48,7 @@ export default function posts (state = {
 				...state,
 				isFetching: false,
 				success: false,
-				error: true,
+				failure: action.failure
 			}
 		/*
 		 * VOTE
@@ -72,7 +71,7 @@ export default function posts (state = {
 				...state,
 				isFetching: false
 			}
-		case VOTE_POST_FAILURE :
+		case VOTE_POSTS_FAILURE :
 			return {
 				...state,
 				isFetching: false,
@@ -113,14 +112,15 @@ export default function posts (state = {
 			}
 		case REMOVE_POST_SUCCESS :
 			const removedPostsById = Object.keys(state.byId).reduce((object, key) => {
-				if (key !== action.id) {
+				if (key !== action.post.id) {
 			  	object[key] = state.byId[key]
 				}
 				return object
 			}, {})
 			return {
 				...state,
-				byId: removedPostsById
+				byId: removedPostsById,
+				isFetching: false
 			}
 		/*
 		 * UPDATE
@@ -139,9 +139,10 @@ export default function posts (state = {
 		 * ORDER
 		 */
 		case ORDER_POSTS_BY :
-			const itemsById = {};
-			state.items.sort((a, b) => ( b[action.orderBy] - a[action.orderBy] ))
-			state.items.map((item) => (itemsById[item.id] = item))
+			let itemsById = {}
+			const keys = Object.keys(state.byId).sort((a, b) => ( state.byId[b][action.orderBy] -  state.byId[a][action.orderBy] ))
+			keys.map((key) => (itemsById[key] = state.byId[key]))
+
 			return {
 				...state,
 				byId: itemsById
@@ -149,12 +150,12 @@ export default function posts (state = {
 		/*
 		 * FAILURE
 		 */
-		case SHOW_POST_FAILURE :
+		case SHOW_POSTS_FAILURE :
 			return {
 				...state,
 				failure: action.failure
 			}
-		case HIDE_POST_FAILURE :
+		case HIDE_POSTS_FAILURE :
 			return {
 				...state,
 				failure: ''

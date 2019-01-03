@@ -14,7 +14,9 @@ import RouteNotFound from '../components/RouteNotFound'
 export class App extends Component {
 
 	static propTypes = {
-		initialDataError: PropTypes.bool.isRequired,
+		success: PropTypes.bool.isRequired,
+		posts: PropTypes.object.isRequired,
+		categories: PropTypes.object.isRequired
 	}
 
 	componentDidMount() {
@@ -22,15 +24,13 @@ export class App extends Component {
 	}
 
 	render() {
-		const { initialDataError } = this.props
+		const { success } = this.props
 
-		if (initialDataError) {
-			return (
-				<div className="error">
-  				<p>Sorry! The server is unavaiable. <br /> Please, try again later.</p>
-  			</div>
-			)
+		if ( !success ) {
+			return (<Messages />)
 		} else {
+			const posts = Object.keys(this.props.posts.byId).join('|')
+			const categories = this.props.categories.byPath.join('|')
 
 			return (
 				<div className="container">
@@ -40,8 +40,8 @@ export class App extends Component {
 						<Route path="/not-found" component={RouteNotFound} />
             <Route path="/edit/:id" component={EditPost} />
             <Route path="/add" component={NewPost} />
-            <Route path="/:category/:id" component={PostView} />
-						<Route path="/:category" component={DefaultView} />
+            <Route exact path={`/:category(${categories})/:id(${posts})`} component={PostView} />
+						<Route exact path={`/:category(${categories})`} component={DefaultView} />
 						<Route component={RouteNotFound} />
         	</Switch>
 					<Messages />
@@ -52,8 +52,12 @@ export class App extends Component {
 }
 
 export const mapStateToProps = ({ categories, posts }) => {
+	const success = categories.success && posts.success
+
 	return {
-		initialDataError: (categories.error && posts.error)
+		success,
+		categories,
+		posts
 	}
 }
 

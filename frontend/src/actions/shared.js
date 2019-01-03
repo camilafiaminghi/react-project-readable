@@ -1,5 +1,5 @@
-import { handleCategories } from './categories'
-import { handlePosts, hidePostFailure } from './posts'
+import { handleCategories, hideCategoriesFailure } from './categories'
+import { handlePosts, hidePostsFailure } from './posts'
 import { handleSaveComment, handleRemoveComment, hideCommentFailure } from './comments'
 import { showLoading, hideLoading } from 'react-redux-loading-bar'
 
@@ -8,7 +8,8 @@ export function handleInitialData () {
 		dispatch(showLoading())
 
 		return Promise.all([
-			dispatch(handleCategories())
+			dispatch(handleCategories()),
+			dispatch(handlePosts())
 	  ])
 	  	.then(() => dispatch(hideLoading()))
 	}
@@ -39,8 +40,9 @@ export function handleCleanAllFailures (id) {
 	return (dispatch) => {
 
 		return Promise.all([
-			dispatch(hidePostFailure()),
-	    dispatch(hideCommentFailure())
+			dispatch(hidePostsFailure()),
+	    dispatch(hideCommentFailure()),
+	    dispatch(hideCategoriesFailure())
 	   ])
 	}
 }

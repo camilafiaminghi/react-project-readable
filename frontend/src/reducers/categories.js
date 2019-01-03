@@ -1,15 +1,20 @@
 import {
 	LOAD_CATEGORIES_REQUEST,
 	LOAD_CATEGORIES_SUCCESS,
-	LOAD_CATEGORIES_FAILURE } from '../actions/categories'
+	LOAD_CATEGORIES_FAILURE,
+	HIDE_CATEGORIES_FAILURE } from '../actions/categories'
 
 export default function categories (state = {
 	items: [],
+	byPath: [],
 	isFetching: false,
 	success: false,
-	error: false,
+	failure: ''
 }, action) {
 	switch(action.type) {
+		/*
+		 * LOAD
+		 */
 		case LOAD_CATEGORIES_REQUEST:
 			return {
 				...state,
@@ -20,6 +25,7 @@ export default function categories (state = {
 			return {
 				...state,
 				items: action.items,
+				byPath: action.items.map((item) => (item.path)),
 				isFetching: false,
 				success: true
 			}
@@ -29,7 +35,15 @@ export default function categories (state = {
 				items: [],
 				isFetching: false,
 				success: false,
-				error: true
+				failure: action.failure
+			}
+		/*
+		 * FAILURE
+		 */
+		case HIDE_CATEGORIES_FAILURE :
+			return {
+				...state,
+				failure: ''
 			}
 		default :
 			return state

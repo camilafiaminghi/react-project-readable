@@ -25,8 +25,7 @@ describe('<DefaultView />', () => {
 		store = mockStore({posts: {items: posts}, categories: {items: data.categories}})
 		props = {
 			items: posts,
-			handlePosts: jest.fn(),
-			match: {params: {category: ''}}
+			handlePosts: jest.fn()
 		}
 		provider = shallow(<Provider store={store}><DefaultView {...props} /></Provider>)
 		wrapper = provider.find(DefaultView).shallow()
@@ -58,11 +57,8 @@ describe('<DefaultView />', () => {
 	})
 
 	it('should mapStateToProps return props', () => {
-		expect(mapStateToProps(store.getState(), {posts: ''})).toHaveProperty('items', [])
-	})
-
-	it('should mapDispatchToProps return props', () => {
-		expect(mapDispatchToProps(store.dispatch)).toHaveProperty('handlePosts')
+		const props = {match:{params:{category:'react'}}}
+		expect(mapStateToProps(store.getState(), props)).toHaveProperty('items', [])
 	})
 })
 

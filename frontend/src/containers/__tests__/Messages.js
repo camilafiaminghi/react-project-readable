@@ -15,7 +15,8 @@ describe('<Messages />', () => {
 	beforeEach(() => {
 		store = mockStore({categories: {failure: 'vote'}, posts: {failure: ''}})
 		props = {
-			postFailure: 'vote',
+			categoriesFailure: '',
+			postsFailure: 'vote',
 			commentFailure: '',
 			handleCleanAllFailures: jest.fn()
 		}
@@ -47,7 +48,7 @@ describe('<Messages />', () => {
 	})
 
 	it('should mapStateToProps return props', () => {
-		expect(mapStateToProps({comments: {failure: ''}, posts: {failure: 'vote'}})).toHaveProperty('postFailure', 'vote')
+		expect(mapStateToProps({comments: {failure: ''}, posts: {failure: 'vote'}, categories: {failure: ''}})).toHaveProperty('postsFailure', 'vote')
 	})
 
 	it('should mapDispatchToProps return props', () => {

@@ -6,7 +6,7 @@ import {
 	LOAD_POSTS_FAILURE,
 	VOTE_POST_REQUEST,
 	VOTE_POST_SUCCESS,
-	VOTE_POST_FAILURE,
+	VOTE_POSTS_FAILURE,
 	SAVE_POST_REQUEST,
 	SAVE_POST_SUCCESS,
 	REMOVE_POST_REQUEST,
@@ -14,8 +14,8 @@ import {
 	UPDATE_POST_REQUEST,
 	UPDATE_POST_SUCCESS,
 	ORDER_POSTS_BY,
-	SHOW_POST_FAILURE,
-	HIDE_POST_FAILURE } from './../posts'
+	SHOW_POSTS_FAILURE,
+	HIDE_POSTS_FAILURE } from './../posts'
 import {
 	loadPostsRequest,
 	loadPostsSuccess,
@@ -23,7 +23,7 @@ import {
 	handlePosts,
 	votePostRequest,
 	votePostSuccess,
-	votePostFailure,
+	votePostsFailure,
 	handleVotePost,
 	savePostRequest,
 	savePostSuccess,
@@ -36,8 +36,8 @@ import {
 	handleUpdatePost,
 	orderPostsBy,
 	handleOrderPostsBy,
-	showPostFailure,
-	hidePostFailure } from './../posts'
+	showPostsFailure,
+	hidePostsFailure } from './../posts'
 import fetch from './../../__helpers__/fetch'
 import posts from './../../__helpers__/posts'
 
@@ -75,7 +75,7 @@ describe('posts action', () => {
 	it('loadPostsFailure should return an object', () => {
 		expect(loadPostsFailure()).toEqual({
 			type: LOAD_POSTS_FAILURE,
-			items: undefined
+			failure: 'load'
 		})
 	})
 
@@ -108,9 +108,9 @@ describe('posts action', () => {
 		})
 	})
 
-	it('votePostFailure should return an object', () => {
-		expect(votePostFailure(posts[0].id, 'upVote')).toEqual({
-			type: VOTE_POST_FAILURE,
+	it('votePostsFailure should return an object', () => {
+		expect(votePostsFailure(posts[0].id, 'upVote')).toEqual({
+			type: VOTE_POSTS_FAILURE,
 			id: posts[0].id,
 			option: 'upVote'
 		})
@@ -133,7 +133,7 @@ describe('posts action', () => {
 
 		const expectAction = [
 			{ type: VOTE_POST_REQUEST, id: posts[0].id, option: 'upVote' },
-			{ type: VOTE_POST_FAILURE, id: posts[0].id, option: 'upVote' }
+			{ type: VOTE_POSTS_FAILURE, id: posts[0].id, option: 'upVote' }
 		]
 
 		return store.dispatch(handleVotePost(posts[0].id, 'upVote'))
@@ -177,7 +177,7 @@ describe('posts action', () => {
 		const expectAction = [
 			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW' },
 			{ type: SAVE_POST_REQUEST },
-			{ type: SHOW_POST_FAILURE, failure: 'save' },
+			{ type: SHOW_POSTS_FAILURE, failure: 'save' },
 			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' }
 		]
 
@@ -189,9 +189,8 @@ describe('posts action', () => {
 	 * REMOVE
 	 */
 	it('removePostRequest should return an object', () => {
-		expect(removePostRequest(posts[0].id)).toEqual({
-			type: REMOVE_POST_REQUEST,
-			id: posts[0].id
+		expect(removePostRequest()).toEqual({
+			type: REMOVE_POST_REQUEST
 		})
 	})
 
@@ -206,7 +205,7 @@ describe('posts action', () => {
 		window.fetch = fetch.successful(posts[0])
 
 		const expectAction = [
-			{ type: REMOVE_POST_REQUEST, id: posts[0].id },
+			{ type: REMOVE_POST_REQUEST },
 			{ type: REMOVE_POST_SUCCESS, post: posts[0] },
 			{ payload: {args: [`/${posts[0].category}`], method: 'push'}, type: '@@router/CALL_HISTORY_METHOD'},
 		]
@@ -219,8 +218,8 @@ describe('posts action', () => {
 		window.fetch = fetch.failing()
 
 		const expectAction = [
-			{ type: REMOVE_POST_REQUEST, id: posts[0].id },
-			{ type: SHOW_POST_FAILURE, failure: 'remove' }
+			{ type: REMOVE_POST_REQUEST },
+			{ type: SHOW_POSTS_FAILURE, failure: 'remove' }
 		]
 
 		return store.dispatch(handleRemovePost(posts[0].id))
@@ -261,7 +260,7 @@ describe('posts action', () => {
 
 		const expectAction = [
 			{ type: UPDATE_POST_REQUEST},
-			{ type: SHOW_POST_FAILURE, failure: 'edit' }
+			{ type: SHOW_POSTS_FAILURE, failure: 'edit' }
 		]
 
 		return store.dispatch(handleUpdatePost(posts[0].id, posts[0]))
@@ -293,16 +292,16 @@ describe('posts action', () => {
 	/*
 	 * FAILURE
 	 */
-	it('showPostFailure should return an object', () => {
-		expect(showPostFailure('remove')).toEqual({
-			type: SHOW_POST_FAILURE,
+	it('showPostsFailure should return an object', () => {
+		expect(showPostsFailure('remove')).toEqual({
+			type: SHOW_POSTS_FAILURE,
 			failure: 'remove'
 		})
 	})
 
-	it('hidePostFailure should return an object', () => {
-		expect(hidePostFailure()).toEqual({
-			type: HIDE_POST_FAILURE
+	it('hidePostsFailure should return an object', () => {
+		expect(hidePostsFailure()).toEqual({
+			type: HIDE_POSTS_FAILURE
 		})
 	})
 })
