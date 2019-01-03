@@ -24,8 +24,9 @@ describe('<Post />', () => {
 		props = {
 			id: posts[0].id,
 			post: posts[0],
-			dispatch: jest.fn(),
-			singleView: true
+			singleView: true,
+			handleVote: jest.fn(),
+			handleRemove: jest.fn()
 		}
 		provider = shallow(<Provider store={store}><Post {...props} /></Provider>)
 		wrapper = provider.find(Post).shallow()
@@ -50,31 +51,16 @@ describe('<Post />', () => {
 	  expect(wrapper.find('a[aria-label="Edit Post"]')).toBeTruthy()
 	})
 
-	it('should handleUpVote method', () => {
-		const handleUpVote = jest.spyOn(wrapper.instance(), 'handleUpVote')
-		wrapper.update()
-
+	it('should handleVote method', () => {
 		const button = wrapper.find('button[aria-label="Increase Vote Score"]')
 		button.simulate('click', {preventDefault() {}})
-		expect(props.dispatch).toHaveBeenCalled()
-	})
-
-	it('should handleDownVote method', () => {
-		const handleDownVote = jest.spyOn(wrapper.instance(), 'handleDownVote')
-		wrapper.update()
-
-		const button = wrapper.find('button[aria-label="Decrease Vote Score"]')
-		button.simulate('click', {preventDefault() {}})
-		expect(props.dispatch).toHaveBeenCalled()
+		expect(props.handleVote).toHaveBeenCalled()
 	})
 
 	it('should handleRemove method', () => {
-		const handleRemove = jest.spyOn(wrapper.instance(), 'handleRemove')
-		wrapper.update()
-
 		const button = wrapper.find('button[aria-label="Remove Post"]')
 		button.simulate('click', {preventDefault() {}})
-		expect(props.dispatch).toHaveBeenCalled()
+		expect(props.handleRemove).toHaveBeenCalled()
 	})
 
 	it('should mapStateToProps return props', () => {

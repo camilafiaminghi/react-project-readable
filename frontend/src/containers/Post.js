@@ -13,29 +13,8 @@ export class Post extends Component {
 		singleView: PropTypes.bool.isRequired
 	}
 
-	handleUpVote = (event) => {
-		event.preventDefault()
-		const { dispatch, id } = this.props
-
-		dispatch(handleVotePost(id, 'upVote'))
-	}
-
-	handleDownVote = (event) => {
-		event.preventDefault()
-		const { dispatch, id } = this.props
-
-		dispatch(handleVotePost(id, 'downVote'))
-	}
-
-	handleRemove = (event) => {
-		event.preventDefault()
-		const { dispatch, id } = this.props
-
-		dispatch(handleRemovePost(id))
-	}
-
 	render() {
-		const { post, singleView } = this.props
+		const { post, singleView, handleRemove, handleVote } = this.props
 
 		if ( post ) {
 			const { id, voteScore, author, timestamp, title, body, category, commentCount } = post
@@ -44,13 +23,13 @@ export class Post extends Component {
 				<div className="item">
 					<div className="vote-score">
 						<button
-							onClick={this.handleUpVote}
+							onClick={() => handleVote(id, 'upVote')}
 							aria-label="Increase Vote Score">
 							<i className="material-icons">expand_less</i>
 						</button>
 						<span>{ voteScore }</span>
 						<button
-							onClick={this.handleDownVote}
+							onClick={() => handleVote(id, 'downVote')}
 							aria-label="Decrease Vote Score">
 							<i className="material-icons">expand_more</i>
 						</button>
@@ -81,7 +60,7 @@ export class Post extends Component {
 										<i className="material-icons">edit</i>
 									</Link>
 									<button
-										onClick={this.handleRemove}
+										onClick={() => handleRemove(id)}
 										aria-label="Remove Post">
 										<i className="material-icons">close</i>
 									</button>
@@ -107,4 +86,11 @@ export const mapStateToProps = ({ posts }, props) => {
 	}
 }
 
-export default withRouter(connect(mapStateToProps)(Post))
+export const mapDispatchToProps = (dispatch) => {
+  return {
+    handleVote: (id, option) => dispatch(handleVotePost(id, option)),
+    handleRemove: (id) => dispatch(handleRemovePost(id))
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Post))
