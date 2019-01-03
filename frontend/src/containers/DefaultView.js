@@ -9,19 +9,26 @@ import Post from './Post'
 export class DefaultView extends Component {
 
 	static propTypes = {
-		category: PropTypes.string,
 		items: PropTypes.array.isRequired
 	}
 
 	componentDidMount() {
-		const { dispatch, category } = this.props
+		const { handlePosts } = this.props
+		const { category } = this.props.match.params
+		handlePosts(category)
+	}
 
-		/* HANDLE POSTS BY CATEGORY */
-		dispatch(handlePosts(category))
+	componentDidUpdate(prevState) {
+		const { handlePosts } = this.props
+		const { category } = this.props.match.params
+		if ( prevState.match.params.category !== category ) {
+			handlePosts(category)
+		}
 	}
 
 	render() {
-		const { items, category } = this.props
+		const { items } = this.props
+		const { category } = this.props.match.params
 
 		return (
 			<div>
@@ -30,7 +37,7 @@ export class DefaultView extends Component {
 				<div className="bordered-top">
 					<div className="block text-center">
 						<Link
-							to={{pathname: '/post', state: { category }}}
+							to={{pathname: '/add', state: { category }}}
 							className="btn-add"
 							aria-label="Add Post">
 							<i className="material-icons">add_box</i>add post
@@ -38,8 +45,8 @@ export class DefaultView extends Component {
 					</div>
 
 					<ul className="items">
-						{items.map((item, index) => (
-							<li key={index} className="bordered">
+						{items.map((item) => (
+							<li key={item} className="bordered">
 								<Post id={item} singleView={false} />
 							</li>
 						))}
@@ -51,13 +58,16 @@ export class DefaultView extends Component {
 }
 
 export const mapStateToProps = ({ posts }, props) => {
-	const { category } = props
 	const items = (posts.success) ? Object.keys(posts.byId) : []
-
 	return {
-		category,
 		items
 	}
 }
 
-export default connect(mapStateToProps)(DefaultView)
+export const mapDispatchToProps = (dispatch) => {
+  return {
+    handlePosts: (category) => dispatch(handlePosts(category))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DefaultView)

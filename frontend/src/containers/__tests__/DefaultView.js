@@ -2,7 +2,7 @@ import React from 'react';
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
-import { DefaultView, mapStateToProps } from './../DefaultView'
+import { DefaultView, mapStateToProps, mapDispatchToProps } from './../DefaultView'
 import { Link } from 'react-router-dom'
 import Nav from './../Nav'
 import Post from './../Post'
@@ -24,9 +24,9 @@ describe('<DefaultView />', () => {
 		window.fetch = fetch.successful({posts})
 		store = mockStore({posts: {items: posts}, categories: {items: data.categories}})
 		props = {
-			categories: data.categories,
 			items: posts,
-			dispatch: store.dispatch
+			handlePosts: jest.fn(),
+			match: {params: {category: ''}}
 		}
 		provider = shallow(<Provider store={store}><DefaultView {...props} /></Provider>)
 		wrapper = provider.find(DefaultView).shallow()
@@ -58,8 +58,11 @@ describe('<DefaultView />', () => {
 	})
 
 	it('should mapStateToProps return props', () => {
-		expect(mapStateToProps(store.getState(), {category: ''})).toHaveProperty('category', '')
 		expect(mapStateToProps(store.getState(), {posts: ''})).toHaveProperty('items', [])
+	})
+
+	it('should mapDispatchToProps return props', () => {
+		expect(mapDispatchToProps(store.dispatch)).toHaveProperty('handlePosts')
 	})
 })
 

@@ -6,29 +6,22 @@ import { handleOrderPostsBy } from './../actions/posts'
 export class SelectOrderBy extends Component {
 
 	static propTypes = {
-		success: PropTypes.bool.isRequired
+		items: PropTypes.array.isRequired
 	}
 
 	state = {
-		option: '',
-		updated: false
+		option: ''
 	}
 
-	componentDidUpdate() {
-		const { success } = this.props
-		const { updated } = this.state
-
-		if (success && !updated) {
-			this.setState((prevState) => ({...prevState, updated: true}))
+	componentDidUpdate(prevState) {
+		if ( !this.props.items.every((item) => (prevState.items.includes(item))) ) {
 			this.handleOnChange('voteScore')
 		}
 	}
 
 	handleOnChange = (option) => {
-		const { dispatch } = this.props
-
 		/* HANDLE ORDERBY */
-		dispatch(handleOrderPostsBy(option))
+		this.props.handleOrderPostsBy(option)
 		this.setState((prevState) => ({...prevState, option}))
 	}
 
@@ -47,11 +40,16 @@ export class SelectOrderBy extends Component {
 }
 
 export const mapStateToProps = ({ posts }, props) => {
-	const { success } = posts
-
+	const items = Object.keys(posts.byId)
 	return {
-		success
+		items
 	}
 }
 
-export default connect(mapStateToProps)(SelectOrderBy)
+export const mapDispatchToProps = (dispatch) => {
+  return {
+    handleOrderPostsBy: (option) => dispatch(handleOrderPostsBy(option))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectOrderBy)

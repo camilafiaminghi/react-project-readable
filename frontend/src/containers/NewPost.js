@@ -16,8 +16,8 @@ export class NewPost extends Component {
 	}
 
 	render() {
-		const { category } = this.props.location.state
-		const post = {author: '', title: '', body: '', category}
+		const category = (this.props.location.state.category) ? this.props.location.state.category : ''
+		const post = { author: '', title: '', body: '', category }
 
 		return (
 			<div>

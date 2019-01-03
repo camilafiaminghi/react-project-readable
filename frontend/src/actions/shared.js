@@ -8,8 +8,7 @@ export function handleInitialData () {
 		dispatch(showLoading())
 
 		return Promise.all([
-			dispatch(handleCategories()),
-	    dispatch(handlePosts())
+			dispatch(handleCategories())
 	  ])
 	  	.then(() => dispatch(hideLoading()))
 	}

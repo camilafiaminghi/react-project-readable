@@ -43,9 +43,9 @@ describe('shared action', () => {
 		const expectAction = [
 			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW' },
 			{ type: LOAD_CATEGORIES_REQUEST },
-			{ type: LOAD_POSTS_REQUEST },
+			// { type: LOAD_POSTS_REQUEST },
 			{ type: LOAD_CATEGORIES_SUCCESS, items: categories },
-			{ type: LOAD_POSTS_SUCCESS, items: { categories: categories, posts: posts } },
+			// { type: LOAD_POSTS_SUCCESS, items: { categories: categories, posts: posts } },
 			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' },
 		]
 
@@ -60,9 +60,7 @@ describe('shared action', () => {
 		const expectAction = [
 			{ payload: {scope: 'default'}, type: 'loading-bar/SHOW' },
 			{ type: LOAD_CATEGORIES_REQUEST },
-			{ type: LOAD_POSTS_REQUEST },
 			{ type: LOAD_CATEGORIES_FAILURE },
-			{ type: LOAD_POSTS_FAILURE },
 			{ payload: {scope: 'default'}, type: 'loading-bar/HIDE' }
 		]
 

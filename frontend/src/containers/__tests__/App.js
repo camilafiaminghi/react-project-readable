@@ -28,7 +28,6 @@ describe('<App />', () => {
 		window.fetch = fetch.successful({data: data})
 		store = mockStore({categories: {items:data.categories, error:false}, posts: {items: posts, error: false}})
 		props = {
-			routes: data.categories.map(item => (`/${item.path}`)),
 			initialDataError: false,
 			dispatch: store.dispatch,
 			handleInitialData: jest.fn()
@@ -51,7 +50,7 @@ describe('<App />', () => {
 	it('should contains components: LoadingBar, Switch, Route', () => {
 		expect(wrapper.find(LoadingBar).exists()).toBeTruthy()
 		expect(wrapper.find(Switch).exists()).toBeTruthy()
-		expect(wrapper.find(Route)).toHaveLength(9)
+		expect(wrapper.find(Route)).toHaveLength(7)
 	})
 
 	it('should renders a div className .error if error', () => {
@@ -60,7 +59,6 @@ describe('<App />', () => {
 	})
 
 	it('should mapStateToProps return props', () => {
-		expect(mapStateToProps(store.getState())).toHaveProperty('routes', ['react', 'redux', 'udacity'])
 		expect(mapStateToProps(store.getState())).toHaveProperty('initialDataError', false)
 	})
 

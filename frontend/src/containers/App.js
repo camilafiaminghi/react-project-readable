@@ -15,16 +15,14 @@ export class App extends Component {
 
 	static propTypes = {
 		initialDataError: PropTypes.bool.isRequired,
-		routes: PropTypes.array.isRequired
 	}
 
 	componentDidMount() {
-		/* HANDLE INITIAL DATA */
 		this.props.handleInitialData()
 	}
 
 	render() {
-		const { initialDataError, routes } = this.props
+		const { initialDataError } = this.props
 
 		if (initialDataError) {
 			return (
@@ -33,19 +31,18 @@ export class App extends Component {
   			</div>
 			)
 		} else {
+
 			return (
 				<div className="container">
 					<LoadingBar className="loading-bar" />
 					<Switch>
-						<Route exact path="/" render={() => <DefaultView category="" />} />
-						{routes.map((route, index) => (
-							<Route exact key={index} path={`/${route}`} render={() => <DefaultView category={route} />} />
-            ))}
+						<Route exact path="/" component={DefaultView} />
+						<Route path="/not-found" component={RouteNotFound} />
             <Route path="/edit/:id" component={EditPost} />
-            <Route exact path="/post" component={NewPost} />
-            <Route exact strict path="/:category/:id" component={PostView} />
-            <Route component={RouteNotFound} />
-            <Route path="/not-found" component={RouteNotFound} />
+            <Route path="/add" component={NewPost} />
+            <Route path="/:category/:id" component={PostView} />
+						<Route path="/:category" component={DefaultView} />
+						<Route component={RouteNotFound} />
         	</Switch>
 					<Messages />
 				</div>
@@ -55,10 +52,8 @@ export class App extends Component {
 }
 
 export const mapStateToProps = ({ categories, posts }) => {
-
 	return {
-		initialDataError: (categories.error && posts.error),
-		routes: categories.items.map(item => (item.path))
+		initialDataError: (categories.error && posts.error)
 	}
 }
 
