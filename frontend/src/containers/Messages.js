@@ -10,11 +10,6 @@ export class Messages extends Component {
 		commentFailure: PropTypes.string
 	}
 
-	// handleClose = (event) => {
-	// 	event.preventDefault()
-	// 	this.props.dispatch(handleCleanAllFailures())
-	// }
-
 	render() {
 		const { postFailure, commentFailure, handleCleanAllFailures } = this.props
 
