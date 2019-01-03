@@ -16,34 +16,17 @@ export class Comment extends Component {
 		editComment: false
 	}
 
-	handleUpVote = (event) => {
-		event.preventDefault()
-		const { dispatch, id } = this.props
+	handleOnUpdate = (validated, form) => {
+		const { id, handleUpdate } = this.props
 
-		dispatch(handleVoteComment(id, 'upVote'))
-	}
-
-	handleDownVote = (event) => {
-		event.preventDefault()
-		const { dispatch, id } = this.props
-
-		dispatch(handleVoteComment(id, 'downVote'))
-	}
-
-	handleRemove = () => {
-		const { dispatch, id } = this.props
-		dispatch(handleRemovePostComments(id))
-	}
-
-	handleUpdate = (validated, form) => {
-		const { dispatch, id } = this.props
 		if (validated) {
-			dispatch(handleUpdateComment(id, form))
+			handleUpdate(id, form)
 			this.setState((prevState) => ({...prevState, editComment: !prevState.editComment}))
 		}
 	}
 
 	render() {
+		const { id, handleRemove, handleVote } = this.props
 		const { voteScore, author, body, timestamp } = this.props.comment
 		const { editComment } = this.state
 
@@ -51,13 +34,13 @@ export class Comment extends Component {
 			<div>
 				<div className="vote-score">
 					<button
-						onClick={this.handleUpVote}
+						onClick={() => handleVote(id, 'upVote')}
 						aria-label="Increase Vote Score">
 						<i className="material-icons">expand_less</i>
 					</button>
 					<span>{ voteScore }</span>
 					<button
-						onClick={this.handleDownVote}
+						onClick={() => handleVote(id, 'downVote')}
 						aria-label="Decrease Vote Score">
 						<i className="material-icons">expand_more</i>
 					</button>
@@ -77,7 +60,7 @@ export class Comment extends Component {
 						</button>
 					}
 					<button
-						onClick={this.handleRemove}
+						onClick={() => handleRemove(id)}
 						aria-label="Remove Comment">
 						<i className="material-icons">close</i>
 					</button>
@@ -90,7 +73,7 @@ export class Comment extends Component {
 							aria-label="Cancel Comment">
 							<i className="material-icons">remove_circle_outline</i>cancel
 						</button>
-						<FormComment comment={{author,body}} handleSubmit={this.handleUpdate} />
+						<FormComment comment={{author,body}} handleSubmit={this.handleOnUpdate} />
 					</div>
 				}
 			</div>
@@ -107,4 +90,12 @@ export const mapStateToProps = ({ comments }, props) => {
 	}
 }
 
-export default connect(mapStateToProps)(Comment)
+export const mapDispatchToProps = (dispatch) => {
+  return {
+    handleVote: (id, option) => dispatch(handleVoteComment(id, option)),
+    handleRemove: (id) => dispatch(handleRemovePostComments(id)),
+    handleUpdate: (id, form) => dispatch(handleUpdateComment(id, form))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comment)

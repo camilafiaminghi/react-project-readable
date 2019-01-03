@@ -26,7 +26,9 @@ describe('<Comment />', () => {
 		props = {
 			id: comments[0].id,
 			comment,
-			dispatch: jest.fn()
+			handleVote: jest.fn(),
+			handleRemove: jest.fn(),
+			handleUpdate: jest.fn()
 		}
 		provider = shallow(<Provider store={store}><Comment {...props} /></Provider>)
 		wrapper = provider.find(Comment).shallow()
@@ -60,31 +62,16 @@ describe('<Comment />', () => {
 		expect(wrapper.state()).toEqual({...state, editComment: true})
 	})
 
-	it('should handleUpVote method', () => {
-		const handleUpVote = jest.spyOn(wrapper.instance(), 'handleUpVote')
-		wrapper.update()
-
+	it('should handleVote method', () => {
 		const button = wrapper.find('button[aria-label="Increase Vote Score"]')
-		button.simulate('click', {preventDefault() {}})
-		expect(props.dispatch).toHaveBeenCalled()
-	})
-
-	it('should handleDownVote method', () => {
-		const handleDownVote = jest.spyOn(wrapper.instance(), 'handleDownVote')
-		wrapper.update()
-
-		const button = wrapper.find('button[aria-label="Decrease Vote Score"]')
-		button.simulate('click', {preventDefault() {}})
-		expect(props.dispatch).toHaveBeenCalled()
+		button.simulate('click')
+		expect(props.handleVote).toHaveBeenCalled()
 	})
 
 	it('should handleRemove method', () => {
-		const handleRemove = jest.spyOn(wrapper.instance(), 'handleRemove')
-		wrapper.update()
-
 		const button = wrapper.find('button[aria-label="Remove Comment"]')
-		button.simulate('click', {preventDefault() {}})
-		expect(props.dispatch).toHaveBeenCalled()
+		button.simulate('click')
+		expect(props.handleRemove).toHaveBeenCalled()
 	})
 
 	/**/
@@ -98,8 +85,8 @@ describe('<Comment />', () => {
 		expect(wrapper.state()).toEqual({...state, editComment: false})
 	})
 
-	it('should handleUpdate', () => {
-		const handleUpdate = jest.spyOn(wrapper.instance(), 'handleUpdate')
+	it('should handleOnUpdate', () => {
+		const handleUpdate = jest.spyOn(wrapper.instance(), 'handleOnUpdate')
 		wrapper.update()
 		wrapper.setState({editComment: true})
 
