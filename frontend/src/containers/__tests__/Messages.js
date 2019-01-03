@@ -2,7 +2,7 @@ import React from 'react';
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
-import { Messages, mapStateToProps } from './../Messages'
+import { Messages, mapStateToProps, mapDispatchToProps } from './../Messages'
 
 const mockStore = configureMockStore([thunk])
 let store
@@ -17,7 +17,7 @@ describe('<Messages />', () => {
 		props = {
 			postFailure: 'vote',
 			commentFailure: '',
-			dispatch: jest.fn()
+			handleCleanAllFailures: jest.fn()
 		}
 		provider = shallow(<Provider store={store}><Messages {...props} /></Provider>)
 		wrapper = provider.find(Messages).shallow()
@@ -34,22 +34,24 @@ describe('<Messages />', () => {
 	  expect(wrapper.find('button[aria-label="Close alert"]')).toBeTruthy()
 	})
 
-	it('should handleClose from button', () => {
-		const handleClose = jest.spyOn(wrapper.instance(), 'handleClose')
+	it('should handleCleanAllFailures from button', () => {
 		const button = wrapper.find('button[aria-label="Close alert"]')
 		button.simulate('click', {preventDefault(){}})
-		expect(props.dispatch).toHaveBeenCalled()
+		expect(props.handleCleanAllFailures).toHaveBeenCalled()
 	})
 
-	it('should handleClose from mask', () => {
-		const handleClose = jest.spyOn(wrapper.instance(), 'handleClose')
-		const button = wrapper.find('.modal-mask')
-		button.simulate('click', {preventDefault(){}})
-		expect(props.dispatch).toHaveBeenCalled()
+	it('should handleCleanAllFailures from mask', () => {
+		const mask = wrapper.find('.modal-mask')
+		mask.simulate('click', {preventDefault(){}})
+		expect(props.handleCleanAllFailures).toHaveBeenCalled()
 	})
 
 	it('should mapStateToProps return props', () => {
 		expect(mapStateToProps({comments: {failure: ''}, posts: {failure: 'vote'}})).toHaveProperty('postFailure', 'vote')
+	})
+
+	it('should mapDispatchToProps return props', () => {
+		expect(mapDispatchToProps(store.dispatch)).toHaveProperty('handleCleanAllFailures')
 	})
 })
 

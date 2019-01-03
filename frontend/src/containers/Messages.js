@@ -10,25 +10,25 @@ export class Messages extends Component {
 		commentFailure: PropTypes.string
 	}
 
-	handleClose = (event) => {
-		event.preventDefault()
-		this.props.dispatch(handleCleanAllFailures())
-	}
+	// handleClose = (event) => {
+	// 	event.preventDefault()
+	// 	this.props.dispatch(handleCleanAllFailures())
+	// }
 
 	render() {
-		const { postFailure, commentFailure } = this.props
+		const { postFailure, commentFailure, handleCleanAllFailures } = this.props
 
 		return (
 			<Fragment>
 				{ (postFailure || commentFailure) &&
 					<div className="modal">
 						<div
-							onClick={this.handleClose}
+							onClick={() => handleCleanAllFailures()}
 							className="modal-mask"></div>
 						<div className="modal-content">
 
 							<button
-								onClick={this.handleClose}
+								onClick={() => handleCleanAllFailures()}
 								aria-label="Close alert">
 								<i className="material-icons">close</i>
 							</button>
@@ -55,4 +55,10 @@ export const mapStateToProps = ({ posts, comments }) => {
 	}
 }
 
-export default connect(mapStateToProps)(Messages)
+export const mapDispatchToProps = (dispatch) => {
+  return {
+    handleCleanAllFailures: () => dispatch(handleCleanAllFailures())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Messages)
