@@ -2,7 +2,7 @@ import React from 'react';
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
-import { Comment, mapStateToProps } from './../Comment'
+import { Comment, mapStateToProps, mapDispatchToProps } from './../Comment'
 import FormComment from './../FormComment'
 import fetch from './../../__helpers__/fetch'
 import comments from './../../__helpers__/comments'
@@ -96,6 +96,12 @@ describe('<Comment />', () => {
 
 	it('should mapStateToProps return props', () => {
 		expect(mapStateToProps({comments: store.getState()}, {id: comments[0].id})).toHaveProperty('comment', comments[0])
+	})
+
+	it('should mapDispatchToProps return props', () => {
+		expect(mapDispatchToProps(store.dispatch)).toHaveProperty('handleVote')
+		expect(mapDispatchToProps(store.dispatch)).toHaveProperty('handleRemove')
+		expect(mapDispatchToProps(store.dispatch)).toHaveProperty('handleUpdate')
 	})
 })
 

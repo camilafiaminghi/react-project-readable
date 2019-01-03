@@ -2,7 +2,7 @@ import React from 'react';
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
-import { Comments, mapStateToProps } from './../Comments'
+import { Comments, mapStateToProps, mapDispatchToProps } from './../Comments'
 import Comment from './../Comment'
 import FormComment from './../FormComment'
 import fetch from './../../__helpers__/fetch'
@@ -28,7 +28,8 @@ describe('<Comments />', () => {
 		props = {
 			parentId: posts[0].id,
 			items: Object.keys(byId),
-			dispatch: jest.fn()
+			handleComments: jest.fn(),
+			handleSave: jest.fn()
 		}
 		provider = shallow(<Provider store={store}><Comments {...props} /></Provider>)
 		wrapper = provider.find(Comments).shallow()
@@ -72,8 +73,8 @@ describe('<Comments />', () => {
 		expect(wrapper.state()).toEqual({...state, addComment: false})
 	})
 
-	it('should handleSave', () => {
-		const handleSave = jest.spyOn(wrapper.instance(), 'handleSave')
+	it('should handleOnSave', () => {
+		const handleSave = jest.spyOn(wrapper.instance(), 'handleOnSave')
 		wrapper.update()
 		wrapper.setState({addComment: true})
 
@@ -84,6 +85,11 @@ describe('<Comments />', () => {
 	it('should mapStateToProps return props', () => {
 		expect(mapStateToProps({comments: store.getState()}, {parentId: posts[0].id})).toHaveProperty('parentId', posts[0].id)
 		expect(mapStateToProps({comments: store.getState()}, {parentId: posts[0].id})).toHaveProperty('items', Object.keys(byId))
+	})
+
+	it('should mapDispatchToProps return props', () => {
+		expect(mapDispatchToProps(store.dispatch)).toHaveProperty('handleSave')
+		expect(mapDispatchToProps(store.dispatch)).toHaveProperty('handleComments')
 	})
 })
 

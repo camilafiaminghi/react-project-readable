@@ -19,15 +19,15 @@ export class Comments extends Component {
 
 	componentDidMount() {
 		/* HANDLE COMMENTS BY POST */
-		this.props.dispatch(handleComments(this.props.parentId))
+		this.props.handleComments(this.props.parentId)
 	}
 
-	handleSave = (validated, form) => {
-		const { dispatch, parentId } = this.props
+	handleOnSave = (validated, form) => {
+		const { parentId, handleSave } = this.props
 
 		/* DISPATCH IF IS VALID */
 		if (validated) {
-			dispatch(handleUpdatePostComments(form, parentId))
+			handleSave(form, parentId)
 			this.setState((prevState) => ({...prevState, addComment: !prevState.addComment}))
 		}
 	}
@@ -55,7 +55,7 @@ export class Comments extends Component {
 							aria-label="Cancel Comment">
 							<i className="material-icons">remove_circle_outline</i>cancel
 						</button>
-						<FormComment comment={{author:'',body:''}} handleSubmit={this.handleSave} />
+						<FormComment comment={{author:'',body:''}} handleSubmit={this.handleOnSave} />
 					</div>
 				}
 
@@ -81,4 +81,11 @@ export const mapStateToProps = ({ comments }, props) => {
 	}
 }
 
-export default connect(mapStateToProps)(Comments)
+export const mapDispatchToProps = (dispatch) => {
+  return {
+    handleComments: (id) => dispatch(handleComments(id)),
+    handleSave: (form, parentId) => dispatch(handleUpdatePostComments(form, parentId))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Comments)
