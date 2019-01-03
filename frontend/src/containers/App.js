@@ -37,8 +37,7 @@ export class App extends Component {
 					<LoadingBar className="loading-bar" />
 					<Switch>
 						<Route exact path="/" component={DefaultView} />
-						<Route path="/not-found" component={RouteNotFound} />
-            <Route path="/edit/:id" component={EditPost} />
+						<Route path="/edit/:id" component={EditPost} />
             <Route path="/add" component={NewPost} />
             <Route exact path={`/:category(${categories})/:id(${posts})`} component={PostView} />
 						<Route exact path={`/:category(${categories})`} component={DefaultView} />
