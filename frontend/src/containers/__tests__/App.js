@@ -60,7 +60,7 @@ describe('<App />', () => {
 	it('should contains components: LoadingBar, Switch, Route', () => {
 		expect(wrapper.find(LoadingBar).exists()).toBeTruthy()
 		expect(wrapper.find(Switch).exists()).toBeTruthy()
-		expect(wrapper.find(Route)).toHaveLength(7)
+		expect(wrapper.find(Route)).toHaveLength(6)
 	})
 
 	it('should mapStateToProps return props', () => {
