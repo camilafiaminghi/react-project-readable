@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { Debounce } from 'react-throttle';
 import { handleVoteComment, handleUpdateComment } from '../actions/comments'
 import { handleRemovePostComments } from '../actions/shared'
 import { timeDiff, formatTimeDiff } from '../utils/dateUtils'
@@ -33,17 +34,21 @@ export class Comment extends Component {
 		return (
 			<div>
 				<div className="vote-score">
-					<button
-						onClick={() => handleVote(id, 'upVote')}
-						aria-label="Increase Vote Score">
-						<i className="material-icons">expand_less</i>
-					</button>
+					<Debounce time="100" handler="onClick">
+						<button
+							onClick={() => handleVote(id, 'upVote')}
+							aria-label="Increase Vote Score">
+							<i className="material-icons">expand_less</i>
+						</button>
+					</Debounce>
 					<span>{ voteScore }</span>
-					<button
-						onClick={() => handleVote(id, 'downVote')}
-						aria-label="Decrease Vote Score">
-						<i className="material-icons">expand_more</i>
-					</button>
+					<Debounce time="100" handler="onClick">
+						<button
+							onClick={() => handleVote(id, 'downVote')}
+							aria-label="Decrease Vote Score">
+							<i className="material-icons">expand_more</i>
+						</button>
+					</Debounce>
 				</div>
 				<div className="details">
 					<span className="author"> Commented by <strong>{ author }</strong> { formatTimeDiff(timeDiff(timestamp)) }</span>
